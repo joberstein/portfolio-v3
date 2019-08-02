@@ -1,0 +1,74 @@
+.form {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0 15px;
+}
+
+.fieldLabel {
+  line-height: 24px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.inputField {
+  line-height: 32px;
+}
+
+.inputTextBox {
+  max-width: 480px;
+  line-height: 28px;
+  resize: none;
+}
+
+.inputField,
+.inputTextBox {
+  outline: none;
+  border: none;
+  background-color: #cef;
+  color: #000000;
+  padding: 5px 5px 5px 10px;
+  font-size: 20px;
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+}
+
+.inputField:-webkit-autofill,
+.inputField-webkit-autofill:focus,
+.inputField-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0 1000px #cef inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+::placeholder {
+  color: steelblue;
+}
+
+.formButton {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: steelblue;
+  color: #cef;
+  padding: 15px;
+  font-size: 24px;
+  font-family: Arial, sans-serif;
+  letter-spacing: 1.5px;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.sendSuccess {
+  font-size: 32px;
+}
