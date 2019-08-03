@@ -19,7 +19,7 @@ const routes = [
 
 const App = () => (
     <div className={styles.app}>
-        <Router basename="/portfolio-v3">
+        <Router basename={process.env.PUBLIC_URL}>
             <ScrollToTop/>
             <Header routes={routes} />
             <Switch>
