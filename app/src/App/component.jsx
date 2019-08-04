@@ -8,6 +8,7 @@ import About from "About/component";
 import Portfolio from "Portfolio/component";
 import Contact from "Contact/component";
 import ScrollToTop from "ScrollToTop/component";
+import NotFound from "NotFound/component";
 import {createRouteLink} from "Navigation/component";
 
 const routes = [
@@ -24,6 +25,7 @@ const App = () => (
             <Header routes={routes} />
             <Switch>
                 {routes.map(renderRoute)}
+                <Route component={NotFound} />
             </Switch>
             <Footer/>
         </Router>

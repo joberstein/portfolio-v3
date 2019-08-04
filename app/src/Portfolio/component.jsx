@@ -3,6 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import styles from "./styles.module.scss";
 import Navigation from "Navigation/component";
 import PortfolioSection from "PortfolioSection/component";
+import NotFound from "NotFound/component";
 import animation from "./animation/data";
 import apps from "./apps/data";
 import drawing from "./drawing/data";
@@ -40,23 +41,25 @@ class Portfolio extends React.Component {
 
     render() {
         return (
-            <div className={styles.portfolio}>
-                <h1>Portfolio</h1>
-                <div className={styles.links}>
-                    <Navigation routes={routes} basePath={this.props.match.path}/>
-                </div>
-
-                <Switch>
-                    {routes.map(this.renderRoute)}
-                </Switch>
-            </div>
+            <Switch>
+                {routes.map(this.renderRoute)}
+                <Route component={NotFound} />
+            </Switch>
         );
     }
 
     renderRoute = ({path, data}) => (
         <Route key={path}
                path={`${this.props.match.path}${path}`}
-               render={() => <PortfolioSection data={data} path={path} />} />
+               render={() => (
+                   <div className={styles.portfolio}>
+                       <h1>Portfolio</h1>
+                       <div className={styles.links}>
+                           <Navigation routes={routes} basePath={this.props.match.path}/>
+                       </div>
+                       <PortfolioSection data={data} path={path} />
+                   </div>
+                )} />
     )
 }
 
