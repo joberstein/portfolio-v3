@@ -1,9 +1,12 @@
 export const technology = [
-    "Spring + Thymeleaf",
-    "React + Redux",
-    "Webpack",
-    "Sass",
-    "SQL"
+    "Java",
+    "JavaScript",
+    "Spring",
+    "React",
+    "HTML",
+    "CSS/Sass",
+    "SQL",
+    "Webpack"
 ];
 
 export const videoGames = [
