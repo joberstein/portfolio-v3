@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "0.1.0",
-  "homepage": "http://joberstein.github.io/portfolio-v3",
+  "homepage": "https://www.jesseoberstein.com",
   "private": true,
   "dependencies": {
     "@material-ui/core": "3.1.0",
