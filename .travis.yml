@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - stable
+env:
+  global:
+    secure: MKipgJu5QO90JFlrXH/Oag+Vo5islUzunBXBwo7B9gSAvpo27exKnGqHgxTTJ2tSSQsjFxYWGBpJfFDDEW9jqbhZ5dO4YjdOeqX1+D/QQVduxNH8/VfPMR3OlThQw/VVqCNOQgZE6Vb2Nsc6TSBfe9Qxx7VNjzruvJGbbeFeKsWpkrX/FXFLSC7L29GaLjXIxNDSZGpOMbkCONGms593M1FGTJ6ckbtZVHwcnTsVPQeWHbQPe0AkpwbAzbicPHiL+jyDtOAd+PCwaXtahBMU8OizO4YUUZT54mRM7z4Stm8/1OHMIyG2h1S+zzUxk4nRTWjErxIYqnva5zpW2fDicn0nXUf3aOBWtLTti3xhnVtCsYQjYbn3rn/nSu+HRlcPPlVcrW680cpmWG6o9k1aPU2zmJWwrf9NHM8jyJJTaMU3Nrpd4XQV0oCPK+ctP8W8HHsisTXawxeEDVy5KYtNhdNvFV6uqhLWVtaxYtYH/EOJ5Xg8yfdNwZcf5xmTkw8FAI3sCY/iqxRk7vLfuhbZ55vXs2UP1Va9xq11Xl7wZIR3mPEwoGWAlWd9tos7ZRhv+tnf6GCNZ+69PYjTwXvOfwFJz20AdeTJLnyozeJpXN02/JGBopAGzSJKhHDU1s/55Ipjqa13APW+9+HerOami/3PJWkfw1ku9RMwMzgB0zk=
+cache:
+  directories:
+  - app/node_modules
+script:
+- npm run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: "$GITHUB_TOKEN"
+  local_dir: app/build
+  on:
+    branch: gh-pages
