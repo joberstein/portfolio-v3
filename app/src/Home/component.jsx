@@ -1,11 +1,30 @@
 import React from "react";
 import styles from "Home/styles.module.scss";
-import fushimiInari from "./img/fushimi-inari.jpg";
-import gundam from "./img/gundam.jpg";
-import himeji from "./img/himeji.jpg";
-import hydrangea from "./img/hydrangea.jpg";
-import kinkakuji from "./img/kinkakuji.jpg";
-import nara from "./img/nara.jpg";
+import fushimiInariJpg from "./img/fushimi-inari.jpg";
+import fushimiInariJp2 from "./img/fushimi-inari.jp2";
+import fushimiInariWebp from "./img/fushimi-inari.webp";
+import gundamJpg from "./img/gundam.jpg";
+import gundamJp2 from "./img/gundam.jp2";
+import gundamWebp from "./img/gundam.webp";
+import himejiJpg from "./img/himeji.jpg";
+import himejiJp2 from "./img/himeji.jp2";
+import himejiWebp from "./img/himeji.webp";
+import hydrangeaJpg from "./img/hydrangea.jpg";
+import hydrangeaJp2 from "./img/hydrangea.jp2";
+import hydrangeaWebp from "./img/hydrangea.webp";
+import kinkakujiJpg from "./img/kinkakuji.jpg";
+import kinkakujiJp2 from "./img/kinkakuji.jp2";
+import kinkakujiWebp from "./img/kinkakuji.webp";
+import naraJpg from "./img/nara.jpg";
+import naraJp2 from "./img/nara.jp2";
+import naraWebp from "./img/nara.webp";
+
+const fushimiInari = [fushimiInariWebp, fushimiInariJp2, fushimiInariJpg];
+const gundam = [gundamWebp, gundamJp2, gundamJpg];
+const himeji = [himejiWebp, himejiJp2, himejiJpg];
+const hydrangea = [hydrangeaWebp, hydrangeaJp2, hydrangeaJpg];
+const kinkakuji = [kinkakujiWebp, kinkakujiJp2, kinkakujiJpg];
+const nara = [naraWebp, naraJp2, naraJpg];
 
 const Home = () => (
     <div className={styles.home}>
@@ -14,7 +33,7 @@ const Home = () => (
         </p>
 
         <div className={`${styles.images} ${styles.imagesWide}`}>
-            {[himeji, hydrangea, nara].map(image => <Image data={image} key={image}/>)}
+            {[himeji, hydrangea, nara].map(images => <Image data={images} key={images}/>)}
         </div>
 
         <p className={styles.quote}>
@@ -22,15 +41,21 @@ const Home = () => (
         </p>
 
         <div className={`${styles.images} ${styles.imagesTall}`}>
-            {[gundam, kinkakuji, fushimiInari].map(image => <Image data={image} key={image}/>)}
+            {[gundam, kinkakuji, fushimiInari].map(images => <Image data={images} key={images}/>)}
         </div>
     </div>
 );
 
-const Image = ({data}) => (
-    <div>
-        <img className={styles.image} src={data} alt=""/>
-    </div>
-);
+const Image = ({data}) => {
+    const fallbackImage = data.pop();
+    return (
+        <div>
+            <picture>
+                {data.map(image => <source srcSet={image} key={image}/>)}
+                <img className={styles.image} src={fallbackImage} alt=""/>
+            </picture>
+        </div>
+    );
+};
 
 export default Home;
