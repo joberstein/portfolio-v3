@@ -14,10 +14,7 @@ const sendMessage = data => {
     };
 
     return fetch(SEND_MESSAGE_URL, requestOptions)
-        .then(response => {
-            const {status} = response;
-            return status >= 200 && status < 400
-        });
+        .then(({status}) => status >= 200 && status < 400);
 };
 
 export default sendMessage;

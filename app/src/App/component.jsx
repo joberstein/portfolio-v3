@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import styles from './styles.module.scss';
 import Header from "Header/component";
 import Footer from "Footer/component";
+import Analytics from "Analytics/component";
 import Home from "Home/component";
 import About from "About/component";
 import Portfolio from "Portfolio/component";
@@ -23,10 +24,13 @@ const App = () => (
         <Router basename={process.env.PUBLIC_URL}>
             <ScrollToTop/>
             <Header routes={routes} />
+
+            <Route component={Analytics}/>
             <Switch>
                 {routes.map(renderRoute)}
                 <Route component={NotFound} />
             </Switch>
+
             <Footer/>
         </Router>
     </div>
