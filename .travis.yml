@@ -7,12 +7,14 @@ env:
 cache:
   directories:
   - app/node_modules
+before_script:
+  - cd app
 script:
-- npm run build
+  - npm run build
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: "$GITHUB_TOKEN"
-  local_dir: app/build
+  local_dir: build
   on:
     branch: gh-pages
