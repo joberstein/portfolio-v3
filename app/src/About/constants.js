@@ -3,30 +3,37 @@ export const technology = [
     "JavaScript",
     "Spring",
     "React",
-    "HTML",
+    "HTML/Velocity",
     "CSS/Sass",
     "SQL",
-    "Webpack"
+    "Webpack",
+    "Git",
+    "Maven",
+    "Kafka",
+    "Docker + Kubernetes",
+    "JUnit/Mockito/Selenium"
 ];
 
 export const videoGames = [
+    "Super Smash Bros. Ultimate",
     "Paper Mario: The Thousand-Year Door",
-    "Super Mario Galaxy",
+    "Super Mario Odyssey",
     "Mario Kart Wii",
     "Pokemon Emerald",
-    "Super Smash Bros. Brawl",
-    "Legend of Zelda: Twilight Princess",
-    "Metroid Prime: Trilogy"
+    "Legend of Zelda: Breath of the Wild",
+    "Metroid Prime: Trilogy",
+    "Professor Layton and the Curious Village"
 ];
 
 export const tvShows = [
     "The Office",
+    "Avatar: the Last Airbender",
     "A Series of Unfortunate Events",
     "Black Mirror",
     "Brooklyn 99",
     "The Great British Baking Show",
-    "30 Rock",
-    "Friends"
+    "Community",
+    "The Dragon Prince"
 ];
 
 export const anime = [
@@ -45,7 +52,9 @@ export const boardGames = [
     "Settlers of Catan",
     "Pandemic",
     "Hanabi",
-    "Munchkin"
+    "A Ticket to Ride",
+    "Betrayal at House on the Hill",
+    "Illimat"
 ];
 
 export const travelGoals = [

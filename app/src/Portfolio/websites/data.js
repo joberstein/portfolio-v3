@@ -43,7 +43,7 @@ export default {
 			"in college.",
 			{
 				image: portfolioV0,
-				link: "https://joberstein.github.com/portfoliov0"
+				link: "https://joberstein.github.com/portfolio-v0"
 			})
 
 		// TODO need to recreate the blog

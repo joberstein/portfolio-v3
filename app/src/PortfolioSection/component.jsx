@@ -83,7 +83,7 @@ class PortfolioSection extends React.Component {
 
     renderOverlay = (DatumType, overlayProps={}) => (
         <div className={styles.overlay} {...overlayProps}>
-            <DatumType htmlColor="#FFFFFF" fontSize="inherit"/>
+            <DatumType fontSize="inherit"/>
         </div>
     );
 

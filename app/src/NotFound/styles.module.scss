@@ -3,7 +3,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 auto 75px;
+  margin: 0 auto;
+  flex: 1 0 auto;
 }
 
 .content {
@@ -23,10 +24,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .notFound {
-    margin-bottom: 0;
-  }
-
   .mainText {
     font-size: 24px;
     margin: 10px 0 20px;
