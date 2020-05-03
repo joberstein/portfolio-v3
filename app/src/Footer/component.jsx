@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import resume from "./files/resume_2019-3.pdf";
-import ExternalLinks, {createTextLink} from "../ExternalLinks/component";
+import resume from "./files/resume.pdf";
+import ExternalLinks, {createTextLink} from "ExternalLinks/component";
 import {createRouteLink, VerticalNavigation} from "Navigation/component";
 import Home from "Home/component";
 import About from "About/component";
@@ -16,7 +16,8 @@ const portfolioLinks = [
 ];
 
 const contactLinks = [
-    createTextLink(resume, "Resume"),
+    createTextLink(resume, "Resume (PDF)"),
+    createTextLink("https://joberstein.github.io/resume", "Resume (HTML)"),
     createTextLink("https://www.linkedin.com/in/jesseoberstein", "LinkedIn"),
     createTextLink("https://www.github.com/joberstein", "GitHub"),
 ];
