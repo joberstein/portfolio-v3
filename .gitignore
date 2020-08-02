@@ -44,6 +44,10 @@ Thumbs.db
 *.idea
 *.iml
 
+# Visual Studio #
+##################
+*.vscode
+
 # Miscellaneous #
 #################
 .env.local
@@ -63,7 +67,6 @@ app/.pnp
 
 
 #########################
-###   Lambda Module   ###
+###  SendEmail Module ###
 #########################
-/lambda/target/
-/lambda/*/sensitive/
+sendEmail/target/
