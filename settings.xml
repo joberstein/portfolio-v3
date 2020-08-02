@@ -2,6 +2,7 @@
     <servers>
         <server>
             <id>github</id>
+            <username>joberstein</username>
             <password>${env.GITHUB_TOKEN}</password>
         </server>
     </servers>
