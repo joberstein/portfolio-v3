@@ -41,7 +41,7 @@ jobs:
       install:
         - mvn clean install
       before_script:
-        - git checkout origin/master
+        - git checkout -b travis-release
         - cp ../settings.xml "$HOME/.m2/settings.xml"
         - mvn release:clean 
       script:
