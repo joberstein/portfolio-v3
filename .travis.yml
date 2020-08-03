@@ -20,7 +20,6 @@ jobs:
     - language: node_js
       node_js: stable
       before_install:
-        - $TRAVIS_BRANCH
         - $DEPLOY_TAG_MESSAGE
         - $TRAVIS_TAG
         - cd app
