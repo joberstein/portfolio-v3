@@ -20,14 +20,11 @@ jobs:
     - language: node_js
       node_js: stable
       before_install:
-        - echo "$DEPLOY_TAG_MESSAGE"
         - cd app
         - yarn cache clean
       install:
         - yarn install
       script:
-        - DEPLOY_TAG_MESSAGE=$(echo git tag -l --format='%(contents:lines=1)' deploy)
-        - echo "$DEPLOY_TAG_MESSAGE"
         - yarn run build
       before_deploy:
         - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
@@ -51,9 +48,6 @@ jobs:
         - cd sendEmail
       install:
         - mvn clean install
-      script:
-        - DEPLOY_TAG_MESSAGE=$(echo git tag -l --format='%(contents:lines=1)' deploy)
-        - echo "$DEPLOY_TAG_MESSAGE"
       before_deploy:
         - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
       deploy:
