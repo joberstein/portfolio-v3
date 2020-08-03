@@ -21,7 +21,7 @@ jobs:
       node_js: stable
       before_install:
         - echo $TRAVIS_TAG
-        - echo $DEPLOY_TAG_MESSAGE
+        - $DEPLOY_TAG_MESSAGE
         - cd app
         - yarn cache clean
       install:
@@ -38,7 +38,7 @@ jobs:
         target_branch: gh-pages
         on:
           branch: master
-          condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
+          condition: (tag = deploy) && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
