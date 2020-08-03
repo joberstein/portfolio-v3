@@ -14,7 +14,7 @@ env:
     # GOOGLE_CAPTCHA_KEY
     - secure: laQPvwNx/k5xrxCCr4ATcJxeKA5rrvdILm4pzfJR8FFgarXyQ88xqyG6g1XRuGtbzJbcMpX3cWTTdNg/AyrTHjupdnIXrA0akhaX1S5JgOvQqx0vT/xiD32xf+ip3fITd/QH74bM/0EE7ZVGnEoMgg0ofjnpn3fLupgD4qLt+XTUj8KDPW3gfXkqfTieATjlKLOsmIEMdIFdKbhIrYhF/hSqM1rHHoImIPl7Mc03NKTDKaqMvRPqlby8rNjalcm3FbYip+S6QHnKM1vWDQZXiq0ZJNn/WjwcHxfMAQoaLVwZMai+8Sz1zHl97i0G/aSLEAgVEJDyRc4dd5HBm0MOGd+DrciSH8JWTAY3bpiQw2JaQKbRRibZUBNkLh5QjdhRvJPkpyJByxeuaEEirPd07klmniwkQmO+3LbDirw8pjwfO2BVWpHGmmUi2TFsZgAcbEaNSdFs82+DnXnMWW1RCbidNE3thYaNzEGPgi1R5Px9prsJGS0MZvgrKdckax+EKBcuHmSnqRczv5h1x826DaU8pKPnzz1Fc6jycdEFB9hYE0gkkLjf6cPUTseKOMKCYhEVCUCKbfctwxOG6r/Wz0Cssm+3ETa5Ailhz8ojGiR4gbprYgwXTB50ZJkk4YL+5XHsfvhZY0aIv8Uq4HMipk6Ck9qlvcfG9GOulM1x6v8=
 
-    - DEPLOY_TAG_MESSAGE=DEPLOY_MSG="$(echo git tag -l --format='%(contents:lines=1)' deploy)"
+    - DEPLOY_TAG_MESSAGE="$(echo git tag -l --format='%(contents:lines=1)' deploy)"
 jobs:
   include:
     - language: node_js
@@ -26,7 +26,7 @@ jobs:
       install:
         - yarn install
       script:
-        - DEPLOY_TAG_MESSAGE=DEPLOY_MSG=$(echo git tag -l --format='%(contents:lines=1)' deploy)
+        - DEPLOY_TAG_MESSAGE=$(echo git tag -l --format='%(contents:lines=1)' deploy)
         - echo "$DEPLOY_TAG_MESSAGE"
         - yarn run build
       before_deploy:
@@ -52,7 +52,7 @@ jobs:
       install:
         - mvn clean install
       script:
-        - DEPLOY_TAG_MESSAGE=DEPLOY_MSG=$(echo git tag -l --format='%(contents:lines=1)' deploy)
+        - DEPLOY_TAG_MESSAGE=$(echo git tag -l --format='%(contents:lines=1)' deploy)
         - echo "$DEPLOY_TAG_MESSAGE"
       before_deploy:
         - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
