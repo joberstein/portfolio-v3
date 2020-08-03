@@ -20,7 +20,6 @@ jobs:
   include:
     - language: node_js
       node_js: stable
-      if: tag =~ /^deploy-\d+$/
       before_install:
         - cd app
         - yarn cache clean
@@ -46,7 +45,6 @@ jobs:
 
     - language: java
       jdk: oraclejdk11
-      if: tag =~ /^deploy-\d+$/
       before_install:
         - cd sendEmail
       install:
