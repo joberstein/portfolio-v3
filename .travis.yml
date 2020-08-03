@@ -1,4 +1,4 @@
-if: NOT ($TRAVIS_TAG =~ /^deploy-\d+$/)
+if: NOT (tag =~ /^deploy-\d+$/)
 
 env:
   global:
