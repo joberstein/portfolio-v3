@@ -1,4 +1,4 @@
-if: NOT (tag =~ /^deploy-\d+$/)
+if: NOT ($TRAVIS_TAG =~ /^deploy-\d+$/)
 
 env:
   global:
@@ -37,7 +37,7 @@ jobs:
         target_branch: gh-pages
         on:
           branch: master
-          condition: ($TRAVIS_TAG = deploy) && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
+          condition: ($TRAVIS_TAG = "deploy") && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
@@ -67,7 +67,7 @@ jobs:
         edge: true
         on:
           branch: master
-          condition: (tag = deploy) && ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
+          condition: ($TRAVIS_TAG = "deploy") && ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
