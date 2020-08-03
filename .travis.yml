@@ -16,8 +16,9 @@ env:
 jobs:
   exclude:
     - language: node_js
-      node_js: stable
-      if: tag =~ /^deploy~\d+$/
+      node_js: 
+        - stable
+      if: tag =~ /^deploy-\d+$/
       before_install:
         - cd app
         - yarn cache clean
@@ -29,21 +30,22 @@ jobs:
         - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
       deploy:
         provider: pages
-        skip_cleanup: true
+        cleanup: false
         github_token: "$GITHUB_TOKEN"
         local_dir: app/build
         target_branch: gh-pages
         on:
           branch: master
-          if: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
+          condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
         - git push origin :refs/tags/deploy
 
     - language: java
-      jdk: oraclejdk11
-      if: tag =~ /^deploy~\d+$/
+      jdk: 
+        - oraclejdk11
+      if: tag =~ /^deploy-\d+$/
       before_install:
         - cd sendEmail
       install:
@@ -66,8 +68,8 @@ jobs:
         edge: true
         on:
           branch: master
-          if: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
-        after_deploy:
-          - git push origin --tags
-          - git tag -d deploy
-          - git push origin :refs/tags/deploy
+          condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
+      after_deploy:
+        - git push origin --tags
+        - git tag -d deploy
+        - git push origin :refs/tags/deploy
