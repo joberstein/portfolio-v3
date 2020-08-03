@@ -17,59 +17,60 @@ env:
     - DEPLOY_TAG_MESSAGE="git tag -l --format=%(contents) deploy"
 
 jobs:
-  - language: node_js
-    node_js: stable
-    if: tag =~ /^deploy-\d+$/
-    before_install:
-      - cd app
-      - yarn cache clean
-    install:
-      - yarn install
-    script:
-      - yarn run build
-    before_deploy:
-      - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
-    deploy:
-      provider: pages
-      cleanup: false
-      github_token: "$GITHUB_TOKEN"
-      local_dir: app/build
-      target_branch: gh-pages
-      on:
-        branch: master
-        condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
-    after_deploy:
-      - git push origin --tags
-      - git tag -d deploy
-      - git push origin :refs/tags/deploy
+  include:
+    - language: node_js
+      node_js: stable
+      if: tag =~ /^deploy-\d+$/
+      before_install:
+        - cd app
+        - yarn cache clean
+      install:
+        - yarn install
+      script:
+        - yarn run build
+      before_deploy:
+        - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
+      deploy:
+        provider: pages
+        cleanup: false
+        github_token: "$GITHUB_TOKEN"
+        local_dir: app/build
+        target_branch: gh-pages
+        on:
+          branch: master
+          condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
+      after_deploy:
+        - git push origin --tags
+        - git tag -d deploy
+        - git push origin :refs/tags/deploy
 
-  - language: java
-    jdk: oraclejdk11
-    if: tag =~ /^deploy-\d+$/
-    before_install:
-      - cd sendEmail
-    install:
-      - mvn clean install
-    before_deploy:
-      - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
-    deploy:
-      provider: lambda
-      access_key_id: "$AWS_ACCESS_KEY_ID"
-      secret_access_key: "$AWS_SECRET_ACCESS_KEY"
-      function_name: "sendEmail-clone"
-      region: "us-east-1"
-      role: "arn:aws:iam::752983187404:role/portfolio-v3_sendEmail"
-      runtime: "java11"
-      module_name: "joberstein.portfolio.sendEmail"
-      handler_name: "SendEmailHandler::handleRequest"
-      environment: "GOOGLE_CAPTCHA_KEY=$GOOGLE_CAPTCHA_KEY"
-      zip: "./target/sendEmail-jar-with-dependencies.jar"
-      publish: true
-      edge: true
-      on:
-        branch: master
-        condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
-    after_deploy:
-      - git push origin --tags
-      - git tag -d deploy
-      - git push origin :refs/tags/deploy
+    - language: java
+      jdk: oraclejdk11
+      if: tag =~ /^deploy-\d+$/
+      before_install:
+        - cd sendEmail
+      install:
+        - mvn clean install
+      before_deploy:
+        - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
+      deploy:
+        provider: lambda
+        access_key_id: "$AWS_ACCESS_KEY_ID"
+        secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+        function_name: "sendEmail-clone"
+        region: "us-east-1"
+        role: "arn:aws:iam::752983187404:role/portfolio-v3_sendEmail"
+        runtime: "java11"
+        module_name: "joberstein.portfolio.sendEmail"
+        handler_name: "SendEmailHandler::handleRequest"
+        environment: "GOOGLE_CAPTCHA_KEY=$GOOGLE_CAPTCHA_KEY"
+        zip: "./target/sendEmail-jar-with-dependencies.jar"
+        publish: true
+        edge: true
+        on:
+          branch: master
+          condition: (tag = deploy) AND ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
+      after_deploy:
+        - git push origin --tags
+        - git tag -d deploy
+        - git push origin :refs/tags/deploy
