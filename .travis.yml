@@ -21,6 +21,7 @@ jobs:
     - language: node_js
       node_js: stable
       before_install:
+        - echo "$DEPLOY_TAG_MESSAGE"
         - cd app
         - yarn cache clean
       install:
