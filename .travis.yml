@@ -1,4 +1,4 @@
-if: NOT (tag =~ /^deploy-\d+$/)
+if: (branch = master) AND NOT (tag =~ /^deploy-\d+$/)
 
 env:
   global:
@@ -21,6 +21,7 @@ jobs:
       node_js: stable
       before_install:
         - $DEPLOY_TAG_MESSAGE
+        - $TRAVIS_TAG
         - cd app
         - yarn cache clean
       install:
