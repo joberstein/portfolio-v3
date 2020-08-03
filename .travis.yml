@@ -40,7 +40,7 @@ jobs:
         target_branch: gh-pages
         on:
           branch: deploy
-          condition: (tag = deploy) AND (env(DEPLOY_TAG_MESSAGE) =~ /deploy:app/)
+          condition: (tag = deploy) && (env(DEPLOY_TAG_MESSAGE) =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
@@ -70,7 +70,7 @@ jobs:
         edge: true
         on:
           branch: deploy
-          condition: (tag = "deploy") AND (env(DEPLOY_TAG_MESSAGE) =~ /deploy:sendEmail/)
+          condition: (tag = "deploy") && (env(DEPLOY_TAG_MESSAGE) =~ /deploy:sendEmail/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
