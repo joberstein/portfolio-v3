@@ -15,10 +15,9 @@ env:
     - DEPLOY_TAG_MESSAGE="git tag -l --format=%(contents) deploy"
 jobs:
   exclude:
-    - if: tag =~ /^deploy~\d+$/
-      language: node_js
-      node_js: 
-        - stable
+    - language: node_js
+      node_js: stable
+      if: tag =~ /^deploy~\d+$/
       before_install:
         - cd app
         - yarn cache clean
@@ -42,22 +41,15 @@ jobs:
         - git tag -d deploy
         - git push origin :refs/tags/deploy
 
-    - if: tag =~ /^deploy~\d+$/
-      language: java
-      jdk:
-        - oraclejdk11
+    - language: java
+      jdk: oraclejdk11
+      if: tag =~ /^deploy~\d+$/
       before_install:
         - cd sendEmail
       install:
         - mvn clean install
-      # before_script:
-      #   - git checkout -b travis-release
-      #   - cp ../settings.xml "$HOME/.m2/settings.xml"
-      #   - mvn release:clean 
-      # script:
-      #   - mvn -B release:prepare release:perform
       before_deploy:
-          - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
+        - git tag deploy-$TRAVIS_BUILD_NUMBER deploy
       deploy:
         provider: lambda
         access_key_id: "$AWS_ACCESS_KEY_ID"
