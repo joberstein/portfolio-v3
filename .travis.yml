@@ -21,7 +21,8 @@ jobs:
       node_js: stable
       before_install:
         - $DEPLOY_TAG_MESSAGE
-        - $TRAVIS_TAG
+        - echo "$TRAVIS_TAG"
+        - echo "$TRAVIS_BRANCH"
         - cd app
         - yarn cache clean
       install:
