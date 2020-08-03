@@ -39,7 +39,7 @@ jobs:
         target_branch: gh-pages
         on:
           branch: deploy
-          condition: ($TRAVIS_TAG = "deploy") && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
+          condition: $TRAVIS_TAG = deploy
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
