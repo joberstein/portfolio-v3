@@ -22,12 +22,14 @@ jobs:
       before_install:
         - cd app
         - yarn cache clean
+        - echo "$DEPLOY_TAG_MESSAGE"
+        - if [[ "$TEST" =~ sendEmail|all ]]; then echo true; else echo false; fi
       install:
         - yarn install
       script:
         - yarn run build
       before_deploy:
-        - git tag deploy:app-$TRAVIS_BUILD_NUMBER deploy
+        - git tag app-b$TRAVIS_BUILD_NUMBER deploy
       deploy:
         provider: pages
         cleanup: false
@@ -35,6 +37,7 @@ jobs:
         local_dir: app/build
         target_branch: gh-pages
         on:
+          branch: deploy
           condition: (tag = deploy) && ("$DEPLOY_TAG_MESSAGE" =~ app|all)
       after_deploy:
         - git push origin --tags
@@ -48,7 +51,7 @@ jobs:
       install:
         - mvn clean install
       before_deploy:
-        - git tag deploy:sendEmail-$TRAVIS_BUILD_NUMBER deploy
+        - git tag sendEmail-b$TRAVIS_BUILD_NUMBER deploy
       deploy:
         provider: lambda
         access_key_id: "$AWS_ACCESS_KEY_ID"
@@ -64,6 +67,7 @@ jobs:
         publish: true
         edge: true
         on:
+          branch: deploy
           condition: (tag = deploy) && ("$DEPLOY_TAG_MESSAGE" =~ sendEmail|all)
       after_deploy:
         - git push origin --tags
