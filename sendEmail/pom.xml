@@ -80,7 +80,7 @@
     </dependencies>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@github.com/joberstein/portfolio-v3</developerConnection>
+        <developerConnection>scm:git:https://github.com/joberstein/portfolio-v3</developerConnection>
     </scm>
 
     <build>
