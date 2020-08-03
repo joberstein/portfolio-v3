@@ -20,7 +20,6 @@ jobs:
     - language: node_js
       node_js: stable
       before_install:
-        - $DEPLOY_TAG_MESSAGE
         - echo $DEPLOY_TAG_MESSAGE
         - echo "$DEPLOY_TAG_MESSAGE"
         - echo "$TRAVIS_TAG"
