@@ -21,6 +21,11 @@ jobs:
       node_js: stable
       before_install:
         - $DEPLOY_TAG_MESSAGE
+        - echo $DEPLOY_TAG_MESSAGE
+        - echo "$DEPLOY_TAG_MESSAGE"
+        - TEST=$DEPLOY_TAG_MESSAGE
+        - echo "$TEST"
+        - echo $TEST
         - echo "$TRAVIS_TAG"
         - echo "$TRAVIS_BRANCH"
         - cd app
@@ -39,7 +44,7 @@ jobs:
         target_branch: gh-pages
         on:
           branch: deploy
-          condition: $TRAVIS_TAG = deploy
+          condition: ($TRAVIS_TAG = deploy) && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
