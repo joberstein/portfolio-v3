@@ -1,4 +1,4 @@
-if: (branch = master) AND NOT (tag =~ /^deploy-\d+$/)
+if: (branch = deploy) AND NOT (tag =~ /^deploy-\d+$/)
 
 env:
   global:
@@ -20,6 +20,7 @@ jobs:
     - language: node_js
       node_js: stable
       before_install:
+        - $TRAVIS_BRANCH
         - $DEPLOY_TAG_MESSAGE
         - $TRAVIS_TAG
         - cd app
@@ -37,7 +38,7 @@ jobs:
         local_dir: app/build
         target_branch: gh-pages
         on:
-          branch: master
+          branch: deploy
           condition: ($TRAVIS_TAG = "deploy") && ($DEPLOY_TAG_MESSAGE =~ /deploy:app/)
       after_deploy:
         - git push origin --tags
@@ -67,7 +68,7 @@ jobs:
         publish: true
         edge: true
         on:
-          branch: master
+          branch: deploy
           condition: ($TRAVIS_TAG = "deploy") && ($DEPLOY_TAG_MESSAGE =~ /deploy:sendEmail/)
       after_deploy:
         - git push origin --tags
