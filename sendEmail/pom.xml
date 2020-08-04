@@ -12,7 +12,7 @@
         <aws.lambda.events.version>2.2.6</aws.lambda.events.version>
         <java.version>11</java.version>
         <jackson.version>2.11.1</jackson.version>
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.12</lombok.version>
         <unirest.version>3.7.04</unirest.version>
     </properties>
 
@@ -46,6 +46,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -62,7 +63,6 @@
             <artifactId>unirest-objectmapper-jackson</artifactId>
             <version>${unirest.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>

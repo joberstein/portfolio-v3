@@ -1,6 +1,9 @@
 package joberstein.portfolio.model;
 
 import com.amazonaws.services.simpleemail.model.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import lombok.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -8,16 +11,17 @@ import java.nio.charset.StandardCharsets;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonDeserialize(builder = ContactRequest.ContactRequestBuilder.class)
 public class ContactRequest {
-
     private String from;
     private String replyToAddress;
     private String subject;
     private String body;
     private String captcha;
     private String ipAddress;
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class ContactRequestBuilder {}
 
     public VerifyCaptchaRequest toCaptchaRequest() {
         return VerifyCaptchaRequest.builder()

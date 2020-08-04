@@ -6,8 +6,6 @@ import lombok.*;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class VerifyCaptchaRequest {
     private String secret;
     private String response;

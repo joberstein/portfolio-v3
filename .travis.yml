@@ -63,6 +63,8 @@ jobs:
         module_name: "joberstein.portfolio.SendEmailHandler"
         handler_name: "handleRequest"
         environment: "GOOGLE_CAPTCHA_KEY=$GOOGLE_CAPTCHA_KEY"
+        memory_size: 512
+        timeout: 15
         zip: "./target/sendEmail-jar-with-dependencies.jar"
         publish: true
         edge: true
