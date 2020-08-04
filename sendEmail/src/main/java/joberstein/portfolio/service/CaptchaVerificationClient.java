@@ -12,18 +12,20 @@ import org.apache.http.HttpHeaders;
 @AllArgsConstructor
 public class CaptchaVerificationClient {
     private final String CAPTCHA_VERIFICATION_URL = "https://www.google.com/recaptcha/api/siteverify";
-    
+
     private UnirestInstance unirestClient;
 
-    public boolean verify(VerifyCaptchaRequest request) {
+    /**
+     * Request the captcha verification API with the given captcha request.
+     */
+    public VerifyCaptchaResponse verify(VerifyCaptchaRequest request) {
         return unirestClient.post(CAPTCHA_VERIFICATION_URL)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .queryString(Map.of(
                 "response", request.getResponse(),
                 "secret", request.getSecret()))
             .asObject(VerifyCaptchaResponse.class)
-            .getBody()
-            .isSuccess();
+            .getBody();
     }
 
     public void close() {

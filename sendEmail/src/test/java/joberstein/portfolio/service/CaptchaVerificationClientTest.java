@@ -41,7 +41,7 @@ public class CaptchaVerificationClientTest {
         var response = VerifyCaptchaResponse.builder().success(true).build();
         mockVerificationRequest(response);
 
-        assertTrue(captchaVerificationClient.verify(CAPTCHA_REQUEST));
+        assertTrue(captchaVerificationClient.verify(CAPTCHA_REQUEST).isSuccess());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class CaptchaVerificationClientTest {
         var response = VerifyCaptchaResponse.builder().build();
         mockVerificationRequest(response);
         
-        assertFalse(captchaVerificationClient.verify(CAPTCHA_REQUEST));
+        assertFalse(captchaVerificationClient.verify(CAPTCHA_REQUEST).isSuccess());
     }
 
     private void mockVerificationRequest(VerifyCaptchaResponse expectedResponse) {

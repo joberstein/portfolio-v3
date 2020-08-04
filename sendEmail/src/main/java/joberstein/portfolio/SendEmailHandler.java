@@ -7,6 +7,7 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import joberstein.portfolio.configuration.AppConfig;
 import joberstein.portfolio.model.ContactRequest;
 import joberstein.portfolio.model.ContactResponse;
+import joberstein.portfolio.model.VerifyCaptchaResponse;
 import joberstein.portfolio.service.CaptchaVerificationClient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -36,10 +37,11 @@ public class SendEmailHandler implements RequestHandler<ContactRequest, ContactR
     public ContactResponse handleRequest(ContactRequest contactRequest, Context context) {
         CaptchaVerificationClient captchaVerificationClient = config.getCaptchaVerificationClient();
         var captchaRequest = contactRequest.toCaptchaRequest();
-        boolean isCaptchaValid = captchaVerificationClient.verify(captchaRequest);
+        VerifyCaptchaResponse captchaResponse = captchaVerificationClient.verify(captchaRequest);
         captchaVerificationClient.close();
 
-        if (!isCaptchaValid) {
+        if (!captchaResponse.isSuccess()) {
+            context.getLogger().log(captchaResponse.toString());
             throw new RuntimeException("Captcha validation failed.");
         }
 

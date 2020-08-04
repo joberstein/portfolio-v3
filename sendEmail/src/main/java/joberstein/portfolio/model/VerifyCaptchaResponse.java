@@ -9,6 +9,10 @@ import lombok.*;
 
 import java.util.Set;
 
+/**
+ * Modeled after the Google Captcha Verification API response format: 
+ * https://developers.google.com/recaptcha/docs/verify
+ */
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)

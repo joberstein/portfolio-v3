@@ -1,5 +1,7 @@
 package joberstein.portfolio;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import com.amazonaws.services.simpleemail.model.SendEmailResult;
@@ -8,6 +10,7 @@ import joberstein.portfolio.configuration.AppConfig;
 import joberstein.portfolio.model.ContactRequest;
 import joberstein.portfolio.model.ContactResponse;
 import joberstein.portfolio.model.VerifyCaptchaRequest;
+import joberstein.portfolio.model.VerifyCaptchaResponse;
 import joberstein.portfolio.service.CaptchaVerificationClient;
 
 import org.junit.Before;
@@ -24,6 +27,12 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendEmailHandlerTest {
+
+    @Mock
+    private Context context;
+
+    @Mock
+    private LambdaLogger logger;
 
     @Mock
     private AmazonSimpleEmailService ses;
@@ -49,22 +58,29 @@ public class SendEmailHandlerTest {
 
     @Before
     public void setup() {
+        VerifyCaptchaResponse captchaResponse = VerifyCaptchaResponse.builder().success(true).build();
+
         when(config.getCaptchaVerificationClient()).thenReturn(captchaVerificationClient);
-        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(true);
+        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
         doNothing().when(captchaVerificationClient).close();
 
         when(config.getSimpleEmailService()).thenReturn(ses);
         when(ses.sendEmail(any(SendEmailRequest.class))).thenReturn(new SendEmailResult().withMessageId(MESSAGE_ID));
+
+        when(context.getLogger()).thenReturn(logger);
+        doNothing().when(logger).log(anyString());
     }
 
     @Test
     public void testHandleRequest_invalidCaptcha() {
-        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(false);
+        VerifyCaptchaResponse captchaResponse = VerifyCaptchaResponse.builder().success(false).build();
+        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
 
         try {
-            application.handleRequest(CONTACT_REQUEST, null);
+            application.handleRequest(CONTACT_REQUEST, context);
         } catch (RuntimeException e) {
             assertEquals("Captcha validation failed.", e.getMessage());
+            verify(logger).log(captchaResponse.toString());
             verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
             verifyZeroInteractions(ses);
             return;
@@ -75,10 +91,11 @@ public class SendEmailHandlerTest {
 
     @Test
     public void testHandleRequest_validCaptcha() {
-        ContactResponse response = application.handleRequest(CONTACT_REQUEST, null);
+        ContactResponse response = application.handleRequest(CONTACT_REQUEST, context);
         assertEquals(MESSAGE_ID, response.getResultId());
         verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
         verify(ses).sendEmail(any(SendEmailRequest.class));
+        verifyZeroInteractions(logger);
     }
 
     @Test
@@ -86,11 +103,12 @@ public class SendEmailHandlerTest {
         when(ses.sendEmail(any(SendEmailRequest.class))).thenThrow(new RuntimeException("Send failed."));
 
         try {
-            application.handleRequest(CONTACT_REQUEST, null);
+            application.handleRequest(CONTACT_REQUEST, context);
         } catch(RuntimeException e) {
             assertEquals("Send failed.", e.getMessage());
             verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
             verify(ses).sendEmail(any(SendEmailRequest.class));
+            verifyZeroInteractions(logger);
             return;
         }
 
