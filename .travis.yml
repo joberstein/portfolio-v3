@@ -27,7 +27,8 @@ jobs:
       script:
         - yarn run build
       before_deploy:
-        - git tag app-b$TRAVIS_BUILD_NUMBER deploy
+        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
         provider: pages
         cleanup: false
@@ -49,7 +50,8 @@ jobs:
       install:
         - mvn clean install
       before_deploy:
-        - git tag sendEmail-b$TRAVIS_BUILD_NUMBER deploy
+        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git tag "sendEmail-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
         provider: lambda
         access_key_id: "$AWS_ACCESS_KEY_ID"
