@@ -4,11 +4,13 @@ import joberstein.portfolio.model.VerifyCaptchaRequest;
 import joberstein.portfolio.model.VerifyCaptchaResponse;
 import kong.unirest.UnirestInstance;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Map;
 
 import org.apache.http.HttpHeaders;
 
+@Getter
 @AllArgsConstructor
 public class CaptchaVerificationClient {
     private final String CAPTCHA_VERIFICATION_URL = "https://www.google.com/recaptcha/api/siteverify";

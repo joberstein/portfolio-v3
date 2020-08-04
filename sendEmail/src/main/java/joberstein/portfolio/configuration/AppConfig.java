@@ -17,7 +17,6 @@ public class AppConfig {
     private static AppConfig instance;
     private AmazonSimpleEmailService simpleEmailService;
     private CaptchaVerificationClient captchaVerificationClient;
-    private UnirestInstance unirestInstance;
 
     public static AppConfig getInstance() {
         if (instance == null) {
@@ -36,19 +35,12 @@ public class AppConfig {
     }
 
     public CaptchaVerificationClient getCaptchaVerificationClient() {
-        if (captchaVerificationClient == null) {
-            captchaVerificationClient = new CaptchaVerificationClient(getUnirestClient());
+        if (captchaVerificationClient == null || !captchaVerificationClient.getUnirestClient().isRunning()) {
+            UnirestInstance unirestInstance = Unirest.spawnInstance();
+            unirestInstance.config().setObjectMapper(new JacksonObjectMapper());
+            captchaVerificationClient = new CaptchaVerificationClient(unirestInstance);
         }
 
         return captchaVerificationClient;
-    }
-
-    private UnirestInstance getUnirestClient() {
-        if (unirestInstance == null || !unirestInstance.isRunning()) {
-            unirestInstance = Unirest.primaryInstance();
-            unirestInstance.config().setObjectMapper(new JacksonObjectMapper());
-        }
-        
-        return unirestInstance;
     }
 }
