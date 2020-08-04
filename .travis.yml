@@ -30,7 +30,7 @@ jobs:
       before_deploy:
         - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
         - git fetch origin master
-        - git checkout master
+        - git checkout -b master
         - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
         provider: pages
