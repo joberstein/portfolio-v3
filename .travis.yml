@@ -34,8 +34,9 @@ jobs:
         provider: pages
         cleanup: false
         github_token: "$GITHUB_TOKEN"
-        local_dir: app/build
+        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/app/build
         target_branch: gh-pages
+        edge: true
         on:
           branch: deploy
           condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(app|all)$
