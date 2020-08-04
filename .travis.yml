@@ -21,6 +21,9 @@ jobs:
       node_js: stable
       cache: yarn
       before_install:
+        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git fetch origin master
+        - git checkout -b master
         - cd app
         - yarn cache clean
       install:
@@ -28,9 +31,6 @@ jobs:
       script:
         - yarn run build
       before_deploy:
-        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git fetch origin master
-        - git checkout -b master
         - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
         provider: pages
