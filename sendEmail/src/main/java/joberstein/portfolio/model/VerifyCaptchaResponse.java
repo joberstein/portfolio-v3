@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VerifyCaptchaResponse {

@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class ContactRequest {
 
