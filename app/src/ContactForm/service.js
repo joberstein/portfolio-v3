@@ -10,7 +10,10 @@ const sendMessage = data => {
     const requestOptions = {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json"
+        }
     };
 
     return fetch(SEND_MESSAGE_URL, requestOptions)

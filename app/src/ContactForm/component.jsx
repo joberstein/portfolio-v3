@@ -106,15 +106,19 @@ class ContactForm extends React.Component {
         const {contents, captcha} = this.state;
         const data = {...contents, captcha};
 
-        sendMessage(data).then(formSent => {
-            this.setSent(formSent);
-            this.setLoading(false);
-            this.props.showError(!formSent);
-
-            const eventAction = !formSent ? "failure" : "success";
-            recordEvent(eventAction, "Contact Form", "form");
-        });
+        sendMessage(data)
+            .then(this.onSendAttempt)
+            .catch(() => this.onSendAttempt(false));
     };
+
+    onSendAttempt = formSent => {
+        this.setSent(formSent);
+        this.setLoading(false);
+        this.props.showError(!formSent);
+
+        const eventAction = !formSent ? "failure" : "success";
+        recordEvent(eventAction, "Contact Form", "form");
+    }
 }
 
 ContactForm.propTypes = {
