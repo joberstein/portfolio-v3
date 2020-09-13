@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 @Builder
 @JsonDeserialize(builder = ContactRequest.ContactRequestBuilder.class)
 public class ContactRequest {
+    private static final String GOOGLE_CAPTCHA_KEY = "GOOGLE_CAPTCHA_KEY";
+
     private String from;
     private String replyToAddress;
     private String subject;
@@ -26,7 +28,7 @@ public class ContactRequest {
     public VerifyCaptchaRequest toCaptchaRequest() {
         return VerifyCaptchaRequest.builder()
             .response(this.captcha)
-            .secret(System.getenv("GOOGLE_CAPTCHA_KEY"))
+            .secret(System.getenv(GOOGLE_CAPTCHA_KEY))
             .remoteIp(this.ipAddress)
             .build();
     }

@@ -11,7 +11,8 @@ import joberstein.portfolio.model.ContactRequest;
 import joberstein.portfolio.model.ContactResponse;
 import joberstein.portfolio.model.VerifyCaptchaRequest;
 import joberstein.portfolio.model.VerifyCaptchaResponse;
-import joberstein.portfolio.service.CaptchaVerificationClient;
+import joberstein.portfolio.service.CaptchaVerificationService;
+import joberstein.portfolio.http.HttpClient;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,10 @@ public class SendEmailHandlerTest {
     private AmazonSimpleEmailService ses;
 
     @Mock
-    private CaptchaVerificationClient captchaVerificationClient;
+    private CaptchaVerificationService captchaVerificationService;
+
+    @Mock
+    private HttpClient httpClient;
 
     @Mock
     private AppConfig config;
@@ -60,28 +64,27 @@ public class SendEmailHandlerTest {
     public void setup() {
         VerifyCaptchaResponse captchaResponse = VerifyCaptchaResponse.builder().success(true).build();
 
-        when(config.getCaptchaVerificationClient()).thenReturn(captchaVerificationClient);
-        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
-        doNothing().when(captchaVerificationClient).close();
+        when(config.getCaptchaVerificationService(logger)).thenReturn(captchaVerificationService);
+        when(captchaVerificationService.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
+        when(captchaVerificationService.getHttpClient()).thenReturn(httpClient);
+        doNothing().when(httpClient).close();
 
         when(config.getSimpleEmailService()).thenReturn(ses);
         when(ses.sendEmail(any(SendEmailRequest.class))).thenReturn(new SendEmailResult().withMessageId(MESSAGE_ID));
 
         when(context.getLogger()).thenReturn(logger);
-        doNothing().when(logger).log(anyString());
     }
 
     @Test
     public void testHandleRequest_invalidCaptcha() {
         VerifyCaptchaResponse captchaResponse = VerifyCaptchaResponse.builder().success(false).build();
-        when(captchaVerificationClient.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
+        when(captchaVerificationService.verify(any(VerifyCaptchaRequest.class))).thenReturn(captchaResponse);
 
         try {
             application.handleRequest(CONTACT_REQUEST, context);
         } catch (RuntimeException e) {
             assertEquals("Captcha validation failed.", e.getMessage());
-            verify(logger).log(captchaResponse.toString());
-            verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
+            verify(captchaVerificationService).verify(any(VerifyCaptchaRequest.class));
             verifyZeroInteractions(ses);
             return;
         }
@@ -93,9 +96,8 @@ public class SendEmailHandlerTest {
     public void testHandleRequest_validCaptcha() {
         ContactResponse response = application.handleRequest(CONTACT_REQUEST, context);
         assertEquals(MESSAGE_ID, response.getResultId());
-        verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
+        verify(captchaVerificationService).verify(any(VerifyCaptchaRequest.class));
         verify(ses).sendEmail(any(SendEmailRequest.class));
-        verifyZeroInteractions(logger);
     }
 
     @Test
@@ -106,9 +108,8 @@ public class SendEmailHandlerTest {
             application.handleRequest(CONTACT_REQUEST, context);
         } catch(RuntimeException e) {
             assertEquals("Send failed.", e.getMessage());
-            verify(captchaVerificationClient).verify(any(VerifyCaptchaRequest.class));
+            verify(captchaVerificationService).verify(any(VerifyCaptchaRequest.class));
             verify(ses).sendEmail(any(SendEmailRequest.class));
-            verifyZeroInteractions(logger);
             return;
         }
 

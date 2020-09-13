@@ -1,22 +1,21 @@
 package joberstein.portfolio.configuration;
 
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import kong.unirest.Unirest;
-import kong.unirest.UnirestInstance;
-import kong.unirest.jackson.JacksonObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import joberstein.portfolio.service.CaptchaVerificationClient;
+import joberstein.portfolio.service.CaptchaVerificationService;
+import joberstein.portfolio.http.UnirestClient;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppConfig {
-    private final static Regions SES_REGION = Regions.US_EAST_1;
+    private static final Regions SES_REGION = Regions.US_EAST_1;
     
     private static AppConfig instance;
     private AmazonSimpleEmailService simpleEmailService;
-    private CaptchaVerificationClient captchaVerificationClient;
+    private CaptchaVerificationService captchaVerificationService;
 
     public static AppConfig getInstance() {
         if (instance == null) {
@@ -34,13 +33,12 @@ public class AppConfig {
         return simpleEmailService;
     }
 
-    public CaptchaVerificationClient getCaptchaVerificationClient() {
-        if (captchaVerificationClient == null || !captchaVerificationClient.getUnirestClient().isRunning()) {
-            UnirestInstance unirestInstance = Unirest.spawnInstance();
-            unirestInstance.config().setObjectMapper(new JacksonObjectMapper());
-            captchaVerificationClient = new CaptchaVerificationClient(unirestInstance);
+    public CaptchaVerificationService getCaptchaVerificationService(LambdaLogger logger) {
+        if (captchaVerificationService == null || !captchaVerificationService.getHttpClient().isRunning()) {
+            var httpClient = UnirestClient.newInstance(logger);
+            captchaVerificationService = new CaptchaVerificationService(httpClient);
         }
 
-        return captchaVerificationClient;
+        return captchaVerificationService;
     }
 }
