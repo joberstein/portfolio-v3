@@ -25,6 +25,7 @@ jobs:
         - yarn cache clean
       install:
         - yarn install
+        - yarn test
       script:
         - yarn run build
       before_deploy:

@@ -1,5 +1,5 @@
 import React from "react";
-import {recordEvent} from "Analytics/service";
+import {recordInteraction} from "Analytics/service";
 import Lightbox from 'react-image-lightbox';
 import styles from "./styles.module.scss";
 import 'react-image-lightbox/style.css';
@@ -51,7 +51,7 @@ class PortfolioSection extends React.Component {
         const prevImageIdx = (clickedImageIdx + imageData.length - 1) % imageData.length;
         const nextImageIdx = (clickedImageIdx + 1) % imageData.length;
         const clickedImage = imageData[clickedImageIdx];
-        const recordImageView = () => recordEvent("click", clickedImage.title, "image");
+        const recordImageView = () => recordInteraction("click", clickedImage.title, "image");
 
         return isLightboxOpen && (
             <Lightbox imageTitle={clickedImage.title}
@@ -88,7 +88,7 @@ class PortfolioSection extends React.Component {
     );
 
     renderLinkedOverlay = (name, type, url, DatumType) => (
-        <a href={url} target="_blank" rel="noopener noreferrer" onClick={() => recordEvent("click", name, type)}>
+        <a href={url} target="_blank" rel="noopener noreferrer" onClick={() => recordInteraction("click", name, type)}>
             {this.renderOverlay(DatumType)}
         </a>
     );

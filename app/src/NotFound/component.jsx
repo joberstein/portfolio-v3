@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import {recordNonInteractionEvent} from "Analytics/service";
+import {getPathname} from "windowUtils";
 
 class NotFound extends React.Component {
 
     componentDidMount() {
-        recordNonInteractionEvent("404", window.location.pathname, "PageView");
+        recordNonInteractionEvent("404", getPathname(), "PageView");
     }
 
     render() {

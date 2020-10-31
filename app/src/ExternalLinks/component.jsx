@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {recordEvent} from "Analytics/service";
+import {recordInteraction} from "Analytics/service";
 import styles from "./styles.module.scss";
 
 const ExternalLinks = ({linkType, routes}) => (
@@ -9,7 +9,7 @@ const ExternalLinks = ({linkType, routes}) => (
             {routes.map(route => (
                 <li key={route.link}>
                     <a href={route.link} target="_blank" rel="noopener noreferrer" className={styles.link}
-                       onClick={() => recordEvent("click", route.text, "link")}>
+                       onClick={() => recordInteraction("click", route.text, "link")}>
                         {getLink(linkType, route)}
                     </a>
                 </li>

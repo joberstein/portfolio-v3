@@ -4,7 +4,7 @@ import {ClipLoader} from "react-spinners";
 import {GoogleReCaptchaProvider, GoogleReCaptcha} from 'react-google-recaptcha-v3';
 import styles from "./styles.module.scss";
 import sendMessage from "./service";
-import {recordEvent} from "Analytics/service";
+import {recordInteraction} from "Analytics/service";
 
 class ContactForm extends React.Component {
 
@@ -117,7 +117,7 @@ class ContactForm extends React.Component {
         this.props.showError(!formSent);
 
         const eventAction = !formSent ? "failure" : "success";
-        recordEvent(eventAction, "Contact Form", "form");
+        recordInteraction(eventAction, "Contact Form", "form");
     }
 }
 
