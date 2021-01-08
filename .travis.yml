@@ -44,6 +44,7 @@ jobs:
           template: ./cdk.out/sendEmailRole.template.json
           stack_name: sendEmailRole
           region: "$AWS_REGION"
+          capabilities: CAPABILITY_NAMED_IAM
           edge: true
           on:
             branch: deploy
@@ -54,6 +55,7 @@ jobs:
           template: ./cdk.out/sendEmailLambda.template.json
           stack_name: sendEmailLambda
           region: "$AWS_REGION"
+          capabilities: CAPABILITY_NAMED_IAM
           edge: true
           on:
             branch: deploy
@@ -64,10 +66,11 @@ jobs:
           template: ./cdk.out/messagesApi.template.json
           stack_name: messagesApi
           region: "$AWS_REGION"
+          capabilities: CAPABILITY_NAMED_IAM
           edge: true
           on:
             branch: deploy
-            
+
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
@@ -122,6 +125,7 @@ jobs:
         function_name: "sendEmail"
         region: "$AWS_REGION"
         runtime: "java11"
+        role: "arn:aws:iam::752983187404:role/sendEmailFromLambda"
         module_name: "joberstein.portfolio.SendEmailHandler"
         handler_name: "handleRequest"
         environment: "GOOGLE_CAPTCHA_KEY=$GOOGLE_CAPTCHA_KEY"
