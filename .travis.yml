@@ -18,9 +18,9 @@ env:
     - AWS_REGION=us-west-2
 
 stages:
-  - name: infrastructure
+  - stage: infrastructure
     if: branch = deploy && $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
-  - code
+  - stage: code
 
 jobs:
   include:
