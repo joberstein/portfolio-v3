@@ -37,16 +37,33 @@ jobs:
         - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
         - git tag "infrastructure-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
-        provider: cloudformation
-        access_key_id: "$AWS_ACCESS_KEY_ID"
-        secret_access_key: "$AWS_SECRET_ACCESS_KEY"
-        template: ./cdk.out/messagesApi.template.json
-        stack_name: messagesApi
-        region: "$AWS_REGION"
-        edge: true
         on:
           branch: deploy
           condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
+          
+        - provider: cloudformation
+          access_key_id: "$AWS_ACCESS_KEY_ID"
+          secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+          template: ./cdk.out/sendEmailRole.template.json
+          stack_name: sendEmailRole
+          region: "$AWS_REGION"
+          edge: true
+
+        - provider: cloudformation
+          access_key_id: "$AWS_ACCESS_KEY_ID"
+          secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+          template: ./cdk.out/sendEmailLambda.template.json
+          stack_name: sendEmailLambda
+          region: "$AWS_REGION"
+          edge: true
+        
+        - provider: cloudformation
+          access_key_id: "$AWS_ACCESS_KEY_ID"
+          secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+          template: ./cdk.out/messagesApi.template.json
+          stack_name: messagesApi
+          region: "$AWS_REGION"
+          edge: true
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
