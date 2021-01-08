@@ -19,7 +19,7 @@ env:
 
 stages:
   - stage: infrastructure
-    if: branch = deploy && $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
+    if: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
   - stage: code
 
 jobs:
@@ -45,6 +45,8 @@ jobs:
           stack_name: sendEmailRole
           region: "$AWS_REGION"
           edge: true
+          on:
+            branch: deploy
 
         - provider: cloudformation
           access_key_id: "$AWS_ACCESS_KEY_ID"
@@ -53,6 +55,8 @@ jobs:
           stack_name: sendEmailLambda
           region: "$AWS_REGION"
           edge: true
+          on:
+            branch: deploy
         
         - provider: cloudformation
           access_key_id: "$AWS_ACCESS_KEY_ID"
@@ -61,6 +65,9 @@ jobs:
           stack_name: messagesApi
           region: "$AWS_REGION"
           edge: true
+          on:
+            branch: deploy
+            
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
