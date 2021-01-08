@@ -1,6 +1,6 @@
 package joberstein.portfolio.apiGateway.model;
 
-import static org.apache.http.entity.ContentType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ public abstract class ModelResource {
         return ModelOptions.builder()
             .modelName(this.name)
             .description(this.description)
-            .contentType(APPLICATION_JSON.getMimeType())
+            .contentType(APPLICATION_JSON)
             .schema(buildSchema())
             .build();
     }

@@ -1,7 +1,6 @@
 package joberstein.portfolio.lambda;
 
 import joberstein.portfolio.BaseStack;
-import joberstein.portfolio.SendEmailHandler;
 import joberstein.portfolio.iam.SendEmailRole;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Duration;
@@ -29,7 +28,7 @@ public class SendEmailLambda extends BaseStack<Function> {
 	protected Function build() {
         return Function.Builder.create(this, "sendEmailLambda")
             .functionName("sendEmail")
-            .handler(SendEmailHandler.class.getName())
+            .handler("")
             .description("Sends an email out with SimpleEmailService.")
             .runtime(Runtime.NODEJS_12_X) // Java runtimes don't allow inline code.
             .role(this.role)

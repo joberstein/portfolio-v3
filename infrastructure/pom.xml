@@ -10,36 +10,25 @@
         <java.version>11</java.version>
         <jackson.version>2.11.0</jackson.version>
         <lombok.version>1.18.12</lombok.version>
+        <javax.ws.rs-version>2.1.1</javax.ws.rs-version>
         <cors-filter.version>2.9</cors-filter.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>joberstein.portfolio</groupId>
-            <artifactId>sendEmail</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
             <groupId>software.amazon.awscdk</groupId>
             <artifactId>core</artifactId>
             <version>${aws.cdk.version}</version>
-            <exclusions>
-                <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
             <artifactId>apigateway</artifactId>
             <version>${aws.cdk.version}</version>
-            <exclusions>
-                <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>${javax.ws.rs-version}</version>
         </dependency>
         <dependency>
             <groupId>com.thetransactioncompany</groupId>

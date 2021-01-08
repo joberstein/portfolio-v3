@@ -5,13 +5,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.ws.rs.core.Response.Status;
+
 import static com.thetransactioncompany.cors.HeaderName.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static joberstein.portfolio.apiGateway.MessagesApi.responseHeaderKey;
-import static org.apache.http.entity.ContentType.APPLICATION_JSON;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_FORBIDDEN;
-import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
 import joberstein.portfolio.apiGateway.model.SendMessageRequest;
 import joberstein.portfolio.apiGateway.model.SendMessageResponse;
@@ -38,7 +40,7 @@ public class SendMessageOptionsBuilder {
             .authorizationType(AuthorizationType.NONE)
             .apiKeyRequired(false)
             .requestModels(Map.ofEntries(
-                Map.entry(APPLICATION_JSON.getMimeType(), addModel(api, new SendMessageRequest()))
+                Map.entry(APPLICATION_JSON, addModel(api, new SendMessageRequest()))
             ))
             .requestValidatorOptions(buildRequestValidatorOptions())
             .methodResponses(buildMethodResponses())
@@ -52,23 +54,23 @@ public class SendMessageOptionsBuilder {
     }
 
     private List<MethodResponse> buildMethodResponses() {
-        return Stream.of(SC_OK, SC_BAD_REQUEST, SC_FORBIDDEN, SC_INTERNAL_SERVER_ERROR)
-            .map(code -> MethodResponse.builder()
-                .statusCode(Integer.toString(code))
+        return Stream.of(OK, BAD_REQUEST, FORBIDDEN, INTERNAL_SERVER_ERROR)
+            .map(status -> MethodResponse.builder()
+                .statusCode(Integer.toString(status.getStatusCode()))
                 .responseParameters(METHOD_RESPONSE_HEADERS)
                 .responseModels(Map.ofEntries(
-                    Map.entry(APPLICATION_JSON.getMimeType(), getResponseModel(code))))
+                    Map.entry(APPLICATION_JSON, getResponseModel(status))))
                 .build())
             .collect(Collectors.toList());
     }
 
-    private IModel getResponseModel(int statusCode) {
-        switch (statusCode) {
-            case SC_OK:
+    private IModel getResponseModel(Status status) {
+        switch (status) {
+            case OK:
                 return addModel(api, new SendMessageResponse());
-            case SC_BAD_REQUEST:
-            case SC_FORBIDDEN:
-            case SC_INTERNAL_SERVER_ERROR:
+            case BAD_REQUEST:
+            case FORBIDDEN:
+            case INTERNAL_SERVER_ERROR:
                 return Model.ERROR_MODEL;
             default:
                 return Model.EMPTY_MODEL;

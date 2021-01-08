@@ -3,13 +3,11 @@ package joberstein.portfolio.apiGateway;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.http.entity.ContentType.APPLICATION_JSON;
-import static com.amazonaws.http.HttpMethodName.POST;
-import static com.amazonaws.http.HttpMethodName.OPTIONS;
-import static kong.unirest.HeaderNames.CONTENT_TYPE;
-import static kong.unirest.HeaderNames.AUTHORIZATION;
-
-import org.apache.http.entity.ContentType;
+import static javax.ws.rs.HttpMethod.POST;
+import static javax.ws.rs.HttpMethod.OPTIONS;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import joberstein.portfolio.BaseStack;
 import joberstein.portfolio.apiGateway.methods.sendMessage.SendMessageIntegrationBuilder;
@@ -28,7 +26,7 @@ public class MessagesApi extends BaseStack<RestApi> {
 
     private final String MESSAGES_RESOURCE = "messages";
     
-    private final Map<ContentType, String> REQUEST_TEMPLATES = Map.ofEntries(
+    private final Map<String, String> REQUEST_TEMPLATES = Map.ofEntries(
         Map.entry(APPLICATION_JSON, "/applicationJson.vtl"));
 
     private final SendMessageIntegrationBuilder lambdaIntegrationBuilder;
@@ -59,7 +57,7 @@ public class MessagesApi extends BaseStack<RestApi> {
         messagesResource.addCorsPreflight(buildCorsOptions());
         
         var sendMessageOptions = new SendMessageOptionsBuilder(api).build();
-        messagesResource.addMethod(POST.name(), lambdaIntegrationBuilder.build(), sendMessageOptions);
+        messagesResource.addMethod(POST, lambdaIntegrationBuilder.build(), sendMessageOptions);
         
         return api;
     }
@@ -86,7 +84,7 @@ public class MessagesApi extends BaseStack<RestApi> {
 
     private CorsOptions buildCorsOptions() {
         return CorsOptions.builder()
-            .allowMethods(List.of(POST.name(), OPTIONS.name()))
+            .allowMethods(List.of(POST, OPTIONS))
             .allowHeaders(List.of(CONTENT_TYPE, AUTHORIZATION, "X-Amz-Date", "X-Api-Key", "X-Amz-Security-Token"))
             .allowOrigins(List.of("*"))
             .build();
