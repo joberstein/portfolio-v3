@@ -63,14 +63,14 @@ jobs:
         access_key_id: "$AWS_ACCESS_KEY_ID"
         secret_access_key: "$AWS_SECRET_ACCESS_KEY"
         function_name: "sendEmail"
-        region: "us-east-1"
-        role: "arn:aws:iam::752983187404:role/sendEmailWithLambda"
+        region: "us-west-1"
+        role: "arn:aws:iam::752983187404:role/sendEmailFromLambda"
         runtime: "java11"
         module_name: "joberstein.portfolio.SendEmailHandler"
         handler_name: "handleRequest"
         environment: "GOOGLE_CAPTCHA_KEY=$GOOGLE_CAPTCHA_KEY"
-        memory_size: 512
-        timeout: 15
+        # memory_size: 512
+        # timeout: 15
         zip: "./target/sendEmail-jar-with-dependencies.jar"
         publish: true
         edge: true
