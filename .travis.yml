@@ -1,4 +1,4 @@
-if: tag !~ /^(app|sendEmail)-b\d+$/
+if: tag !~ /^(app|sendEmail|infrastructure)-b\d+$/
 
 env:
   global:
@@ -15,9 +15,45 @@ env:
     - secure: laQPvwNx/k5xrxCCr4ATcJxeKA5rrvdILm4pzfJR8FFgarXyQ88xqyG6g1XRuGtbzJbcMpX3cWTTdNg/AyrTHjupdnIXrA0akhaX1S5JgOvQqx0vT/xiD32xf+ip3fITd/QH74bM/0EE7ZVGnEoMgg0ofjnpn3fLupgD4qLt+XTUj8KDPW3gfXkqfTieATjlKLOsmIEMdIFdKbhIrYhF/hSqM1rHHoImIPl7Mc03NKTDKaqMvRPqlby8rNjalcm3FbYip+S6QHnKM1vWDQZXiq0ZJNn/WjwcHxfMAQoaLVwZMai+8Sz1zHl97i0G/aSLEAgVEJDyRc4dd5HBm0MOGd+DrciSH8JWTAY3bpiQw2JaQKbRRibZUBNkLh5QjdhRvJPkpyJByxeuaEEirPd07klmniwkQmO+3LbDirw8pjwfO2BVWpHGmmUi2TFsZgAcbEaNSdFs82+DnXnMWW1RCbidNE3thYaNzEGPgi1R5Px9prsJGS0MZvgrKdckax+EKBcuHmSnqRczv5h1x826DaU8pKPnzz1Fc6jycdEFB9hYE0gkkLjf6cPUTseKOMKCYhEVCUCKbfctwxOG6r/Wz0Cssm+3ETa5Ailhz8ojGiR4gbprYgwXTB50ZJkk4YL+5XHsfvhZY0aIv8Uq4HMipk6Ck9qlvcfG9GOulM1x6v8=
 
     - DEPLOY_TAG_MESSAGE="$(git tag -l --format='%(contents:lines=1)' deploy)"
+    - AWS_REGION=us-west-2
+
+stages:
+  - stage: infrastructure
+  - stage: code
+
 jobs:
   include:
-    - language: node_js
+    - stage: infrastructure
+      language: node_js
+      node_js: stable
+      cache: yarn
+      before_install:
+        - cd infrastructure
+      install:
+        - yarn install -g aws-cdk@1.76.0
+      script:
+        - cdk synth
+      before_deploy:
+        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git tag "infrastructure-b$TRAVIS_BUILD_NUMBER" deploy
+      deploy:
+        provider: cloudformation
+        access_key_id: "$AWS_ACCESS_KEY_ID"
+        secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+        template: ./cdk.out/messagesApi.template.json
+        stack_name: messagesApi
+        region: "$AWS_REGION"
+        edge: true
+        on:
+          branch: deploy
+          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
+      after_deploy:
+        - git push origin --tags
+        - git tag -d deploy
+        - git push origin :refs/tags/deploy
+
+    - stage: code
+      language: node_js
       node_js: stable
       cache: yarn
       before_install:
@@ -63,8 +99,7 @@ jobs:
         access_key_id: "$AWS_ACCESS_KEY_ID"
         secret_access_key: "$AWS_SECRET_ACCESS_KEY"
         function_name: "sendEmail"
-        region: "us-west-1"
-        role: "arn:aws:iam::752983187404:role/sendEmailFromLambda"
+        region: "$AWS_REGION"
         runtime: "java11"
         module_name: "joberstein.portfolio.SendEmailHandler"
         handler_name: "handleRequest"
@@ -76,7 +111,7 @@ jobs:
         edge: true
         on:
           branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|all)$
+          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|infrastructure|all)$
       after_deploy:
         - git push origin --tags
         - git tag -d deploy
