@@ -5,8 +5,8 @@
 
 DEPLOY_COMMAND=$1
 
-if [[ -z $DEPLOY_COMMAND || ! $DEPLOY_COMMAND =~ ^(app|sendEmail|all)$ ]]; then
-	echo "Usage: ./tag-for-deploy (app|sendEmail|all)"
+if [[ -z $DEPLOY_COMMAND || ! $DEPLOY_COMMAND =~ ^(app|sendEmail|infrastructure|all)$ ]]; then
+	echo "Usage: ./tag-for-deploy (app|sendEmail|infrastructure|all)"
 	exit 1;
 fi
 

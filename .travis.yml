@@ -26,11 +26,11 @@ jobs:
     - stage: infrastructure
       language: node_js
       node_js: stable
-      cache: yarn
+      cache: npm
       before_install:
         - cd infrastructure
       install:
-        - yarn install -g aws-cdk@1.76.0
+        - npm install -g aws-cdk@1.81.0
       script:
         - cdk synth
       before_deploy:
