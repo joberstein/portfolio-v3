@@ -18,8 +18,9 @@ env:
     - AWS_REGION=us-west-2
 
 stages:
-  - stage: infrastructure
-  - stage: code
+  - name: infrastructure
+    if: branch = deploy && $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
+  - code
 
 jobs:
   include:
@@ -37,10 +38,6 @@ jobs:
         - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
         - git tag "infrastructure-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
-        on:
-          branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(infrastructure|all)$
-          
         - provider: cloudformation
           access_key_id: "$AWS_ACCESS_KEY_ID"
           secret_access_key: "$AWS_SECRET_ACCESS_KEY"
