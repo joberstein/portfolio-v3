@@ -25,9 +25,9 @@ jobs:
         - yarn cache clean
       install:
         - yarn install
-        - yarn test
       script:
         - yarn run build
+        - yarn test
       before_deploy:
         - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
         - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
@@ -64,7 +64,7 @@ jobs:
         secret_access_key: "$AWS_SECRET_ACCESS_KEY"
         function_name: "sendEmail"
         region: "us-east-1"
-        role: "arn:aws:iam::752983187404:role/portfolio-v3_sendEmail"
+        role: "arn:aws:iam::752983187404:role/sendEmailWithLambda"
         runtime: "java11"
         module_name: "joberstein.portfolio.SendEmailHandler"
         handler_name: "handleRequest"

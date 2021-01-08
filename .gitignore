@@ -50,6 +50,7 @@ Thumbs.db
 *.classpath
 *.factorypath
 *.settings
+*.project
 
 # Miscellaneous #
 #################
@@ -73,3 +74,10 @@ app/.pnp
 ###  SendEmail Module ###
 #########################
 sendEmail/target/
+
+#########################
+# Infrastructure Module #
+#########################
+infrastructure/target/
+.cdk.staging
+cdk.out
