@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RequestTemplateBuilder {
-    
+
+    private static final String BASE_RESOURCES_PATH = "apiGateway/requestTemplates";
+
     private final Map<String, String> requestTemplates;
     
     RequestTemplateBuilder(Map<String, String> templates) {
@@ -15,7 +17,7 @@ public class RequestTemplateBuilder {
             .stream()
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
-                e -> "apiGateway/requestTemplates/" + e.getValue()));
+                e -> BASE_RESOURCES_PATH + e.getValue()));
     }
         
     Map<String, String> build() {
