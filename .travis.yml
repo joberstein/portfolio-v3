@@ -19,36 +19,6 @@ env:
 
 jobs:
   include:
-    - name: "Application"
-      language: node_js
-      node_js: stable
-      cache: yarn
-      before_install:
-        - cd app
-        - yarn cache clean
-      install:
-        - yarn install
-      script:
-        - yarn run build
-        - yarn test
-      before_deploy:
-        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
-      deploy:
-        provider: pages
-        cleanup: false
-        github_token: "$GITHUB_TOKEN"
-        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/app/build
-        target_branch: gh-pages
-        edge: true
-        on:
-          branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(app|all)$
-      after_deploy:
-        - git push origin --tags
-        - git tag -d deploy
-        - git push origin :refs/tags/deploy
-
     - stage: "Deploy Asset Infrastructure"
       name: "sendEmail Bucket"
       language: node_js
@@ -104,7 +74,8 @@ jobs:
         - git tag -d deploy
         - git push origin :refs/tags/deploy
 
-    - stage: "Deploy Infrastructure"
+    - stage: "Deploy Application"
+      name: "Infrastructure"
       language: node_js
       node_js: stable
       cache: npm
@@ -123,3 +94,33 @@ jobs:
           on:
             branch: deploy
             condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|infrastructure|all)$
+
+    - name: "React App"
+      language: node_js
+      node_js: stable
+      cache: yarn
+      before_install:
+        - cd app
+        - yarn cache clean
+      install:
+        - yarn install
+      script:
+        - yarn run build
+        - yarn test
+      before_deploy:
+        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
+        - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
+      deploy:
+        provider: pages
+        cleanup: false
+        github_token: "$GITHUB_TOKEN"
+        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/app/build
+        target_branch: gh-pages
+        edge: true
+        on:
+          branch: deploy
+          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(app|all)$
+      after_deploy:
+        - git push origin --tags
+        - git tag -d deploy
+        - git push origin :refs/tags/deploy
