@@ -19,7 +19,7 @@ env:
 
 jobs:
   include:
-    - stage: "app and assets"
+    - name: "Application"
       language: node_js
       node_js: stable
       cache: yarn
@@ -49,7 +49,9 @@ jobs:
         - git tag -d deploy
         - git push origin :refs/tags/deploy
 
-    - language: node_js
+    - stage: "Deploy Asset Infrastructure"
+      name: "sendEmail Bucket"
+      language: node_js
       node_js: stable
       cache: npm
       before_install:
@@ -71,7 +73,8 @@ jobs:
           branch: deploy
           condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|all)$
 
-    - stage: sendEmail
+    - stage: "Deploy Assets"
+      name: "sendEmail Code"
       language: java
       jdk: oraclejdk11
       cache:
@@ -101,7 +104,7 @@ jobs:
         - git tag -d deploy
         - git push origin :refs/tags/deploy
 
-    - stage: infrastructure
+    - stage: "Deploy Infrastructure"
       language: node_js
       node_js: stable
       cache: npm
