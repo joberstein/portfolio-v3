@@ -1,5 +1,3 @@
-if: tag !~ /^(app|sendEmail|infrastructure)-b\d+$/
-
 env:
   global:
     # GITHUB_TOKEN
@@ -14,7 +12,6 @@ env:
     # GOOGLE_CAPTCHA_KEY
     - secure: laQPvwNx/k5xrxCCr4ATcJxeKA5rrvdILm4pzfJR8FFgarXyQ88xqyG6g1XRuGtbzJbcMpX3cWTTdNg/AyrTHjupdnIXrA0akhaX1S5JgOvQqx0vT/xiD32xf+ip3fITd/QH74bM/0EE7ZVGnEoMgg0ofjnpn3fLupgD4qLt+XTUj8KDPW3gfXkqfTieATjlKLOsmIEMdIFdKbhIrYhF/hSqM1rHHoImIPl7Mc03NKTDKaqMvRPqlby8rNjalcm3FbYip+S6QHnKM1vWDQZXiq0ZJNn/WjwcHxfMAQoaLVwZMai+8Sz1zHl97i0G/aSLEAgVEJDyRc4dd5HBm0MOGd+DrciSH8JWTAY3bpiQw2JaQKbRRibZUBNkLh5QjdhRvJPkpyJByxeuaEEirPd07klmniwkQmO+3LbDirw8pjwfO2BVWpHGmmUi2TFsZgAcbEaNSdFs82+DnXnMWW1RCbidNE3thYaNzEGPgi1R5Px9prsJGS0MZvgrKdckax+EKBcuHmSnqRczv5h1x826DaU8pKPnzz1Fc6jycdEFB9hYE0gkkLjf6cPUTseKOMKCYhEVCUCKbfctwxOG6r/Wz0Cssm+3ETa5Ailhz8ojGiR4gbprYgwXTB50ZJkk4YL+5XHsfvhZY0aIv8Uq4HMipk6Ck9qlvcfG9GOulM1x6v8=
 
-    - DEPLOY_TAG_MESSAGE="$(git tag -l --format='%(contents:lines=1)' deploy)"
     - AWS_REGION=us-west-2
 
 jobs:
@@ -40,8 +37,7 @@ jobs:
         capabilities: CAPABILITY_NAMED_IAM
         edge: true
         on:
-          branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|all)$
+          condition: $TRAVIS_BRANCH =~ ^deploy(-sendEmail)?$
 
     - stage: "Deploy Assets"
       name: "sendEmail Code"
@@ -55,24 +51,18 @@ jobs:
       install:
         - mvn clean install
       before_deploy:
-        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git tag "sendEmail-b$TRAVIS_BUILD_NUMBER" deploy
+        - cd target
       deploy:
         provider: s3
         access_key_id: "$AWS_ACCESS_KEY_ID"
         secret_access_key: "$AWS_SECRET_ACCESS_KEY"
         bucket: send-email-assets
-        glob: target/sendEmail-jar-with-dependencies.jar
+        glob: sendEmail-jar-with-dependencies.jar
         upload_dir: assets
         storage_class: STANDARD_IA
         edge: true
         on:
-          branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|all)$
-      after_deploy:
-        - git push origin --tags
-        - git tag -d deploy
-        - git push origin :refs/tags/deploy
+          condition: $TRAVIS_BRANCH =~ ^deploy(-sendEmail)?$
 
     - stage: "Deploy Application"
       name: "Infrastructure"
@@ -92,8 +82,7 @@ jobs:
           script: cdk deploy --all -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
           edge: true
           on:
-            branch: deploy
-            condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(sendEmail|infrastructure|all)$
+            condition: $TRAVIS_BRANCH =~ ^deploy(-(sendEmail|infrastructure))?$
 
     - name: "React App"
       language: node_js
@@ -107,9 +96,6 @@ jobs:
       script:
         - yarn run build
         - yarn test
-      before_deploy:
-        - git remote set-url origin "https://joberstein:$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
-        - git tag "app-b$TRAVIS_BUILD_NUMBER" deploy
       deploy:
         provider: pages
         cleanup: false
@@ -118,9 +104,4 @@ jobs:
         target_branch: gh-pages
         edge: true
         on:
-          branch: deploy
-          condition: $TRAVIS_TAG = deploy && $DEPLOY_TAG_MESSAGE =~ ^(app|all)$
-      after_deploy:
-        - git push origin --tags
-        - git tag -d deploy
-        - git push origin :refs/tags/deploy
+          condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
