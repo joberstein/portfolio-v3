@@ -1,5 +1,5 @@
 
-const SEND_MESSAGE_URL = "https://x0m2io7sjd.execute-api.us-east-2.amazonaws.com/production/messages";
+const SEND_MESSAGE_URL = "https://340zllvwgk.execute-api.us-east-1.amazonaws.com/production/messages";
 
 /**
  * Send a message with the given data.  Returns a promise with a boolean indicating if the send was successful or not.
