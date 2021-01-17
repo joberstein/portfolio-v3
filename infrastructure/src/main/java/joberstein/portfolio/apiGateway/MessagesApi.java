@@ -68,7 +68,7 @@ public class MessagesApi extends BaseStack<RestApi> {
         return RestApi.Builder.create(this, "messagesRestApi")
             .restApiName(API_NAME)
             .description(API_DESCRIPTION)
-            .endpointTypes(List.of(EndpointType.EDGE))
+            .endpointTypes(List.of(EndpointType.REGIONAL))
             .deployOptions(buildStageOptions())
             .retainDeployments(true)
             .cloudWatchRole(false)
