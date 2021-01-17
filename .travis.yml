@@ -81,7 +81,7 @@ jobs:
         - cdk synth -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
       deploy:
           provider: script
-          script: cdk deploy --all --ci -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
+          script: cdk deploy --all --ci true --require-approval never -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
           edge: true
           on:
             all_branches: true
