@@ -18,23 +18,16 @@ import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
 import software.amazon.awscdk.services.s3.Bucket;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class SendEmailLambda extends BaseStack<Function> {
 
     private static final String GOOGLE_CAPTCHA_KEY = "GOOGLE_CAPTCHA_KEY";
-    private static final String COMMIT_MESSAGE = "COMMIT_MESSAGE";
 
     private static final String FUNCTION_NAME = "sendEmail";
     private static final String FUNCTION_DESCRIPTION = "Sends an email out with SimpleEmailService.";
     private static final String HANDLER = "joberstein.portfolio.SendEmailHandler";
     private static final String OBJECT_KEY = "assets/sendEmail-jar-with-dependencies.jar";
-
-    private static final Pattern COMMIT_PATTERN = Pattern.compile("^(\\w{7})\\s(.*)");
-    private static final DateTimeFormatter ISO_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("YYYY-MM-DD hh:mm:ss");
 
     private final AmazonS3 s3Client;
     private final Role role;
@@ -58,14 +51,8 @@ public class SendEmailLambda extends BaseStack<Function> {
 
         this.init();
 
-        var commitMatcher = COMMIT_PATTERN.matcher(getContextValue(COMMIT_MESSAGE));
-        var commitHash = commitMatcher.matches() ? commitMatcher.group(1) : "Unknown hash";
-        var commitMessage = commitMatcher.matches() ? commitMatcher.group(2) : "Commit message unavailable.";
-        var formattedDate = ISO_DATE_TIME_FORMATTER.format(LocalDateTime.now());
-
         Version.Builder.create(this, "sendEmailVersionId")
             .lambda(this.getInstance())
-            .description(String.format("[%s] %s (%s)", formattedDate, commitMessage, commitHash))
             .build();
     }
 
