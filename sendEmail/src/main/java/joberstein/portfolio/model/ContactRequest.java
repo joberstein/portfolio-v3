@@ -3,8 +3,8 @@ package joberstein.portfolio.model;
 import com.amazonaws.services.simpleemail.model.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -20,16 +20,15 @@ public class ContactRequest {
     private String subject;
     private String body;
     private String captcha;
-    private String ipAddress;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class ContactRequestBuilder {}
 
-    public VerifyCaptchaRequest toCaptchaRequest() {
+    public VerifyCaptchaRequest toCaptchaRequest(String ipAddress) {
         return VerifyCaptchaRequest.builder()
             .response(this.captcha)
             .secret(System.getenv(GOOGLE_CAPTCHA_KEY))
-            .remoteIp(this.ipAddress)
+            .remoteIp(ipAddress)
             .build();
     }
 
