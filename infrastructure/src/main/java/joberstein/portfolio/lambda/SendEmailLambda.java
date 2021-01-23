@@ -70,10 +70,6 @@ public class SendEmailLambda extends BaseStack<Function> {
             .build();
     }
 
-    private String getContextValue(String key) {
-        return (String) this.getNode().tryGetContext(key);
-    }
-
     private String getLatestVersionId() {
         var listVersionsRequest = new ListVersionsRequest()
             .withBucketName(SendEmailBucket.BUCKET_NAME)

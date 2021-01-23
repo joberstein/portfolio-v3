@@ -19,4 +19,8 @@ public abstract class BaseStack<T> extends Stack {
     protected void init() {
         this.instance = this.build();
     }
+
+    protected String getContextValue(String key) {
+        return (String) this.getNode().tryGetContext(key);
+    }
 }

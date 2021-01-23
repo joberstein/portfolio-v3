@@ -1,37 +1,32 @@
 package joberstein.portfolio.apiGateway;
 
+import com.amazonaws.services.s3.Headers;
 import joberstein.portfolio.BaseStack;
-import joberstein.portfolio.apiGateway.methods.sendMessage.SendMessageIntegrationBuilder;
-import joberstein.portfolio.apiGateway.methods.sendMessage.SendMessageOptionsBuilder;
 import joberstein.portfolio.lambda.SendEmailLambda;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Environment;
 import software.amazon.awscdk.core.StackProps;
-import software.amazon.awscdk.services.apigateway.*;
+import software.amazon.awscdk.services.apigatewayv2.*;
+import software.amazon.awscdk.services.apigatewayv2.integrations.LambdaProxyIntegration;
+import software.amazon.awscdk.services.lambda.Function;
 
 import java.util.List;
-import java.util.Map;
 
-import static javax.ws.rs.HttpMethod.OPTIONS;
-import static javax.ws.rs.HttpMethod.POST;
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-public class MessagesApi extends BaseStack<RestApi> {
+public class MessagesApi extends BaseStack<HttpApi> {
 
     private static final String API_NAME = "Messages API";
     private static final String API_DESCRIPTION = "Allows messages to be sent out to a recipient.";
-    private static final String MESSAGES_RESOURCE = "messages";
+    private static final String MESSAGES_RESOURCE = "/messages";
     private static final String STAGE_NAME = "production";
 
-    private static final String X_AMZ_DATE = "X-Amz-Date";
+    private static final String X_AMZ_DATE = Headers.S3_ALTERNATE_DATE;
+    private static final String X_AMZ_SECURITY_TOKEN = Headers.SECURITY_TOKEN;
     private static final String X_API_KEY = "X-Api-Key";
-    private static final String X_AMZ_SECURITY_TOKEN = "X-Amz-Security-Token";
-    
-    private static final Map<String, String> REQUEST_TEMPLATES = Map.of(APPLICATION_JSON, "/applicationJson.vtl");
 
-    private final SendMessageIntegrationBuilder lambdaIntegrationBuilder;
+    private final Function sendEmailLambda;
 
     public MessagesApi(Construct scope, Environment environment, SendEmailLambda sendEmailLambda) {
         super(scope, "messagesApi", StackProps.builder()
@@ -39,56 +34,47 @@ public class MessagesApi extends BaseStack<RestApi> {
             .build());
 
         this.addDependency(sendEmailLambda);
+        this.sendEmailLambda = sendEmailLambda.getInstance();
 
-        var lambda = sendEmailLambda.getInstance();
-        var requestTemplateBuilder = new RequestTemplateBuilder(REQUEST_TEMPLATES);
-        var requestTemplates = requestTemplateBuilder.build();
-        this.lambdaIntegrationBuilder = new SendMessageIntegrationBuilder(lambda, requestTemplates);
-        
         this.init();
+
+        var api = this.getInstance();
+        api.addRoutes(buildSendMessagesRoute());
+        api.addStage("productionStage", buildStageOptions());
     }
     
-    public static String responseHeaderKey(String header) {
-        return "method.response.header." + header;
-    }
-
-    protected RestApi build() {
-        RestApi api = buildApi();
-        
-        var messagesResource = api.getRoot().addResource(MESSAGES_RESOURCE);
-        messagesResource.addCorsPreflight(buildCorsOptions());
-        
-        var sendMessageOptions = new SendMessageOptionsBuilder(api).build();
-        messagesResource.addMethod(POST, lambdaIntegrationBuilder.build(), sendMessageOptions);
-        
-        return api;
-    }
-
-    private RestApi buildApi() {
-        return RestApi.Builder.create(this, "messagesRestApi")
-            .restApiName(API_NAME)
+    protected HttpApi build() {
+        return HttpApi.Builder.create(this, "messagesHttpApi")
+            .apiName(API_NAME)
             .description(API_DESCRIPTION)
-            .endpointTypes(List.of(EndpointType.REGIONAL))
-            .deployOptions(buildStageOptions())
-            .retainDeployments(true)
-            .cloudWatchRole(false)
+            .corsPreflight(buildCorsOptions())
             .build();
     }
 
-    private StageOptions buildStageOptions() {
-        return StageOptions.builder()
+    private HttpStageOptions buildStageOptions() {
+        return HttpStageOptions.builder()
             .stageName(STAGE_NAME)
-            .throttlingRateLimit(30)
-            .throttlingBurstLimit(15)
-            .loggingLevel(MethodLoggingLevel.OFF)
+            .autoDeploy(true)
             .build();
     }
 
-    private CorsOptions buildCorsOptions() {
-        return CorsOptions.builder()
-            .allowMethods(List.of(POST, OPTIONS))
-            .allowHeaders(List.of(CONTENT_TYPE, AUTHORIZATION, X_AMZ_DATE, X_API_KEY, X_AMZ_SECURITY_TOKEN))
+    private CorsPreflightOptions buildCorsOptions() {
+        return CorsPreflightOptions.builder()
+            .allowMethods(List.of(HttpMethod.POST, HttpMethod.OPTIONS))
+            .allowHeaders(List.of(CONTENT_TYPE, AUTHORIZATION, X_AMZ_DATE, X_AMZ_SECURITY_TOKEN, X_API_KEY))
             .allowOrigins(List.of("*"))
+            .build();
+    }
+
+    private AddRoutesOptions buildSendMessagesRoute() {
+        var integration = LambdaProxyIntegration.Builder.create()
+            .handler(this.sendEmailLambda)
+            .build();
+
+        return AddRoutesOptions.builder()
+            .methods(List.of(HttpMethod.POST))
+            .path(MESSAGES_RESOURCE)
+            .integration(integration)
             .build();
     }
 }
