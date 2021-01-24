@@ -23,11 +23,6 @@
         </dependency>
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
-            <artifactId>apigateway</artifactId>
-            <version>${aws.cdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awscdk</groupId>
             <artifactId>apigatewayv2</artifactId>
             <version>${aws.cdk.version}</version>
         </dependency>
