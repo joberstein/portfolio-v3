@@ -12,7 +12,7 @@
     "@types/react": "^16.8.8",
     "@types/react-dom": "^16.8.2",
     "classnames": "^2.2.6",
-    "node-sass": "^4.11.0",
+    "node-sass": "^6.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-app-polyfill": "^1.0.2",
@@ -29,6 +29,9 @@
     "typescript": "^3.3.3333"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^17.0.2",
+    "@commitlint/format": "^17.0.0",
+    "@commitlint/types": "^17.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "react-scripts": "^3.1.1"
