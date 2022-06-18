@@ -68,6 +68,20 @@ Certain portions of the project can be deployed based on the pushed branch:
     * Packages the app into a 'build' folder
     * Deploys to Github Pages by copying the 'build' folder over to the 'gh-pages' branch
 
+## Hooks
+
+This project utilizes git hooks to enforce conventional commits, which support semantic versioning.
+
+To initialize this project's hooks, run the following command from the project root:
+
+> ./hooks/setup.sh
+
+Supported hooks:
+- **prepare-commit-msg**: Appends the issue number, if found, to the commit message. 
+  Retrieves the issue number from the branch when named like `issues/<number>` 
+- **commit-msg**: Runs the `commitlint` package against the commit message to enforce 
+  the conventional commit standard
+
 ### Notes
 
 * Building the project consists of running the react-scripts build script, as well as copying the index page html file 

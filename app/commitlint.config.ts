@@ -9,6 +9,7 @@ const scopes = [
    'docs',
    'dependencies',
    'home',
+   'hooks',
    'index',
    'navigation',
    'portfolio',
