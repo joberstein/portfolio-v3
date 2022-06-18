@@ -21,6 +21,7 @@ const types =  [
   'chore',
   'feat',
   'fix',
+  'merge',
   'refactor',
   'revert',
   'style',
