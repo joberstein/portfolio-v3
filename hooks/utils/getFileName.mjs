@@ -1,4 +1,4 @@
-import { basename } from 'path';
+import { basename, parse } from 'path';
 import { fileURLToPath } from 'url';
 
-export default (filePath) => basename(fileURLToPath(filePath));
+export default (filePath) => parse(basename(fileURLToPath(filePath)));

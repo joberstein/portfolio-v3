@@ -1,6 +1,6 @@
 import fs from 'fs';
 import execAsync from '../utils/execAsync.mjs';
-import getHookName from '../utils/getFileName.mjs';
+import getFileName from '../utils/getFileName.mjs';
 
 const [node, currentPath, messagePath] = process.argv;
 
@@ -20,7 +20,8 @@ const messageContents = messageLines
     .join('\n')
     .trim();
 
-console.log(`Running '${getHookName(import.meta.url)}' hook...`);
+const { name: hook } = getFileName(import.meta.url);
+console.log(`Running '${hook}' hook...`);
 
 const { stdout: branch } = await execAsync('git branch --show-current');
 const issue = branch.trim().replace("issues/", "");
