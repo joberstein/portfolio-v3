@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 
+echo "Running '$0' hook..."
 npx commitlint --edit "\${1}" --config app/commitlint.config.ts

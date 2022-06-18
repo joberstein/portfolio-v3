@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 
-const util = require('node:util');
-const { exec } = require('child_process');
-const execAsync = util.promisify(exec);
+import { promisify } from 'util';
+import { exec } from 'child_process';
+const execAsync = promisify(exec);
 
-const { stdout: projectDir } = await execAsync('git rev-parse --show-toplevel');
+const getDirectoryResult = await execAsync('git rev-parse --show-toplevel');
+const projectDir = getDirectoryResult.stdout.trim();
 const hooksPath = `${projectDir}/hooks`;
 
-const { err } = await execAsync(`git config core.hooksPath ${hooksPath}`);
-const completionMessage = err ?
-    'Could not set local hooks path' :
-    `Set local hooks path to: ${hooksPath}`;
-
-console.log(completionMessage);
+await execAsync(`git config core.hooksPath ${hooksPath}`);
+console.log(`Set local hooks path to: ${hooksPath}`);

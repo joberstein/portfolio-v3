@@ -21,6 +21,8 @@ const messageContents = messageLines
     .join('\n')
     .trim();
 
+console.log(`Running '${__filename}' hook...`);
+
 exec('git branch --show-current', (err, stdout, stderr) => {
     const issue = stdout.replace("issues/", "").trim();
     const isIssueNumeric = issue && /\d+/.test(issue);
@@ -33,5 +35,8 @@ exec('git branch --show-current', (err, stdout, stderr) => {
             .concat(messageComments);
 
         fs.writeFileSync(messagePath, newMessage);
+        console.log("Appended the issue number to the commit message.");
+    } else {
+        console.log("No commit message modifications necessary.");
     }
 });
