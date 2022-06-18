@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+HOOK=$(basename "$0")
+node ./hooks/impl/$HOOK.mjs "$@"
