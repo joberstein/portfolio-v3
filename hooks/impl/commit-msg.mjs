@@ -1,13 +1,19 @@
-#!/usr/bin/env node
-
-const path = require('path');
-const { exec } = require("child_process");
+import execAsync from '../utils/execAsync.mjs';
+import getHookName from '../utils/getFileName.mjs';
 
 const [node, currentPath, messagePath] = process.argv;
-console.log(messagePath);
-console.log(`Running '${path.basename(__filename)}' hook...`);
-exec(`npx commitlint --edit "\${messagePath}" --config app/commitlint.config.ts`, (a, b, c) => {
-    console.log(a);
-    console.log(b);
-    console.log(c);
-});
+
+console.log(`Running '${getHookName(import.meta.url)}' hook...`);
+
+try {
+    const { stdout: result } = await execAsync(
+        `npx commitlint --edit "\${messagePath}" --config app/commitlint.config.ts`
+    );
+
+    if (result) {
+        console.log(result);
+    }
+} catch (e) {
+    console.log(e.stdout);
+    process.exit(1);
+}

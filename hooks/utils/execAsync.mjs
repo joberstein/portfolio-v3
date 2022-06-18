@@ -1,4 +1,4 @@
-const { promisify } = require('util');
-const { exec } = require('child_process');
+import { promisify } from 'util';
+import { exec } from 'child_process';
 
-export default () => promisify(exec);
+export default promisify(exec);

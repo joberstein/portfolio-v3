@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-echo "Running '$0' hook..."
-npx commitlint --edit "\${1}" --config app/commitlint.config.ts
+HOOK=$(basename "$0")
+node ./hooks/impl/$HOOK.mjs "$@"

@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
-const fs = require('fs');
-const path = require('path');
-const { exec } = require("child_process");
+import fs from 'fs';
+import execAsync from '../utils/execAsync.mjs';
+import getHookName from '../utils/getFileName.mjs';
 
 const [node, currentPath, messagePath] = process.argv;
 
@@ -22,25 +20,25 @@ const messageContents = messageLines
     .join('\n')
     .trim();
 
-console.log(`Running '${path.basename(__filename)}' hook...`);
+console.log(`Running '${getHookName(import.meta.url)}' hook...`);
 
-exec('git branch --show-current', (err, stdout, stderr) => {
-    const issue = stdout.replace("issues/", "").trim();
-    const isIssueNumeric = issue && /\d+/.test(issue);
-    const issueTag = `Issue ${issue}.`;
+const { stdout: branch } = await execAsync('git branch --show-current');
+const issue = branch.trim().replace("issues/", "");
+const isIssueNumeric = issue && /\d+/.test(issue);
+const issueTag = `Issue ${issue}.`;
 
-    if (isIssueNumeric && !messageContents.includes(issueTag)) {
-        const newMessage = messageContents
-            .concat("\n".repeat(2))
-            .concat(issueTag)
-            .concat(messageComments);
+if (isIssueNumeric && !messageContents.includes(issueTag)) {
+    const newMessage = messageContents
+        .concat("\n".repeat(2))
+        .concat(issueTag)
+        .concat("\n".repeat(2))
+        .concat(messageComments);
 
-        fs.writeFileSync(messagePath, newMessage);
-        console.log("Appended the issue number to the commit message.");
-    } else {
-        console.log("No commit message modifications necessary.");
-    }
+    fs.writeFileSync(messagePath, newMessage);
+    console.log("Appended the issue number to the commit message.");
+} else {
+    console.log("No commit message modifications necessary.");
+}
 
-    // Extra newline
-    console.log();
-});
+// Extra newline
+console.log();
