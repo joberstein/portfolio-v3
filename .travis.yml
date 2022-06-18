@@ -19,7 +19,7 @@ jobs:
     - stage: "Deploy Asset Infrastructure"
       name: "sendEmail Bucket"
       language: node_js
-      node_js: stable
+      node_js: lts/*
       cache: npm
       before_install:
         - cd infrastructure
@@ -69,7 +69,7 @@ jobs:
     - stage: "Deploy Application"
       name: "Infrastructure"
       language: node_js
-      node_js: stable
+      node_js: lts/*
       cache: npm
       env:
         - COMMIT_MESSAGE="$(git log -1 --oneline --no-decorate)"
@@ -89,7 +89,7 @@ jobs:
 
     - name: "React App"
       language: node_js
-      node_js: stable
+      node_js: lts/*
       cache: yarn
       before_install:
         - cd app
