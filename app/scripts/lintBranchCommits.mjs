@@ -9,7 +9,8 @@ if (branch === "master") {
     process.exit(0);
 }
 
-console.log(`Validating commit messages on branch '${branch}'...`);
+console.log("Fetching commits available on the master branch...");
+await execAsync('git fetch origin master:master');
 
 const { stdout: from } = await execAsync(`git rev-list ^master "${branch}" | tail -n 1`);
 const fromCommit = from.trim();
@@ -19,10 +20,14 @@ if (!fromCommit) {
     process.exit(0);
 }
 
+console.log(`Validating commit messages on branch '${branch}'...\n`);
+
 try {
-    await execAsync(`npx commitlint --from ${fromCommit} --config app/commitlint.config.ts -V`);
+    const { stdout } = await execAsync(`npx commitlint --from ${fromCommit}^ --config commitlint.config.ts -V`);
+    console.log(stdout);
 } catch (e) {
-    console.log(e.stdout);
+    const errorMessage = e.stdout?.trim() || e;
+    console.log(errorMessage);
     process.exit(1);
 }
 

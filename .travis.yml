@@ -93,10 +93,10 @@ jobs:
       cache: yarn
       before_install:
         - cd app
-        - node ./scripts/lintBranchCommits.mjs $TRAVIS_BRANCH
         - yarn cache clean
       install:
         - yarn install
+        - node ./scripts/lintBranchCommits.mjs $TRAVIS_BRANCH
       script:
         - yarn run build
         - yarn test
