@@ -105,12 +105,14 @@ jobs:
       language: node_js
       node_js: lts/*
       cache: yarn
+      before_script: cd app
       script: yarn lint:commits $TRAVIS_BRANCH
 
     - name: "Run Tests"
       language: node_js
       node_js: lts/*
       cache: yarn
+      before_script: cd app
       script: yarn test
 
     - stage: "React App - Release"
@@ -119,6 +121,7 @@ jobs:
       cache: yarn
       install: skip
       script: skip
+      before_deploy: cd app
       deploy:
         provider: script
         cleanup: false
@@ -129,6 +132,7 @@ jobs:
       language: node_js
       node_js: lts/*
       cache: yarn
+      before_script: cd app
       script: yarn build
       deploy:
         provider: pages
