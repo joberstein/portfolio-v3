@@ -18,6 +18,7 @@ jobs:
   include:
     - stage: "Deploy Asset Infrastructure"
       name: "sendEmail Bucket"
+      if: branch = master
       language: node_js
       node_js: lts/*
       cache: npm
@@ -42,6 +43,7 @@ jobs:
 
     - stage: "Deploy Assets"
       name: "sendEmail Code"
+      if: branch = master
       language: java
       jdk: oraclejdk11
       cache:
@@ -68,6 +70,7 @@ jobs:
 
     - stage: "Deploy Application"
       name: "Infrastructure"
+      if: branch = master
       language: node_js
       node_js: lts/*
       cache: npm
@@ -87,19 +90,46 @@ jobs:
             all_branches: true
             condition: $TRAVIS_BRANCH =~ ^deploy(-(sendEmail|infrastructure))?$
 
-    - name: "React App"
+    - stage: "React App - Install"
       language: node_js
       node_js: lts/*
       cache: yarn
       before_install:
         - cd app
         - yarn cache clean
-      install:
-        - yarn install
-        - node ./scripts/lintBranchCommits.mjs $TRAVIS_BRANCH
-      script:
-        - yarn run build
-        - yarn test
+      install: yarn install
+      script: skip
+
+    - stage: "React App - Validate"
+      name: "Lint Commits"
+      language: node_js
+      node_js: lts/*
+      cache: yarn
+      script: yarn lint:commits $TRAVIS_BRANCH
+
+    - name: "Run Tests"
+      language: node_js
+      node_js: lts/*
+      cache: yarn
+      script: yarn test
+
+    - stage: "React App - Release"
+      language: node_js
+      node_js: lts/*
+      cache: yarn
+      install: skip
+      script: skip
+      deploy:
+        provider: script
+        cleanup: false
+        edge: true
+        script: yarn release --ci -d --debug --branches=$TRAVIS_BRANCH
+
+    - stage: "React App - Deploy"
+      language: node_js
+      node_js: lts/*
+      cache: yarn
+      script: yarn build
       deploy:
         provider: pages
         cleanup: false
