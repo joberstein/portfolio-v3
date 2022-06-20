@@ -6,8 +6,8 @@ $.verbose = false;
 
 const branch = (await $`git branch --show-current`).stdout.trim();
 
-if (branch === "master") {
-    console.log('Skipped source code diff on master.');
+if (!branch || branch === "master") {
+    console.log(`Skipped commit validation on branch '${branch}'.`);
     process.exit(0);
 }
 
