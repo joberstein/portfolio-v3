@@ -41,7 +41,7 @@
     "test": "react-scripts test --env=node",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "lint:commits": "./scripts/lintBranchCommits.mjs",
+    "lint:commits": "zx ./scripts/lintBranchCommits.mjs",
     "release": "npx semantic-release"
   },
   "browserslist": [
