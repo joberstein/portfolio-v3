@@ -7,8 +7,9 @@ const { name: hook } = getFileName(import.meta.url);
 console.log(`Running '${hook}' hook...`);
 
 try {
-    await execAsync(`npx commitlint --edit "\${messagePath}" --config app/commitlint.config.ts`);
+    await execAsync(`npx commitlint --edit "\${messagePath}"`);
 } catch (e) {
-    console.log(e.stdout);
+    const errorMessage = e.stdout || e;
+    console.log(errorMessage);
     process.exit(1);
 }
