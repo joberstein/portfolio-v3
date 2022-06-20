@@ -63,21 +63,7 @@ Thumbs.db
 ######################
 ###   App Module   ###
 ######################
-app/node_modules
-app/build
-app/coverage
-app/.pnp
-.pnp.js
-
-
-#########################
-###  SendEmail Module ###
-#########################
-sendEmail/target/
-
-#########################
-# Infrastructure Module #
-#########################
-infrastructure/target/
-.cdk.staging
-cdk.out
+node_modules
+build
+coverage
+.pnp*
