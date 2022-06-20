@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env zx
 
-import execAsync from '../utils/execAsync.mjs';
+$.verbose = false;
 
-const { stdout: projectDir } = await execAsync('git rev-parse --show-toplevel');
+const { stdout: projectDir } = await $`git rev-parse --show-toplevel`;
 const hooksPath = `${projectDir.trim()}/hooks`;
 
-await execAsync(`git config core.hooksPath ${hooksPath}`);
+await $`git config core.hooksPath ${hooksPath}`;
 console.log(`Set local hooks path to: ${hooksPath}`);

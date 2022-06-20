@@ -20,14 +20,24 @@ nvm install lts/* --latest-npm
 nvm use lts/*
 ```
 
-3. Install git hooks:
+3. Install [google/zx](https://github.com/google/zx) - provides utilities for running NodeJS scripts:
+```
+npm i -g zx
+```
+
+4. Install [yarn](https://classic.yarnpkg.com/en/docs/install) (1.17.x):
+```
+npm i -g yarn
+```
+
+5. Install [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks):
 ```
 node ./scripts/setupHooks.mjs
 ```
 
-4. Install yarn:
+6. Install project dependencies:
 ```
-npm install --global yarn
+yarn install --frozen-lockfile
 ```
 
 ## Contributing

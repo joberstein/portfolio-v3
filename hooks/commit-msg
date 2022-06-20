@@ -1,14 +1,16 @@
-#!/usr/bin/env bash
-":" //#; exec /usr/bin/env node --input-type=module - $(basename $0) $@ < $0
+#!/usr/bin/env zx
 
-import execAsync from './utils/execAsync.mjs';
+import { parse } from "path";
 
-const [node, filename, hook, messagePath] = process.argv;
+$.verbose = false;
 
+const messagePath = process.argv[3];
+
+const { name: hook } = parse(__filename);
 console.log(`Running '${hook}' hook...`);
 
 try {
-    await execAsync(`npx commitlint --edit "\${messagePath}"`);
+    await $`npx commitlint --edit "${messagePath}"`;
 } catch (e) {
     const errorMessage = e.stdout || e;
     console.log(errorMessage);

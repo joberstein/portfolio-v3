@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/env zx
 
-import execAsync from '../utils/execAsync.mjs';
+$.verbose = false;
 
 const [node, currentPath, branch] = process.argv;
 
@@ -10,9 +10,9 @@ if (branch === "master") {
 }
 
 console.log("Fetching commits available on the master branch...");
-await execAsync('git fetch origin master:master');
+await $`git fetch origin master:master`;
 
-const { stdout: from } = await execAsync(`git rev-list ^master "${branch}" | tail -n 1`);
+const { stdout: from } = await $`git rev-list ^master "${branch}" | tail -n 1`;
 const fromCommit = from.trim();
 
 if (!fromCommit) {
@@ -23,7 +23,7 @@ if (!fromCommit) {
 console.log(`Validating commit messages on branch '${branch}'...\n`);
 
 try {
-    const { stdout } = await execAsync(`npx commitlint --from ${fromCommit}^ --config commitlint.config.ts -V`);
+    const { stdout } = await $`npx commitlint --from ${fromCommit}^ -V`;
     console.log(stdout);
 } catch (e) {
     const errorMessage = e.stdout?.trim() || e;
