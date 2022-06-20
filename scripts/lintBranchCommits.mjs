@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import execAsync from '../../hooks/utils/execAsync.mjs';
+import execAsync from '../hooks/utils/execAsync.mjs';
 
 const [node, currentPath, branch] = process.argv;
 
