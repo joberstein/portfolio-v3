@@ -15,6 +15,7 @@ script:
   - yarn lint:commits $TRAVIS_BRANCH
   - yarn test
   - yarn build
+  - yarn release:validate $TRAVIS_BRANCH
 
 deploy:
   - provider: script

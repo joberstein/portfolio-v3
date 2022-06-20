@@ -42,7 +42,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "lint:commits": "zx ./scripts/lintBranchCommits.mjs",
-    "release": "npx semantic-release"
+    "release": "npx semantic-release",
+    "release:validate": "zx ./scripts/diffSource.mjs"
   },
   "browserslist": [
     ">0.2%",

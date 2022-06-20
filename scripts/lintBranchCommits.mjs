@@ -2,10 +2,10 @@
 
 $.verbose = false;
 
-const branch = process.argv[3];
+const branch = process.argv[3] || (await $`git branch --show-current`).stdout.trim();
 
-if (branch === "master") {
-    console.log('Skipped commit validation on master.');
+if (!branch || branch === "master") {
+    console.log(`Skipped commit validation on branch '${branch}'.`);
     process.exit(0);
 }
 

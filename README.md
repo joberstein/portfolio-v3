@@ -73,15 +73,28 @@ yarn test
 
 ## Validation
 
+### Code-Style
 Run eslint to check for code-style issues:
 ```
 yarn lint
 ```
 
-Run commitlint to verify all the commits on a branch are valid:
+### Commits
+Run commitlint to verify that all the commits on the current branch are valid:
 ```
-yarn lint:commits <branch>
+yarn lint:commits
 ```
+
+### Releases
+Compare the current build hash to the GitHub Pages build hash, and analyze the 
+commit history on the current branch:
+```
+export GITHUB_TOKEN=<gh-personal-access-token>
+yarn release:validate
+```
+The release is valid if either of the following cases is true:
+- The source code has changed, and the commit history indicates a release should be created
+- The source code has not changed, and the commit history does not indicate a release should be created
 
 ## Build
 
