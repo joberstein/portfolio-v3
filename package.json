@@ -1,6 +1,5 @@
 {
   "name": "portfolio",
-  "version": "0.1.0",
   "homepage": "https://www.jesseoberstein.com",
   "private": true,
   "dependencies": {
@@ -41,7 +40,9 @@
     "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test --env=node",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:commits": "node ./scripts/lintBranchCommits.mjs",
+    "release": "npx semantic-release"
   },
   "eslintConfig": {
     "extends": "react-app"
