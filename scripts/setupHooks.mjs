@@ -1,4 +1,6 @@
-import execAsync from './utils/execAsync.mjs';
+#!/usr/bin/env node
+
+import execAsync from '../utils/execAsync.mjs';
 
 const { stdout: projectDir } = await execAsync('git rev-parse --show-toplevel');
 const hooksPath = `${projectDir.trim()}/hooks`;

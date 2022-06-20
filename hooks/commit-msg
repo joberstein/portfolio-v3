@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+":" //#; exec /usr/bin/env node --input-type=module - $(basename $0) $@ < $0
 
-HOOK=$(basename "$0")
-node ./hooks/impl/$HOOK.mjs "$@"
+import execAsync from './utils/execAsync.mjs';
+
+const [node, filename, hook, messagePath] = process.argv;
+
+console.log(`Running '${hook}' hook...`);
+
+try {
+    await execAsync(`npx commitlint --edit "\${messagePath}"`);
+} catch (e) {
+    const errorMessage = e.stdout || e;
+    console.log(errorMessage);
+    process.exit(1);
+}
