@@ -18,9 +18,9 @@ script:
 deploy:
   - provider: script
     edge: true
-    script: yarn release -d --branches=$TRAVIS_BRANCH
+    script: yarn release
     on:
-      all_branches: true
+      branch: master
 
   - provider: pages
     edge: true
@@ -28,5 +28,4 @@ deploy:
     local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
     target_branch: gh-pages
     on:
-      all_branches: true
-      condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
+      branch: master
