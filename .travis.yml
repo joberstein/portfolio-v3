@@ -7,28 +7,26 @@ env:
     # GITHUB_TOKEN
     - secure: MKipgJu5QO90JFlrXH/Oag+Vo5islUzunBXBwo7B9gSAvpo27exKnGqHgxTTJ2tSSQsjFxYWGBpJfFDDEW9jqbhZ5dO4YjdOeqX1+D/QQVduxNH8/VfPMR3OlThQw/VVqCNOQgZE6Vb2Nsc6TSBfe9Qxx7VNjzruvJGbbeFeKsWpkrX/FXFLSC7L29GaLjXIxNDSZGpOMbkCONGms593M1FGTJ6ckbtZVHwcnTsVPQeWHbQPe0AkpwbAzbicPHiL+jyDtOAd+PCwaXtahBMU8OizO4YUUZT54mRM7z4Stm8/1OHMIyG2h1S+zzUxk4nRTWjErxIYqnva5zpW2fDicn0nXUf3aOBWtLTti3xhnVtCsYQjYbn3rn/nSu+HRlcPPlVcrW680cpmWG6o9k1aPU2zmJWwrf9NHM8jyJJTaMU3Nrpd4XQV0oCPK+ctP8W8HHsisTXawxeEDVy5KYtNhdNvFV6uqhLWVtaxYtYH/EOJ5Xg8yfdNwZcf5xmTkw8FAI3sCY/iqxRk7vLfuhbZ55vXs2UP1Va9xq11Xl7wZIR3mPEwoGWAlWd9tos7ZRhv+tnf6GCNZ+69PYjTwXvOfwFJz20AdeTJLnyozeJpXN02/JGBopAGzSJKhHDU1s/55Ipjqa13APW+9+HerOami/3PJWkfw1ku9RMwMzgB0zk=
 
-jobs:
-  include:
-    - stage: "Test"
-      before_install: yarn cache clean
+before_install:
+  - yarn cache clean
 
-    - stage: "Validate Commits"
-      script: yarn lint:commits $TRAVIS_BRANCH
+script:
+  - yarn lint:commits $TRAVIS_BRANCH
+  - yarn test
+  - yarn build
 
-    - stage: "Deploy"
-      script: yarn build
-      deploy:
-        - provider: script
-          cleanup: false
-          edge: true
-          script: yarn release --ci -d --debug --branches=$TRAVIS_BRANCH
+deploy:
+  - provider: script
+    edge: true
+    script: yarn release --ci -d --debug --branches=$TRAVIS_BRANCH
+    on:
+      all_branches: true
 
-        - provider: pages
-          cleanup: false
-          github_token: "$GITHUB_TOKEN"
-          local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
-          target_branch: gh-pages
-          edge: true
-          on:
-            all_branches: true
-            condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
+  - provider: pages
+    edge: true
+    github_token: "$GITHUB_TOKEN"
+    local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
+    target_branch: gh-pages
+    on:
+      all_branches: true
+      condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
