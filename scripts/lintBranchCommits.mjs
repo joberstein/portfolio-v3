@@ -2,7 +2,7 @@
 
 $.verbose = false;
 
-const [node, currentPath, branch] = process.argv;
+const branch = process.argv[3];
 
 if (branch === "master") {
     console.log('Skipped commit validation on master.');
