@@ -12,10 +12,10 @@ before_install:
   - yarn global add zx
 
 script:
-  - yarn lint:commits
+  - yarn lint:commits $TRAVIS_BRANCH
   - yarn test
   - yarn build
-  - yarn release:validate
+  - yarn release:validate $TRAVIS_BRANCH
 
 deploy:
   - provider: script
