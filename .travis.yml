@@ -9,131 +9,26 @@ env:
 
 jobs:
   include:
-    - stage: "Deploy Asset Infrastructure"
-      name: "sendEmail Bucket"
-      if: branch = master
-      language: node_js
-      node_js: lts/*
-      cache: npm
-      before_install:
-        - cd infrastructure
-      install:
-        - npm install -g aws-cdk@1.81.0
-      script:
-        - cdk synth -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
-      deploy:
-        provider: cloudformation
-        access_key_id: "$AWS_ACCESS_KEY_ID"
-        secret_access_key: "$AWS_SECRET_ACCESS_KEY"
-        template: ./cdk.out/sendEmailBucket.template.json
-        stack_name: sendEmailBucket
-        region: "$AWS_REGION"
-        capabilities: CAPABILITY_NAMED_IAM
-        edge: true
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^deploy(-sendEmail)?$
+    - stage: "Test"
+      before_install: yarn cache clean
 
-    - stage: "Deploy Assets"
-      name: "sendEmail Code"
-      if: branch = master
-      language: java
-      jdk: oraclejdk11
-      cache:
-        directories:
-          - $HOME/.m2
-      before_install:
-        - cd sendEmail
-      install:
-        - mvn clean install
-      before_deploy:
-        - cd target
-      deploy:
-        provider: s3
-        access_key_id: "$AWS_ACCESS_KEY_ID"
-        secret_access_key: "$AWS_SECRET_ACCESS_KEY"
-        bucket: send-email-assets
-        glob: sendEmail-jar-with-dependencies.jar
-        upload_dir: assets
-        storage_class: STANDARD_IA
-        edge: true
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^deploy(-sendEmail)?$
+    - stage: "Validate Commits"
+      script: yarn lint:commits $TRAVIS_BRANCH
 
-    - stage: "Deploy Application"
-      name: "Infrastructure"
-      if: branch = master
-      language: node_js
-      node_js: lts/*
-      cache: npm
-      env:
-        - COMMIT_MESSAGE="$(git log -1 --oneline --no-decorate)"
-      before_install:
-        - cd infrastructure
-      install:
-        - npm install -g aws-cdk@1.81.0
-      script:
-        - cdk synth -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
+    - stage: "Deploy"
+      script: yarn build
       deploy:
-          provider: script
-          script: cdk deploy --all --ci true --require-approval never -c GOOGLE_CAPTCHA_KEY="$GOOGLE_CAPTCHA_KEY" -c COMMIT_MESSAGE="$COMMIT_MESSAGE"
+        - provider: script
+          cleanup: false
+          edge: true
+          script: yarn release --ci -d --debug --branches=$TRAVIS_BRANCH
+
+        - provider: pages
+          cleanup: false
+          github_token: "$GITHUB_TOKEN"
+          local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
+          target_branch: gh-pages
           edge: true
           on:
             all_branches: true
-            condition: $TRAVIS_BRANCH =~ ^deploy(-(sendEmail|infrastructure))?$
-
-    - stage: "React App - Install"
-      language: node_js
-      node_js: lts/*
-      cache: yarn
-      before_install:
-        - cd app
-        - yarn cache clean
-      install: yarn install
-      script: skip
-
-    - stage: "React App - Validate"
-      name: "Lint Commits"
-      language: node_js
-      node_js: lts/*
-      cache: yarn
-      before_script: cd app
-      script: yarn lint:commits $TRAVIS_BRANCH
-
-    - name: "Run Tests"
-      language: node_js
-      node_js: lts/*
-      cache: yarn
-      before_script: cd app
-      script: yarn test
-
-    - stage: "React App - Release"
-      language: node_js
-      node_js: lts/*
-      cache: yarn
-      install: skip
-      script: skip
-      before_deploy: cd app
-      deploy:
-        provider: script
-        cleanup: false
-        edge: true
-        script: yarn release --ci -d --debug --branches=$TRAVIS_BRANCH
-
-    - stage: "React App - Deploy"
-      language: node_js
-      node_js: lts/*
-      cache: yarn
-      before_script: cd app
-      script: yarn build
-      deploy:
-        provider: pages
-        cleanup: false
-        github_token: "$GITHUB_TOKEN"
-        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
-        target_branch: gh-pages
-        edge: true
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
+            condition: $TRAVIS_BRANCH =~ ^deploy(-app)?$
