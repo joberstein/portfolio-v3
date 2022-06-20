@@ -20,14 +20,24 @@ nvm install lts/* --latest-npm
 nvm use lts/*
 ```
 
-3. Install git hooks:
+3. Install [google/zx](https://github.com/google/zx) - provides utilities for running NodeJS scripts:
 ```
-node ./hooks/setup.mjs
+npm i -g zx
 ```
 
-4. Install yarn:
+4. Install [yarn](https://classic.yarnpkg.com/en/docs/install) (1.17.x):
 ```
-npm install --global yarn
+npm i -g yarn
+```
+
+5. Install [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks):
+```
+node ./scripts/setupHooks.mjs
+```
+
+6. Install project dependencies:
+```
+yarn install --frozen-lockfile
 ```
 
 ## Contributing
@@ -41,11 +51,6 @@ Supported hooks:
   Retrieves the issue number from the branch when named like `issues/<number>`
 - **commit-msg**: Runs the `commitlint` package against the commit message to enforce
   the conventional commit standard
-
-The top-level files located in the `hooks` will be used as the actual git hooks once the setup script is run.
-
-A file in the `impl` directory should share the same name as the hook it implements. This setup is advantageous because
-it allows hooks to run as node scripts, and supports ECMAScript module features (i.e. top-level await).
 
 ### Development
 

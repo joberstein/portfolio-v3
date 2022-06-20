@@ -1,4 +1,45 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zx
 
-HOOK=$(basename "$0")
-node ./hooks/impl/$HOOK.mjs "$@"
+import fs from 'fs';
+import { parse } from "path";
+
+$.verbose = false;
+
+const messagePath = process.argv[3];
+
+const isCommentedLine = line => line.startsWith('#');
+
+const messageLines = fs.readFileSync(messagePath, 'utf8')
+    .trim()
+    .split('\n');
+
+const messageComments = messageLines
+    .filter(isCommentedLine)
+    .join('\n')
+    .trim();
+
+const messageContents = messageLines
+    .filter(line => !isCommentedLine(line))
+    .join('\n')
+    .trim();
+
+const { name: hook } = parse(__filename);
+console.log(`Running '${hook}' hook...`);
+
+const { stdout: branch } = await $`git branch --show-current`;
+const issue = branch.trim().replace("issues/", "");
+const isIssueNumeric = issue && /\d+/.test(issue);
+const issueTag = `Issue ${issue}.`;
+
+if (isIssueNumeric && !messageContents.includes(issueTag)) {
+    const newMessage = messageContents
+        .concat("\n".repeat(2))
+        .concat(issueTag)
+        .concat("\n".repeat(2))
+        .concat(messageComments);
+
+    fs.writeFileSync(messagePath, newMessage);
+    console.log("Appended the issue number to the commit message.\n");
+} else {
+    console.log("No commit message modifications necessary.\n");
+}

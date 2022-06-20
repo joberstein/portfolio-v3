@@ -1,4 +1,18 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zx
 
-HOOK=$(basename "$0")
-node ./hooks/impl/$HOOK.mjs "$@"
+import { parse } from "path";
+
+$.verbose = false;
+
+const messagePath = process.argv[3];
+
+const { name: hook } = parse(__filename);
+console.log(`Running '${hook}' hook...`);
+
+try {
+    await $`npx commitlint --edit "${messagePath}"`;
+} catch (e) {
+    const errorMessage = e.stdout || e;
+    console.log(errorMessage);
+    process.exit(1);
+}

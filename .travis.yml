@@ -9,6 +9,7 @@ env:
 
 before_install:
   - yarn cache clean
+  - yarn global add zx
 
 script:
   - yarn lint:commits $TRAVIS_BRANCH
