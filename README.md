@@ -7,9 +7,9 @@ Most recent iteration of my portfolio website as of 07/26/2019.
 ### app - Frontend Development
 
 Once cloned into a local repository, from the project root:
+> `yarn start`
 
-1. `cd app`
-2. `yarn start` - This will start up a local instance of the application at localhost:8080
+This will start up a local instance of the application at localhost:8080
 
 Any source code modifications made will instantly be reflected in the browser upon save.  You may need to stop and 
 restart the application if any changes are made to the package dependencies to see those changes take effect.

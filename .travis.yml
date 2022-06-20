@@ -92,7 +92,6 @@ jobs:
       node_js: lts/*
       cache: yarn
       before_install:
-        - cd app
         - yarn cache clean
       install:
         - yarn install
@@ -104,7 +103,7 @@ jobs:
         provider: pages
         cleanup: false
         github_token: "$GITHUB_TOKEN"
-        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/app/build
+        local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
         target_branch: gh-pages
         edge: true
         on:
