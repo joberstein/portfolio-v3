@@ -2,8 +2,8 @@ const {parse, resolve} = require("path");
 const {execSync} = require("child_process");
 const crypto = require('crypto');
 const {readdirSync, readFileSync, lstatSync} = require("fs");
+const {fetchRemoteBranch} = require("@joberstein12/commit-history-validator");
 
-const encoding = 'utf-8';
 const GH_PAGES = "gh-pages";
 
 const getValue = (digest) => digest.digest('hex');
@@ -24,6 +24,8 @@ const hashPath = (path, digest, options = {}) => {
     }
 }
 
+const checkoutBranch = branch => execSync(`git checkout ${branch}`);
+
 module.exports = {
     isDeployRequired: (branch) => {
         console.info("Generating a hash of the development build...");
@@ -32,28 +34,27 @@ module.exports = {
         hashPath(resolve('build'), devHash);
 
         console.info(`Fetching commits available on the '${GH_PAGES}' branch...`);
-        execSync(`git fetch origin ${GH_PAGES}:${GH_PAGES}`);
+        fetchRemoteBranch(GH_PAGES);
 
         console.info(`Switching to the '${GH_PAGES}' branch...`);
-        execSync(`git checkout ${GH_PAGES}`);
-
-        const repoPath = execSync(`git rev-parse --show-toplevel`, { encoding });
-        const { name: repo } = parse(repoPath.trim());
+        checkoutBranch(GH_PAGES);
 
         console.info("Generating a hash of the production build...");
         const prodHash = crypto.createHash('sha256');
 
-        hashPath(resolve(repo), prodHash, {
+        hashPath(resolve("."), prodHash, {
             exclude: {
-                files: ['\\..*'],
-                folders: ['build', 'node_modules']
+                files: ['.*\\.log'],
+                folders: ['build', 'node_modules', '.git', '.idea']
             }
         });
 
         console.info(`Switching back to branch '${branch}'...`);
-        execSync(`git checkout ${branch}`);
+        checkoutBranch(branch);
 
         console.info(`Comparing build artifact hashes...`);
-        return getValue(devHash) !== getValue(prodHash);
+        const [devDigest, prodDigest] = [devHash, prodHash].map(getValue);
+        
+        return devDigest !== prodDigest;
     }
 };
