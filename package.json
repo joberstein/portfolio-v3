@@ -27,9 +27,7 @@
     "sass": "^1.52.3"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.0.2",
-    "@commitlint/format": "^17.0.0",
-    "@commitlint/types": "^17.0.0",
+    "@joberstein12/commit-history-validator": "^1.2.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "react-scripts": "5.0.1",
@@ -41,9 +39,10 @@
     "test": "react-scripts test --env=node",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "lint:commits": "zx ./scripts/lintBranchCommits.mjs",
-    "release": "npx semantic-release",
-    "release:validate": "zx ./scripts/diffSource.mjs"
+    "hooks:setup": "commit-history-validator hooks setup",
+    "release": "commit-history-validator release",
+    "validate:commits": "commit-history-validator validate commits",
+    "validate:release": "commit-history-validator validate release"
   },
   "browserslist": [
     ">0.2%",
