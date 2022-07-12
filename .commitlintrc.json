@@ -1,0 +1,24 @@
+{
+    "extends": ["@joberstein12"],
+    "rules": {
+        "scope-enum": [2, "always", [
+            "about",
+            "analytics",
+            "app",
+            "contact",
+            "contact-form",
+            "external-links",
+            "footer",
+            "header",
+            "home",
+            "index",
+            "navigation",
+            "not-found",
+            "portfolio",
+            "public",
+            "scroll-to-top",
+            "topic-list",
+            "utilities"
+        ]]
+    }
+}

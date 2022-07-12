@@ -9,13 +9,12 @@ env:
 
 before_install:
   - yarn cache clean
-  - yarn global add zx
 
 script:
-  - yarn lint:commits $TRAVIS_BRANCH
-  - yarn test
   - yarn build
-  - yarn release:validate $TRAVIS_BRANCH
+  - yarn test --ci
+  - yarn validate:commits -b $TRAVIS_BRANCH
+  - yarn validate:release -b $TRAVIS_BRANCH
 
 deploy:
   - provider: script
