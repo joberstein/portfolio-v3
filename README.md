@@ -20,19 +20,14 @@ nvm install lts/* --latest-npm
 nvm use lts/*
 ```
 
-3. Install [google/zx](https://github.com/google/zx) - provides utilities for running NodeJS scripts:
-```
-npm i -g zx
-```
-
-4. Install [yarn](https://classic.yarnpkg.com/en/docs/install) (1.17.x):
+3. Install [yarn](https://classic.yarnpkg.com/en/docs/install) (1.17.x):
 ```
 npm i -g yarn
 ```
 
-5. Install [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks):
+4. Install [pre-commit](https://pre-commit.com/#install). Then, install the repo [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks):
 ```
-node ./scripts/setupHooks.mjs
+pre-commit install
 ```
 
 6. Install project dependencies:
@@ -82,19 +77,33 @@ yarn lint
 ### Commits
 Run commitlint to verify that all the commits on the current branch are valid:
 ```
-yarn lint:commits
+yarn validate:commits
 ```
 
 ### Releases
-Compare the current build hash to the GitHub Pages build hash, and analyze the 
-commit history on the current branch:
+Run a debug version of semantic-release on the current branch. Prints the next version it expects to release, if any.
 ```
 export GITHUB_TOKEN=<gh-personal-access-token>
-yarn release:validate
+yarn release
 ```
-The release is valid if either of the following cases is true:
-- The source code has changed, and the commit history indicates a release should be created
-- The source code has not changed, and the commit history does not indicate a release should be created
+
+You can add an 'args' option to the pre-commit hook to run a dry-run locally as well,
+but remember to revert your changes:
+
+```
+  - repo: https://github.com/joberstein/precommit-semantic-release
+      rev: v1.0.1
+      hooks:
+          - id: semantic-release
+            additional_dependencies:
+              - "@qiwi/semantic-release-gh-pages-plugin"
+            stages:
+              - manual
+            args:
+              - -d
+              - -b <current branch if not 'master'>
+```
+Then, stage the `.pre-commit-config.yaml` file, and run `yarn release`.
 
 ## Build
 
@@ -119,8 +128,5 @@ A deploy is initiated with each merge to the master branch and consists of two p
 - Deploy the built application to GitHub Pages
   - Pushes the `/build` folder contents to the `gh-pages` branch
 
-To do a dry-run for a deploy locally:
-```
-export GITHUB_TOKEN=<gh-personal-access-token>  
-yarn release -d --branches=<current-branch>
-```
+The above deploy process takes place only when semantic-release detects that a new version 
+should be deployed.
