@@ -39,13 +39,13 @@ yarn install --frozen-lockfile
 
 ### Hooks
 
-This project utilizes git hooks to enforce conventional commits, which support semantic versioning.
+This project's hooks are managed by [pre-commit](https://pre-commit.com).
 
-Supported hooks:
-- **prepare-commit-msg**: Appends the issue number, if found, to the commit message.
-  Retrieves the issue number from the branch when named like `issues/<number>`
-- **commit-msg**: Runs the `commitlint` package against the commit message to enforce
+Configured hooks:
+- **giticket**: Appends `Closes #<number>` when a branch is formatted as `#\d+` (e.g. #2)
+- **commitlint**: Runs the `commitlint` package against the commit message to enforce
   the conventional commit standard
+- **semantic-release**: Runs the `semantic-release` package to perform a release of this repo
 
 ### Development
 
@@ -75,20 +75,34 @@ yarn lint
 ```
 
 ### Commits
-Run commitlint to verify that all the commits on the current branch are valid:
+Travis runs commitlint to verify that all the commits on the current branch are valid.
+
+Commits must conform to the conventional commit standard to trigger a deploy.
 ```
 yarn validate:commits
 ```
 
-### Releases
-Run a debug version of semantic-release on the current branch. Prints the next version it expects to release, if any.
+## Build
+
+Compile and bundle the application using webpack, and output it to the `/build` directory:
 ```
-export GITHUB_TOKEN=<gh-personal-access-token>
-yarn release
+yarn build
 ```
 
-You can add an 'args' option to the pre-commit hook to run a dry-run locally as well,
-but remember to revert your changes:
+Also copies the `public/index.html` file contents to a file named `404.html`. GitHub Pages will automatically use 
+`404.html` at the project root as an entrypoint when a page isn't found.
+
+## Deploy
+
+This repository uses [semantic-release](https://github.com/semantic-release/semantic-release) 
+to deploy a new Github version, and updated code to GitHub Pages.
+
+A deploy initiates with each merge to the master branch if semantic-release detects 
+that a new version should be deployed. Semantic-release determines this by analyzing 
+the commit history.
+
+To perform a dry-run of semantic-release on the current branch, you can add an `args` 
+option to the pre-commit hook, but remember to revert your changes:
 
 ```
   - repo: https://github.com/joberstein/precommit-semantic-release
@@ -103,30 +117,11 @@ but remember to revert your changes:
               - -d
               - -b <current branch if not 'master'>
 ```
-Then, stage the `.pre-commit-config.yaml` file, and run `yarn release`.
 
-## Build
+Then, run the following commands in the terminal from the project root:
 
-Compile and bundle the application using webpack, and output it to the `/build` directory:
 ```
-yarn build
+git add .pre-commit-config.yaml
+export GITHUB_TOKEN=<gh-personal-access-token>
+yarn release
 ```
-
-Also copies the `public/index.html` file contents to a file named `404.html`. GitHub Pages will automatically use 
-`404.html` at the project root as an entrypoint when a page isn't found.
-
-## Deploy
-
-This repository takes advantage of Travis CI to easily deploy to GitHub Pages. The 
-travis.yml file in the project root contains the deployment configuration.
-
-A deploy is initiated with each merge to the master branch and consists of two parts:
-- Create a GitHub release
-  - Analyzes the commit history since the last release to generate the next semantic version
-  - Adds a release and notes (generated from the commit history) for the new version
-  - Tags the release commit with the new version 
-- Deploy the built application to GitHub Pages
-  - Pushes the `/build` folder contents to the `gh-pages` branch
-
-The above deploy process takes place only when semantic-release detects that a new version 
-should be deployed.
