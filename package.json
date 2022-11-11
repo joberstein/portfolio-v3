@@ -27,7 +27,6 @@
     "sass": "^1.52.3"
   },
   "devDependencies": {
-    "@joberstein12/commit-history-validator": "^1.2.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "react-scripts": "5.0.1",
@@ -39,10 +38,8 @@
     "test": "react-scripts test --env=node",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "hooks:setup": "commit-history-validator hooks setup",
-    "release": "commit-history-validator release",
-    "validate:commits": "commit-history-validator validate commits",
-    "validate:release": "commit-history-validator validate release"
+    "release": "pre-commit run --hook-stage manual semantic-release -v",
+    "validate:commits": "pre-commit run --hook-stage manual commitlint-travis"
   },
   "browserslist": [
     ">0.2%",

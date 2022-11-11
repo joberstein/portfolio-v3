@@ -1,6 +1,7 @@
 language: node_js
 node_js: lts/*
 cache: yarn
+if: branch != tag
 
 env:
   global:
@@ -13,20 +14,11 @@ before_install:
 script:
   - yarn build
   - yarn test --ci
-  - yarn validate:commits -b $TRAVIS_BRANCH
-  - yarn validate:release -b $TRAVIS_BRANCH
+  - yarn validate:commits
 
 deploy:
   - provider: script
     edge: true
     script: yarn release
-    on:
-      branch: master
-
-  - provider: pages
-    edge: true
-    github_token: "$GITHUB_TOKEN"
-    local_dir: $HOME/build/$TRAVIS_REPO_SLUG/build
-    target_branch: gh-pages
     on:
       branch: master
