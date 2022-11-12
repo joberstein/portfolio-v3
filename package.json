@@ -23,7 +23,7 @@
     "react-recaptcha": "^2.3.10",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-spinners": "^0.5.4",
+    "react-spinners": "^0.13.6",
     "sass": "^1.52.3"
   },
   "devDependencies": {
