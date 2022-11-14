@@ -1,7 +1,10 @@
 dist: jammy
 language: node_js
 node_js: lts/*
-cache: yarn
+cache:
+  directories:
+    - $HOME/.cache/yarn
+    - $HOME/.cache/pre-commit
 if: branch != tag
 
 env:
