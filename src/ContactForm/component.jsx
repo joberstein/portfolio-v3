@@ -63,7 +63,7 @@ class ContactForm extends React.Component {
                               required/>
             </div>
 
-            <GoogleReCaptchaProvider reCaptchaKey="6LfM0KsUAAAAACoONanc2Bl6a8KqpyxBVyeiv4Px">
+            <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_CLIENT_KEY}>
                 <GoogleReCaptcha action="contact_form" onVerify={this.setCaptcha} />
             </GoogleReCaptchaProvider>
 

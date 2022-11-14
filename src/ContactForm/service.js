@@ -1,5 +1,16 @@
 
-const SEND_MESSAGE_URL = "https://agegdkw9wk.execute-api.us-east-1.amazonaws.com/production/messages";
+const getEndpointStage = () => {
+    switch (process.env.NODE_ENV) {
+        case "production":
+            return "prod";
+        case "development":
+            return "dev";
+        default:
+            return "";
+    }
+}
+
+const SEND_MESSAGE_URL = `${process.env.REACT_APP_MESSAGES_API_ENDPOINT}/${getEndpointStage()}/messages`;
 
 /**
  * Send a message with the given data.  Returns a promise with a boolean indicating if the send was successful or not.
