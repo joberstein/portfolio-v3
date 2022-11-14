@@ -1629,10 +1629,10 @@
     "@material/theme" "^1.1.0"
     tslib "^1.9.3"
 
-"@material/react-snackbar@^0.14.0":
-  version "0.14.1"
-  resolved "https://registry.npmjs.org/@material/react-snackbar/-/react-snackbar-0.14.1.tgz"
-  integrity sha512-YzvujVXUryHn8e8fQLHAgk32uCyqh5CO68UbuIkUxbqQU4A+xbyeFIGgr+MEh7dV04CiWg5O6pYMq1Uiz8skRA==
+"@material/react-snackbar@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@material/react-snackbar/-/react-snackbar-0.15.0.tgz#c4ba848451816e9114d3e6297a9686cbf896b93e"
+  integrity sha512-gA3RuYpDiRR90oRzA2hODvsCSz0MPd9XgjGkqtJKLplFU0QKRmSsRrYENHrVZnI+m43yGIhMK0qoO7AJIdrtoA==
   dependencies:
     "@material/snackbar" "^1.0.0"
     classnames "^2.2.6"
