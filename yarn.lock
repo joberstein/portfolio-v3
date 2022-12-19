@@ -1728,6 +1728,11 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@remix-run/router@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.1.0.tgz#b48db8148c8a888e50580a8152b6f68161c49406"
+  integrity sha512-rGl+jH/7x1KBCQScz9p54p0dtPLNeKGb3e0wD2H5/oZj41bwQUnXdzbj2TbUAFhvD7cp9EyEQA4dEgpUFa1O7Q==
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
   resolved "https://registry.npmjs.org/@rollup/plugin-babel/-/plugin-babel-5.3.1.tgz"
@@ -8077,7 +8082,7 @@ react-router-dom@^5.0.1:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router@5.3.3, react-router@^5.0.1:
+react-router@5.3.3:
   version "5.3.3"
   resolved "https://registry.npmjs.org/react-router/-/react-router-5.3.3.tgz"
   integrity sha512-mzQGUvS3bM84TnbtMYR8ZjKnuPJ71IjSzR+DE6UkUqvN4czWIqEs17yLL8xkAycv4ev0AiN+IGrWu88vJs/p2w==
@@ -8092,6 +8097,13 @@ react-router@5.3.3, react-router@^5.0.1:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-router@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.5.0.tgz#b53f15543a60750c925609d2e38037ac5aed6dd3"
+  integrity sha512-fqqUSU0NC0tSX0sZbyuxzuAzvGqbjiZItBQnyicWlOUmzhAU8YuLgRbaCL2hf3sJdtRy4LP/WBrWtARkMvdGPQ==
+  dependencies:
+    "@remix-run/router" "1.1.0"
 
 react-scripts@5.0.1:
   version "5.0.1"
