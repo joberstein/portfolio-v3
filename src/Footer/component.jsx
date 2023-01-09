@@ -2,18 +2,10 @@ import React from "react";
 import styles from "./styles.module.scss";
 import resume from "./files/resume.pdf";
 import ExternalLinks, {createTextLink} from "ExternalLinks/component";
-import {createRouteLink, VerticalNavigation} from "Navigation/component";
-import Home from "Home/component";
-import About from "About/component";
-import Portfolio from "Portfolio/component";
-import Contact from "Contact/component";
+import {VerticalNavigation} from "Navigation/component";
+import { getLinks, LinkTypes } from "Navigation/util";
 
-const portfolioLinks = [
-    createRouteLink("/", "Home", Home),
-    createRouteLink("/about", "About", About),
-    createRouteLink("/portfolio", "Portfolio", Portfolio),
-    createRouteLink("/contact", "Contact", Contact)
-];
+const baseLinks = getLinks({ type: LinkTypes.Base });
 
 const contactLinks = [
     createTextLink(resume, "Resume (PDF)"),
@@ -29,7 +21,7 @@ const Footer = () => (
                 <h3 className={styles.linkSectionTitle}>
                     Site Navigation
                 </h3>
-                <VerticalNavigation routes={portfolioLinks}/>
+                <VerticalNavigation links={baseLinks}/>
             </div>
 
             <div className={styles.linkSection}>

@@ -1,4 +1,4 @@
-import {buildSectionData} from "PortfolioSection/component";
+import {buildSectionData} from "../util";
 import cubism from "./img/cubism.png";
 import portrait from "./img/portrait.png";
 import beans from "./img/beans.png";
