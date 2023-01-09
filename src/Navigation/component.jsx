@@ -1,22 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
-import {NavLink} from "react-router-dom";
 import styles from "./styles.module.scss";
 import verticalStyles from "./styles-vertical.module.scss";
+import { NavLink } from "react-router-dom";
 
-const Navigation = ({routes, basePath, onRouteClick, styleOverride}) => (
+const Navigation = ({links, onRouteClick, styleOverride}) => (
     <nav className={cn(styles.navigation, styleOverride.navigation)}>
          <ul className={cn(styles.links, styleOverride.links)}>
-            {routes.map(route => (
-                <NavLink exact={(basePath + route.path) === "/"}
-                         to={basePath + route.path}
-                         key={route.path}
-                         className={cn(styles.link, styleOverride.link)}
-                         activeClassName={cn(styles.activeLink, styleOverride.activeLink)}
-                         onClick={onRouteClick}>
+            {Object.keys(links).map(path => (
+                <NavLink end={path === "/"}
+                        to={path}
+                        key={path}
+                        className={({ isActive }) => cn(
+                            styles.link, 
+                            styleOverride.link,
+                            ...(isActive ? [styles.activeLink, styleOverride.activeLink] : []),
+                        )}
+                        onClick={onRouteClick}>
                     <li>
-                        {route.linkText}
+                        {links[path]}
                     </li>
                 </NavLink>
             ))}
@@ -26,19 +29,14 @@ const Navigation = ({routes, basePath, onRouteClick, styleOverride}) => (
 
 Navigation.defaultProps = {
     basePath: "",
-    routes: [],
+    links: {},
     onRouteClick: () => {},
     styleOverride: {}
 };
 
 Navigation.propTypes = {
     basePath: PropTypes.string,
-    routes: PropTypes.arrayOf(
-        PropTypes.shape({
-            path: PropTypes.string,
-            linkText: PropTypes.string
-        })
-    ),
+    links: PropTypes.object,
     onRouteClick: PropTypes.func
 };
 

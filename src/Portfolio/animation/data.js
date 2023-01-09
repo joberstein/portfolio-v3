@@ -1,4 +1,4 @@
-import {buildSectionData} from "PortfolioSection/component";
+import {buildSectionData} from "../util";
 import pirates from "./img/pirates.png";
 import boxGuy from "./img/box-guy.png";
 import henry from "./img/henry.png";
