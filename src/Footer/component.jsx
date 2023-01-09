@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./styles.module.scss";
 import resume from "./files/resume.pdf";
 import ExternalLinks, {createTextLink} from "ExternalLinks/component";

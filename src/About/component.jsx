@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./styles.module.scss";
 import TopicList from "TopicList/component";
 import {technology, videoGames, tvShows, anime, boardGames, travelGoals} from "./constants";

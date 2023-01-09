@@ -24,7 +24,7 @@ export default {
 			"sticky section titles, smooth scrolling, and an expandable navigation menu.",
 			{
 				image: portfolioV1,
-				link: "https://joberstein.github.com/portfolio-v1"
+				link: "https://joberstein.github.io/portfolio-v1"
 			}),
 
 		buildSectionData("Emotion Machine",
@@ -33,7 +33,7 @@ export default {
 			"pastel color palette is even playful as well!",
 			{
 				image: emotionMachine,
-				link: "https://joberstein.github.com/emotion-machine"
+				link: "https://joberstein.github.io/emotion-machine"
 			}),
 
 		buildSectionData("Portfolio Website v0",
@@ -43,7 +43,7 @@ export default {
 			"in college.",
 			{
 				image: portfolioV0,
-				link: "https://joberstein.github.com/portfolio-v0"
+				link: "https://joberstein.github.io/portfolio-v0"
 			})
 
 		// TODO need to recreate the blog
