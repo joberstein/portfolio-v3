@@ -1,43 +1,51 @@
-import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import React, {useEffect} from 'react';
+import { BrowserRouter as Router } from "react-router-dom";
 import styles from './styles.module.scss';
 import Header from "Header/component";
 import Footer from "Footer/component";
-import Analytics from "Analytics/component";
+import useAnalytics from "Analytics/hook";
 import Home from "Home/component";
 import About from "About/component";
 import Portfolio from "Portfolio/component";
 import Contact from "Contact/component";
-import ScrollToTop from "ScrollToTop/component";
 import NotFound from "NotFound/component";
-import {createRouteLink} from "Navigation/component";
+import {scrollTo} from "windowUtils";
+import { Route, Routes, useLocation } from 'react-router';
+import PortfolioSection from 'PortfolioSection/component';
 
-const routes = [
-    createRouteLink("/", "Home", Home),
-    createRouteLink("/about", "About", About),
-    createRouteLink("/portfolio", "Portfolio", Portfolio),
-    createRouteLink("/contact", "Contact", Contact)
-];
+const App = () => {
+    const location = useLocation();
+    useAnalytics(location);
 
-const App = () => (
-    <div className={styles.app}>
-        <Router basename={process.env.PUBLIC_URL}>
-            <ScrollToTop/>
-            <Header routes={routes} />
+    useEffect(() => {
+        scrollTo(0, 0);
+    }, [ location.pathname ]);
 
-            <Route component={Analytics}/>
-            <Switch>
-                {routes.map(renderRoute)}
-                <Route component={NotFound} />
-            </Switch>
+    return (
+        <>
+            <Header />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="portfolio" element={<Portfolio />}>
+                    <Route path=":sectionId" element={<PortfolioSection />} />
+                </Route>
+                <Route path="contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
 
             <Footer/>
+        </>
+    );
+}
+
+const AppWrapper = () => (
+    <div className={styles.app}>
+        <Router basename={process.env.PUBLIC_URL}>
+            <App />
         </Router>
     </div>
 );
 
-const renderRoute = ({path, component}) => (
-    <Route exact={path === "/"} key={path} path={path} component={component} />
-);
-
-export default App;
+export default AppWrapper;

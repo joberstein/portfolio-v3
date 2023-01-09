@@ -4,6 +4,9 @@ import styles from "./styles.module.scss";
 import Media from "react-media";
 import Menu from "@material-ui/icons/Menu";
 import {NavLink} from "react-router-dom";
+import { getLinks, LinkTypes } from "Navigation/util";
+
+const baseLinks = getLinks({ type: LinkTypes.Base });
 
 class Header extends React.Component {
 
@@ -17,7 +20,7 @@ class Header extends React.Component {
         return (
             <header className={styles.header}>
                 <div className={styles.container}>
-                    <NavLink exact to="/" className={styles.logo}>
+                    <NavLink end to="/" className={styles.logo}>
                         Jesse Oberstein
                     </NavLink>
 
@@ -28,7 +31,7 @@ class Header extends React.Component {
                     <Media query={{maxWidth: "768px"}}>
                         {matches => (!matches || this.state.shouldShowNavigation) && (
                             <div className={styles.links}>
-                                <Navigation routes={this.props.routes} onRouteClick={this.toggleNavigation}/>
+                                <Navigation links={baseLinks} onRouteClick={this.toggleNavigation}/>
                             </div>
                         )}
                     </Media>

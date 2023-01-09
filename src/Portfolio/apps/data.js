@@ -1,4 +1,4 @@
-import {buildSectionData} from "PortfolioSection/component";
+import {buildSectionData} from "../util";
 import numberPrinter from "./img/number-printer.png";
 import elizasNumbers from "./img/elizas-numbers.jpg";
 import mp3Player from "./img/mp3-player.png";
