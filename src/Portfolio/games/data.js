@@ -1,4 +1,4 @@
-import {buildSectionData} from "PortfolioSection/component";
+import {buildSectionData} from "../util";
 import spongebob from "./img/spongebob.png";
 import fairyTail from "./img/fairy-tail.png";
 import clickNCreate from "./img/click-n-create.png";
