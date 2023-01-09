@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "Home/styles.module.scss";
 import fushimiInariJpg from "./img/fushimi-inari.jpg";
 import fushimiInariJp2 from "./img/fushimi-inari.jp2";

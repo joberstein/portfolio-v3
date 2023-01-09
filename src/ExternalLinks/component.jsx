@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import {recordInteraction} from "Analytics/service";
 import styles from "./styles.module.scss";

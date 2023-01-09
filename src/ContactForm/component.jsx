@@ -1,70 +1,108 @@
-import React from "react";
 import PropTypes from "prop-types";
 import {ClipLoader} from "react-spinners";
 import {GoogleReCaptchaProvider, GoogleReCaptcha} from 'react-google-recaptcha-v3';
 import styles from "./styles.module.scss";
 import sendMessage from "./service";
 import {recordInteraction} from "Analytics/service";
+import { useState } from "react";
 
-class ContactForm extends React.Component {
+const ContactForm = ({ showError }) => {
+    const [loading, setLoading] = useState(false);
+    const [sent, setSent] = useState(false);
+    const [captcha, setCaptcha] = useState("");
+    const [from, setFrom] = useState("");
+    const [replyToAddress, setReplyToAddress] = useState("");
+    const [subject, setSubject] = useState("");
+    const [body, setBody] = useState("");
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            sent: false,
-            captcha: "",
-            contents: {
-                from: "",
-                replyToAddress: "",
-                subject: "",
-                body: ""
-            }
-        };
+    const onSendAttempt = formSent => {
+        setSent(formSent);
+        setLoading(false);
+        showError(!formSent);
+
+        const eventAction = !formSent ? "failure" : "success";
+        recordInteraction(eventAction, "Contact Form", "form");
     }
 
-    render() {
-        return this.state.loading ?
-            this.renderSendingMessage() :
-            this.state.sent ? this.renderSendSuccess() : this.renderForm();
+    const onSubmit = event => {
+        event.preventDefault();
+
+        setLoading(true);
+        showError(false);
+
+        const data = { subject, body, replyToAddress, from, captcha };
+
+        sendMessage(data)
+            .then(onSendAttempt)
+            .catch(() => onSendAttempt(false));
+    };
+
+    if (loading) {
+        return <ClipLoader size={100} sizeUnit="px" color="#123abc"/>;    
     }
 
-    renderForm = () => (
-        <form className={styles.form} onSubmit={this.onSubmit}>
+    if (sent) {
+        return (
+            <div className={styles.sendSuccess}>
+                Successfully sent your message!
+            </div>
+        );
+    }
+
+    return (
+        <form className={styles.form} onSubmit={onSubmit}>
 
             <div className={styles.field}>
-                <input name="from" type="text" value={this.state.contents.from}
-                       onChange={event => this.onUpdateContents("from", event)}
-                       className={styles.inputField}
-                       placeholder="Name" autoFocus />
+                <input 
+                    name="from" 
+                    type="text" 
+                    value={from}
+                    onChange={({ target }) => setFrom(target.value)}
+                    className={styles.inputField}
+                    placeholder="Name" 
+                    autoFocus 
+                />
             </div>
 
             <div className={styles.field}>
-                <input name="replyToAddress" type="email" value={this.state.contents.replyToAddress}
-                       onChange={event => this.onUpdateContents("replyToAddress", event)}
-                       className={styles.inputField}
-                       placeholder="Email"
-                       title="Please enter a valid email."
-                       required/>
+                <input 
+                    name="replyToAddress" 
+                    type="email" 
+                    value={replyToAddress}
+                    onChange={({ target }) => setReplyToAddress(target.value)}
+                    className={styles.inputField}
+                    placeholder="Email" 
+                    title="Please enter a valid email."
+                    required
+                />
             </div>
 
             <div className={styles.field}>
-                <input name="subject" type="text" value={this.state.contents.subject}
-                       onChange={event => this.onUpdateContents("subject", event)}
-                       className={styles.inputField}
-                       placeholder="Subject" required/>
+                <input 
+                    name="subject" 
+                    type="text" 
+                    value={subject}
+                    onChange={({ target }) => setSubject(target.value)}
+                    className={styles.inputField}
+                    placeholder="Subject"
+                    required
+                />
             </div>
 
             <div className={styles.field}>
-                    <textarea name="body" rows="5" value={this.state.contents.body}
-                              onChange={event => this.onUpdateContents("body", event)}
-                              className={styles.inputTextBox}
-                              placeholder="Type your message here..."
-                              required/>
+                <textarea 
+                    name="body" 
+                    rows="5" 
+                    value={body}
+                    onChange={({ target }) => setBody(target.value)}
+                    className={styles.inputTextBox}
+                    placeholder="Type your message here..."
+                    required
+                />
             </div>
 
             <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_CLIENT_KEY}>
-                <GoogleReCaptcha action="contact_form" onVerify={this.setCaptcha} />
+                <GoogleReCaptcha action="contact_form" onVerify={setCaptcha} />
             </GoogleReCaptchaProvider>
 
             <div className={styles.field}>
@@ -74,51 +112,6 @@ class ContactForm extends React.Component {
             </div>
         </form>
     );
-
-    renderSendingMessage = () => (
-        <ClipLoader size={100} sizeUnit="px" color="#123abc"/>
-    );
-
-    renderSendSuccess = () => (
-        <div className={styles.sendSuccess}>Successfully sent your message!</div>
-    );
-
-
-    setLoading = loading => this.setState({loading});
-    setSent = sent => this.setState({sent});
-    setCaptcha = captcha => this.setState({captcha});
-
-    onUpdateContents = (key, event) => {
-        this.setState({
-            contents: {
-                ...this.state.contents,
-                [key]: event.target.value
-            }
-        });
-    };
-
-    onSubmit = event => {
-        event.preventDefault();
-
-        this.setLoading(true);
-        this.props.showError(false);
-
-        const {contents, captcha} = this.state;
-        const data = {...contents, captcha};
-
-        sendMessage(data)
-            .then(this.onSendAttempt)
-            .catch(() => this.onSendAttempt(false));
-    };
-
-    onSendAttempt = formSent => {
-        this.setSent(formSent);
-        this.setLoading(false);
-        this.props.showError(!formSent);
-
-        const eventAction = !formSent ? "failure" : "success";
-        recordInteraction(eventAction, "Contact Form", "form");
-    }
 }
 
 ContactForm.propTypes = {
