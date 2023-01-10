@@ -1,8 +1,8 @@
 import Navigation from "Navigation/component";
 import styles from "./styles.module.scss";
 import Media from "react-media";
-import Menu from "@material-ui/icons/Menu";
-import {NavLink} from "react-router-dom";
+import Menu from "@mui/icons-material/Menu";
+import { NavLink } from "react-router-dom";
 import { getLinks, LinkTypes } from "Navigation/util";
 import { useState } from "react";
 

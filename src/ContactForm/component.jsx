@@ -6,9 +6,8 @@ import sendMessage from "./service";
 import {recordInteraction} from "Analytics/service";
 import { useState } from "react";
 
-const ContactForm = ({ showError }) => {
+const ContactForm = ({ setResult }) => {
     const [loading, setLoading] = useState(false);
-    const [sent, setSent] = useState(false);
     const [captcha, setCaptcha] = useState("");
     const [from, setFrom] = useState("");
     const [replyToAddress, setReplyToAddress] = useState("");
@@ -16,19 +15,25 @@ const ContactForm = ({ showError }) => {
     const [body, setBody] = useState("");
 
     const onSendAttempt = formSent => {
-        setSent(formSent);
         setLoading(false);
-        showError(!formSent);
 
         const eventAction = !formSent ? "failure" : "success";
         recordInteraction(eventAction, "Contact Form", "form");
+        setResult(eventAction);
+
+        if (formSent) {
+            setFrom("");
+            setReplyToAddress("");
+            setSubject("");
+            setBody("");
+        }
     }
 
     const onSubmit = event => {
         event.preventDefault();
 
         setLoading(true);
-        showError(false);
+        setResult("");
 
         const data = { subject, body, replyToAddress, from, captcha };
 
@@ -39,14 +44,6 @@ const ContactForm = ({ showError }) => {
 
     if (loading) {
         return <ClipLoader size={100} sizeUnit="px" color="#123abc"/>;    
-    }
-
-    if (sent) {
-        return (
-            <div className={styles.sendSuccess}>
-                Successfully sent your message!
-            </div>
-        );
     }
 
     return (
