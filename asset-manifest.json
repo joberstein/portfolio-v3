@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9531a0eb.css",
-    "main.js": "/static/js/main.04c330fe.js",
+    "main.js": "/static/js/main.3637e3c8.js",
     "static/media/resume.pdf": "/static/media/resume.e972dcbf6ad60d0170ee.pdf",
     "static/media/fairy-tail.png": "/static/media/fairy-tail.5ff3e7cd3b20328a3c98.png",
     "static/media/fushimi-inari.jpg": "/static/media/fushimi-inari.72d2b5fb4f30ea02a653.jpg",
@@ -51,10 +51,10 @@
     "static/media/click-n-create.png": "/static/media/click-n-create.fe09fd4e5aae7debffa0.png",
     "index.html": "/index.html",
     "main.9531a0eb.css.map": "/static/css/main.9531a0eb.css.map",
-    "main.04c330fe.js.map": "/static/js/main.04c330fe.js.map"
+    "main.3637e3c8.js.map": "/static/js/main.3637e3c8.js.map"
   },
   "entrypoints": [
     "static/css/main.9531a0eb.css",
-    "static/js/main.04c330fe.js"
+    "static/js/main.3637e3c8.js"
   ]
 }
