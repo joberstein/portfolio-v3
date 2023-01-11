@@ -1,10 +1,10 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
-import {ClipLoader} from "react-spinners";
 import {GoogleReCaptchaProvider, GoogleReCaptcha} from 'react-google-recaptcha-v3';
-import styles from "./styles.module.scss";
+import Progress from "@mui/material/CircularProgress";
 import sendMessage from "./service";
 import {recordInteraction} from "Analytics/service";
-import { useState } from "react";
+import styles from "./styles.module.scss";
 
 const ContactForm = ({ setResult }) => {
     const [loading, setLoading] = useState(false);
@@ -42,12 +42,13 @@ const ContactForm = ({ setResult }) => {
             .catch(() => onSendAttempt(false));
     };
 
-    if (loading) {
-        return <ClipLoader size={100} sizeUnit="px" color="#123abc"/>;    
-    }
-
     return (
         <form className={styles.form} onSubmit={onSubmit}>
+            {loading && (
+                <div className={styles.loading}>
+                    <Progress size={100} thickness={2.5} />
+                </div>
+            )}
 
             <div className={styles.field}>
                 <input 
@@ -56,7 +57,8 @@ const ContactForm = ({ setResult }) => {
                     value={from}
                     onChange={({ target }) => setFrom(target.value)}
                     className={styles.inputField}
-                    placeholder="Name" 
+                    placeholder="Name"
+                    disabled={loading}
                     autoFocus 
                 />
             </div>
@@ -70,6 +72,7 @@ const ContactForm = ({ setResult }) => {
                     className={styles.inputField}
                     placeholder="Email" 
                     title="Please enter a valid email."
+                    disabled={loading}
                     required
                 />
             </div>
@@ -82,6 +85,7 @@ const ContactForm = ({ setResult }) => {
                     onChange={({ target }) => setSubject(target.value)}
                     className={styles.inputField}
                     placeholder="Subject"
+                    disabled={loading}
                     required
                 />
             </div>
@@ -94,6 +98,7 @@ const ContactForm = ({ setResult }) => {
                     onChange={({ target }) => setBody(target.value)}
                     className={styles.inputTextBox}
                     placeholder="Type your message here..."
+                    disabled={loading}
                     required
                 />
             </div>
@@ -103,7 +108,7 @@ const ContactForm = ({ setResult }) => {
             </GoogleReCaptchaProvider>
 
             <div className={styles.field}>
-                <button className={styles.formButton} type="submit">
+                <button className={styles.formButton} type="submit" disabled={loading}>
                     Send Message
                 </button>
             </div>

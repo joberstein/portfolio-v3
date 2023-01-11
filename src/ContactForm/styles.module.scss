@@ -5,6 +5,7 @@
   text-align: left;
   width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 
 .field {
@@ -45,7 +46,7 @@
 .inputField:-webkit-autofill,
 .inputField-webkit-autofill:focus,
 .inputField-webkit-autofill:hover {
-  -webkit-box-shadow: 0 0 0 1000px #cef inset;
+  box-shadow: 0 0 0 1000px #cef inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -71,4 +72,21 @@
 
 .sendSuccess {
   font-size: 32px;
+}
+
+.loading {
+  margin-bottom: 24px;
+  font-size: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  opacity: .65;
+  background: white;
 }
