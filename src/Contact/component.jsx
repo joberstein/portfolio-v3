@@ -40,17 +40,19 @@ const Contact = () => {
                 <ContactForm {...{ setResult }} />
             </div>
 
-            <Snackbar 
-                message={snackbarMessage}
-                open={!!snackbarMessage}
-                anchorOrigin={{vertical: "top", horizontal: "center"}}
-                onClose={() => setResult("")}
-                autoHideDuration={15000} 
-            >
-                <Alert severity={snackbarSeverity} variant="filled">
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
+            {!!snackbarMessage && (
+                <Snackbar 
+                    message={snackbarMessage}
+                    open={!!snackbarMessage}
+                    anchorOrigin={{vertical: "top", horizontal: "center"}}
+                    onClose={() => setResult("")}
+                    autoHideDuration={15000} 
+                >
+                    <Alert severity={snackbarSeverity} variant="filled">
+                        {snackbarMessage}
+                    </Alert>
+                </Snackbar>
+            )}
         </div>
     );
 }

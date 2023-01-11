@@ -1,16 +1,17 @@
-import Navigation from "Navigation/component";
-import styles from "./styles.module.scss";
-import Media from "react-media";
-import Menu from "@mui/icons-material/Menu";
-import { NavLink } from "react-router-dom";
-import { getLinks, LinkTypes } from "Navigation/util";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Menu from "@mui/icons-material/Menu";
+import Navigation from "Navigation/component";
+import { getLinks, LinkTypes } from "Navigation/util";
+import styles from "./styles.module.scss";
 
 const baseLinks = getLinks({ type: LinkTypes.Base });
 
 const Header = () => {
     const [shouldShowNavigation, setShouldShowNavigation] = useState(false);
     const toggleNavigation = () => setShouldShowNavigation(!shouldShowNavigation);
+    const isDesktop = useMediaQuery("(min-width: 769px)");
 
     return (
         <header className={styles.header}>
@@ -23,13 +24,11 @@ const Header = () => {
                     <Menu/>
                 </div>
 
-                <Media query={{maxWidth: "768px"}}>
-                    {matches => (!matches || shouldShowNavigation) && (
-                        <div className={styles.links}>
-                            <Navigation links={baseLinks} onRouteClick={toggleNavigation}/>
-                        </div>
-                    )}
-                </Media>
+                {(isDesktop || shouldShowNavigation) && (
+                    <div className={styles.links}>
+                        <Navigation links={baseLinks} onRouteClick={toggleNavigation}/>
+                    </div>
+                )}
             </div>
         </header>
     );
