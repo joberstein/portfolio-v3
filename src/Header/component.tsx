@@ -3,10 +3,10 @@ import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Menu from "@mui/icons-material/Menu";
 import Navigation from "Navigation/component";
-import { getLinksMapping, LinkType } from "Navigation/util";
+import { getRouteMapping, RouteType } from "Navigation/util";
 import styles from "./styles.module.scss";
 
-const baseLinksMapping = getLinksMapping({ type: LinkType.Base });
+const baseLinksMapping = getRouteMapping({ type: RouteType.Base });
 
 const Header = () => {
     const [shouldShowNavigation, setShouldShowNavigation] = useState(false);

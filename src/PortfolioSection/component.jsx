@@ -39,7 +39,11 @@ const PortfolioSection = () => {
         const prevImageIdx = (clickedImageIdx + imageData.length - 1) % imageData.length;
         const nextImageIdx = (clickedImageIdx + 1) % imageData.length;
         const clickedImage = imageData[clickedImageIdx];
-        const recordImageView = () => recordInteraction("click", clickedImage.title, "image");
+        const recordImageView = () => recordInteraction({
+            action: "click", 
+            label: clickedImage.title, 
+            category: "image",
+        });
 
         return isLightboxOpen && (
             <Lightbox imageTitle={clickedImage.title}
@@ -76,7 +80,16 @@ const PortfolioSection = () => {
     );
 
     const renderLinkedOverlay = (name, type, url, DatumType) => (
-        <a href={url} target="_blank" rel="noopener noreferrer" onClick={() => recordInteraction("click", name, type)}>
+        <a 
+            href={url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onClick={() => recordInteraction({
+                action: "click", 
+                label: name, 
+                category: type,
+            })}
+        >
             {renderOverlay(DatumType)}
         </a>
     );

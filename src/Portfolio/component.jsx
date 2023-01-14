@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import Navigation from "Navigation/component";
 import { Outlet, useNavigate, useParams } from "react-router";
-import { getLinksMapping, LinkType } from "Navigation/util";
+import { getRouteMapping, RouteType } from "Navigation/util";
 
-const portfolioLinksMapping = getLinksMapping({ type: LinkType.Portfolio });
+const portfolioLinksMapping = getRouteMapping({ type: RouteType.Portfolio });
 
 const Portfolio = () => {
     const { sectionId } = useParams();

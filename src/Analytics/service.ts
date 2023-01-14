@@ -17,16 +17,16 @@ export const initializeAnalytics = () => {
     GoogleAnalytics.initialize(trackingCode, GA_CONFIG);
 };
 
-export const recordPageView = page => {
+export const recordPageView = (page: string) => {
     GoogleAnalytics.set({page});
     GoogleAnalytics.pageview(page);
 };
 
-const recordEvent = (action, label, category, nonInteraction=false) =>
-    GoogleAnalytics.event({action, category, label, nonInteraction});
+const recordEvent = (event: GoogleAnalytics.EventArgs) =>
+    GoogleAnalytics.event(event);
 
-export const recordInteraction = (action, label, category) =>
-    recordEvent(action, label, category);
+export const recordInteraction = (event: GoogleAnalytics.EventArgs) =>
+    recordEvent({ ...event, nonInteraction: false });
 
-export const recordNonInteractionEvent = (action, label, category) =>
-    recordEvent(action, label, category, true);
+export const recordNonInteractionEvent = (event: GoogleAnalytics.EventArgs) =>
+    recordEvent({ ...event, nonInteraction: true });

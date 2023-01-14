@@ -6,7 +6,11 @@ import {getPathname} from "windowUtils";
 const NotFound = () => {
 
     useEffect(() => {
-        recordNonInteractionEvent("404", getPathname(), "PageView");
+        recordNonInteractionEvent({
+            action: "404", 
+            label: getPathname(), 
+            category: "PageView",
+        });
     }, []);
 
     return (

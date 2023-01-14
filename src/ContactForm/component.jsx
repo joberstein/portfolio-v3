@@ -15,11 +15,16 @@ const ContactForm = ({ setResult }) => {
     const [body, setBody] = useState("");
 
     const onSendAttempt = formSent => {
-        setLoading(false);
+        const action = !formSent ? "failure" : "success";
 
-        const eventAction = !formSent ? "failure" : "success";
-        recordInteraction(eventAction, "Contact Form", "form");
-        setResult(eventAction);
+        setLoading(false);
+        setResult(action);
+
+        recordInteraction({ 
+            action,
+            label: "Contact Form",
+            category: "form",
+        });
 
         if (formSent) {
             setFrom("");

@@ -2,9 +2,9 @@ import styles from "./styles.module.scss";
 import resume from "./files/resume.pdf";
 import ExternalLinks, {createTextLink} from "ExternalLinks/component";
 import {VerticalNavigation} from "Navigation/component";
-import { getLinksMapping, LinkType } from "Navigation/util";
+import { getRouteMapping, RouteType } from "Navigation/util";
 
-const baseLinksMapping = getLinksMapping({ type: LinkType.Base });
+const baseLinksMapping = getRouteMapping({ type: RouteType.Base });
 
 const contactLinks = [
     createTextLink(resume, "Resume (PDF)"),

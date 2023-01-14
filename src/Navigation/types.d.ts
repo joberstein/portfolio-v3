@@ -1,10 +1,10 @@
 interface GetLinksMappingArgs {
-    type: LinkType
+    type: RouteType
 };
 
 interface Link {
     readonly path: string;
-    readonly type: LinkType;
+    readonly type: RouteType;
 }
 
 interface LinksMapping {

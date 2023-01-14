@@ -4,7 +4,7 @@ import * as AnalyticsService from "./service";
 
 jest.mock("./service.js");
 
-let props;
+let props: UseAnalyticsProps;
 
 describe("src/Analytics/hook", () => {
     beforeEach(() => {

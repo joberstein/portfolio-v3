@@ -3,7 +3,6 @@ import * as windowUtils from "windowUtils";
 import * as analyticsService from "Analytics/service";
 
 jest.mock("react-ga");
-jest.mock("windowUtils");
 
 describe("Initializing analytics", () => {
     test("Not on localhost", () => {
@@ -13,7 +12,7 @@ describe("Initializing analytics", () => {
     });
 
     test("On localhost", () => {
-        windowUtils.isLocalhost.mockReturnValue(true);
+        jest.spyOn(windowUtils, 'isLocalhost').mockReturnValue(true);
         analyticsService.initializeAnalytics();
         
         expect(GoogleAnalytics.initialize).toHaveBeenCalledWith("UA-145898568-2", expect.anything());
@@ -33,14 +32,14 @@ describe("Recording events", () => {
 
     test("Interactions", () => {
         const event = {action, label, category, nonInteraction: false};
-        analyticsService.recordInteraction(action, label, category);
+        analyticsService.recordInteraction(event);
 
         expect(GoogleAnalytics.event).toBeCalledWith(event);
     });
 
     test("Non-Interactions", () => {
         const event = {action, label, category, nonInteraction: true};
-        analyticsService.recordNonInteractionEvent(action, label, category);
+        analyticsService.recordNonInteractionEvent(event);
 
         expect(GoogleAnalytics.event).toBeCalledWith(event);
     });
