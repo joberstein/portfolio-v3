@@ -2,9 +2,9 @@ import styles from "./styles.module.scss";
 import resume from "./files/resume.pdf";
 import ExternalLinks, {createTextLink} from "ExternalLinks/component";
 import {VerticalNavigation} from "Navigation/component";
-import { getLinks, LinkTypes } from "Navigation/util";
+import { getLinksMapping, LinkType } from "Navigation/util";
 
-const baseLinks = getLinks({ type: LinkTypes.Base });
+const baseLinksMapping = getLinksMapping({ type: LinkType.Base });
 
 const contactLinks = [
     createTextLink(resume, "Resume (PDF)"),
@@ -20,7 +20,7 @@ const Footer = () => (
                 <h3 className={styles.linkSectionTitle}>
                     Site Navigation
                 </h3>
-                <VerticalNavigation links={baseLinks}/>
+                <VerticalNavigation linksMapping={baseLinksMapping}/>
             </div>
 
             <div className={styles.linkSection}>

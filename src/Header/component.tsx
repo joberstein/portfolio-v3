@@ -3,10 +3,10 @@ import { NavLink } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Menu from "@mui/icons-material/Menu";
 import Navigation from "Navigation/component";
-import { getLinks, LinkTypes } from "Navigation/util";
+import { getLinksMapping, LinkType } from "Navigation/util";
 import styles from "./styles.module.scss";
 
-const baseLinks = getLinks({ type: LinkTypes.Base });
+const baseLinksMapping = getLinksMapping({ type: LinkType.Base });
 
 const Header = () => {
     const [shouldShowNavigation, setShouldShowNavigation] = useState(false);
@@ -26,20 +26,12 @@ const Header = () => {
 
                 {(isDesktop || shouldShowNavigation) && (
                     <div className={styles.links}>
-                        <Navigation links={baseLinks} onRouteClick={toggleNavigation}/>
+                        <Navigation linksMapping={baseLinksMapping} onRouteClick={toggleNavigation}/>
                     </div>
                 )}
             </div>
         </header>
     );
 }
-
-Header.defaultProps = {
-    ...Navigation.defaultProps
-};
-
-Header.propTypes = {
-    ...Navigation.propTypes
-};
 
 export default Header;

@@ -1,10 +1,13 @@
-import PropTypes from "prop-types";
 import cn from "classnames";
 import styles from "./styles.module.scss";
 import verticalStyles from "./styles-vertical.module.scss";
 import { NavLink } from "react-router-dom";
 
-const Navigation = ({links, onRouteClick, styleOverride}) => (
+const Navigation = ({
+    linksMapping: links, 
+    onRouteClick = () => {},
+    styleOverride = {}
+}: NavigationProps) => (
     <nav className={cn(styles.navigation, styleOverride.navigation)}>
          <ul className={cn(styles.links, styleOverride.links)}>
             {Object.keys(links).map(path => (
@@ -26,22 +29,6 @@ const Navigation = ({links, onRouteClick, styleOverride}) => (
     </nav>
 );
 
-Navigation.defaultProps = {
-    basePath: "",
-    links: {},
-    onRouteClick: () => {},
-    styleOverride: {}
-};
-
-Navigation.propTypes = {
-    basePath: PropTypes.string,
-    links: PropTypes.object,
-    onRouteClick: PropTypes.func
-};
-
 export default Navigation;
 
-export const createRouteLink = (path, linkText, component) => ({path, linkText, component});
-export const createLink = (path, linkText) => ({path, linkText});
-
-export const VerticalNavigation = props => <Navigation {...props} styleOverride={verticalStyles} />;
+export const VerticalNavigation = (props: NavigationProps) => <Navigation {...props} styleOverride={verticalStyles} />;
