@@ -1,18 +1,11 @@
-interface GetLinksMappingArgs {
-    type: RouteType
-};
-
-interface Link {
+interface SiteLink {
     readonly path: string;
-    readonly type: RouteType;
-}
-
-interface LinksMapping {
-    readonly [path: string]: string;
+    readonly text: string;
+    readonly type?: SiteLinkCategory;
 }
 
 interface NavigationProps {
-    readonly linksMapping: LinksMapping;
+    readonly links: SiteLink[];
     readonly onRouteClick?: () => void;
     readonly styleOverride?: Record<string, string>;
 }

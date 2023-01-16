@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import styles from './styles.module.scss';
 import Header from "Header/component";
 import Footer from "Footer/component";
@@ -42,9 +43,11 @@ const App = () => {
 
 const AppWrapper = () => (
     <div className={styles.app}>
-        <Router basename={process.env.PUBLIC_URL}>
-            <App />
-        </Router>
+        <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_CLIENT_KEY ?? ''}>
+            <Router basename={process.env.PUBLIC_URL}>
+                <App />
+            </Router>
+        </GoogleReCaptchaProvider>
     </div>
 );
 

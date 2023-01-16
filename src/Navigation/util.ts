@@ -13,19 +13,39 @@ const portfolioPaths = [
     "websites",
 ];
 
-export enum RouteType {
+export enum SiteLinkCategory {
     Base,
     Portfolio
 }
 
-const links: Link[] = [
-    ...basePaths.map(path => ({ path, type: RouteType.Base })),
-    ...portfolioPaths.map(path => ({ path, type: RouteType.Portfolio })),
-];
+const getSiteLinkType = (path: string) => {
+    if (basePaths.includes(path)) {
+        return SiteLinkCategory.Base;
+    }
 
-const getLinkMapping = (path: string) => 
+    if (portfolioPaths.includes(path)) {
+        return SiteLinkCategory.Portfolio;
+    }
+}
+
+const getSiteLinkText = (path: string) => 
     path === "/" ? "Home" : path.toUpperCase().slice(0, 1) + path.slice(1);
 
-export const getRouteMapping = ({ type }: GetLinksMappingArgs): LinksMapping => links
-    .filter(link => link.type === type)
-    .reduce((acc, { path }) => ({ ...acc, [path]: getLinkMapping(path) }), {});
+
+const siteLinks: SiteLink[] = [
+    ...basePaths,
+    ...portfolioPaths,
+]
+.map(path => ({
+    path,
+    type: getSiteLinkType(path),
+    text: getSiteLinkText(path),
+}));
+
+export const getSiteLinks = (filter: Partial<SiteLink>): SiteLink[] => 
+    filter ? 
+        siteLinks.filter(({ type }) => type === filter.type) : 
+        siteLinks;
+
+export const getSiteRoutes = (filter: Partial<SiteLink>): string[] =>
+    getSiteLinks(filter).map(({ path }) => path);

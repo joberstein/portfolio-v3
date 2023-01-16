@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import Navigation from "Navigation/component";
 import { Outlet, useNavigate, useParams } from "react-router";
-import { getRouteMapping, RouteType } from "Navigation/util";
+import { getSiteLinks, getSiteRoutes, SiteLinkCategory } from "Navigation/util";
 
-const portfolioLinksMapping = getRouteMapping({ type: RouteType.Portfolio });
+const portfolioLinks = getSiteLinks({ type: SiteLinkCategory.Portfolio });
+const portfolioPaths = getSiteRoutes({ type: SiteLinkCategory.Portfolio });
 
 const Portfolio = () => {
     const { sectionId } = useParams();
@@ -12,7 +13,6 @@ const Portfolio = () => {
 
     useEffect(() => {
         if (!sectionId) {
-            const portfolioPaths = Object.keys(portfolioLinksMapping);
             const randomIdx = Math.floor(Math.random() * portfolioPaths.length);
             navigate(portfolioPaths[randomIdx]);
         }
@@ -22,7 +22,7 @@ const Portfolio = () => {
         <div className={styles.portfolio}>
             <h1>Portfolio</h1>
             <div className={styles.links}>
-                <Navigation linksMapping={portfolioLinksMapping} />
+                <Navigation links={portfolioLinks} />
             </div>
 
             <Outlet />

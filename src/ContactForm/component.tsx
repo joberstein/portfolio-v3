@@ -1,12 +1,13 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import {GoogleReCaptchaProvider, GoogleReCaptcha} from 'react-google-recaptcha-v3';
+import { useState, useCallback, useEffect } from "react";
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Progress from "@mui/material/CircularProgress";
 import sendMessage from "./service";
 import {recordInteraction} from "Analytics/service";
 import styles from "./styles.module.scss";
 
-const ContactForm = ({ setResult }) => {
+const ContactForm: React.FC<ContactFormProps> = ({ 
+    setResult,
+}) => {
     const [loading, setLoading] = useState(false);
     const [captcha, setCaptcha] = useState("");
     const [from, setFrom] = useState("");
@@ -14,7 +15,7 @@ const ContactForm = ({ setResult }) => {
     const [subject, setSubject] = useState("");
     const [body, setBody] = useState("");
 
-    const onSendAttempt = formSent => {
+    const onSendAttempt = (formSent: boolean) => {
         const action = !formSent ? "failure" : "success";
 
         setLoading(false);
@@ -34,7 +35,7 @@ const ContactForm = ({ setResult }) => {
         }
     }
 
-    const onSubmit = event => {
+    const onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
         event.preventDefault();
 
         setLoading(true);
@@ -46,6 +47,22 @@ const ContactForm = ({ setResult }) => {
             .then(onSendAttempt)
             .catch(() => onSendAttempt(false));
     };
+
+    const { executeRecaptcha } = useGoogleReCaptcha();
+
+    const handleReCaptchaVerify = useCallback(async () => {
+        if (!executeRecaptcha) {
+            console.warn('Execute recaptcha not yet available');
+            return;
+        }
+
+        const token = await executeRecaptcha('contact_form');
+        setCaptcha(token);
+    }, [ executeRecaptcha ]);
+
+    useEffect(() => {
+        handleReCaptchaVerify();
+    }, [ handleReCaptchaVerify ]);
 
     return (
         <form className={styles.form} onSubmit={onSubmit}>
@@ -98,7 +115,7 @@ const ContactForm = ({ setResult }) => {
             <div className={styles.field}>
                 <textarea 
                     name="body" 
-                    rows="5" 
+                    rows={5}
                     value={body}
                     onChange={({ target }) => setBody(target.value)}
                     className={styles.inputTextBox}
@@ -108,21 +125,18 @@ const ContactForm = ({ setResult }) => {
                 />
             </div>
 
-            <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_CLIENT_KEY}>
-                <GoogleReCaptcha action="contact_form" onVerify={setCaptcha} />
-            </GoogleReCaptchaProvider>
-
             <div className={styles.field}>
-                <button className={styles.formButton} type="submit" disabled={loading}>
+                <button
+                    type="submit"
+                    className={styles.formButton}
+                    disabled={loading || !captcha} 
+                    title={!captcha ? 'Sending is disabled until captcha verification has completed.' : ''}
+                >
                     Send Message
                 </button>
             </div>
         </form>
     );
 }
-
-ContactForm.propTypes = {
-    showError: PropTypes.func.isRequired
-};
 
 export default ContactForm;
