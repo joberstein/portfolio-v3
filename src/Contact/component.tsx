@@ -3,8 +3,9 @@ import Alert from "@mui/material/Alert";
 import styles from "./styles.module.scss";
 import ContactForm from "ContactForm/component";
 import { useState, useEffect } from "react";
+import { AlertColor } from "@mui/material";
 
-const getSnackbarConfig = result => {
+const getSnackbarConfig = (result: ContactFormResult | void): SnackbarConfig => {
     switch (result) {
         case "success":
             return {
@@ -17,14 +18,14 @@ const getSnackbarConfig = result => {
                 message: "Uh-oh, it looks like there was an error sending your message. Please try again."
             };
         default:
-            return {};
+            return {} as never;
     }
 };
 
 const Contact = () => {
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState<ContactFormResult | void>();
     const [snackbarMessage, setSnackbarMessage] = useState("");
-    const [snackbarSeverity, setSnackbarSeverity] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>();
 
     useEffect(() => {
         const { severity, message } = getSnackbarConfig(result);
@@ -45,7 +46,7 @@ const Contact = () => {
                     message={snackbarMessage}
                     open={!!snackbarMessage}
                     anchorOrigin={{vertical: "top", horizontal: "center"}}
-                    onClose={() => setResult("")}
+                    onClose={() => setResult(undefined)}
                     autoHideDuration={15000} 
                 >
                     <Alert severity={snackbarSeverity} variant="filled">

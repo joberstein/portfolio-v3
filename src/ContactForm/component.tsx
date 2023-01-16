@@ -39,7 +39,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
         event.preventDefault();
 
         setLoading(true);
-        setResult("");
+        setResult(undefined);
 
         const data = { subject, body, replyToAddress, from, captcha };
 

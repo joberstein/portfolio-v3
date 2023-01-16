@@ -1,7 +1,7 @@
 type EndpointStage = "dev" | "prod";
 
 interface ContactFormProps {
-    readonly setResult: (result: string) => void;
+    readonly setResult: (result: ContactFormResult | void) => void;
 }
 
 interface ContactFormData {

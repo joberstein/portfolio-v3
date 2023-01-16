@@ -30,7 +30,7 @@ const PortfolioSection = () => {
     const { data = [] } = allData[sectionId] || {};
 
     if (!data.length) {
-        <Navigate to="/" />
+        return <Navigate to="/" />;
     }
 
     const imageData = data.filter(({urls}) => urls.image !== undefined);
