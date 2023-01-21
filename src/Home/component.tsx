@@ -1,4 +1,4 @@
-import styles from "Home/styles.module.scss";
+import styles from "./styles.module.scss";
 import fushimiInariJpg from "./img/fushimi-inari.jpg";
 import fushimiInariJp2 from "./img/fushimi-inari.jp2";
 import fushimiInariWebp from "./img/fushimi-inari.webp";
@@ -32,7 +32,7 @@ const Home = () => (
         </p>
 
         <div className={`${styles.images} ${styles.imagesWide}`}>
-            {[himeji, hydrangea, nara].map(images => <Image data={images} key={images}/>)}
+            {[himeji, hydrangea, nara].map(images => <Image data={images} key={JSON.stringify(images)}/>)}
         </div>
 
         <p className={styles.quote}>
@@ -40,12 +40,12 @@ const Home = () => (
         </p>
 
         <div className={`${styles.images} ${styles.imagesTall}`}>
-            {[gundam, kinkakuji, fushimiInari].map(images => <Image data={images} key={images}/>)}
+            {[gundam, kinkakuji, fushimiInari].map(images => <Image data={images} key={JSON.stringify(images)}/>)}
         </div>
     </div>
 );
 
-const Image = ({data}) => {
+const Image: React.FC<ImageProps> = ({data}) => {
     const fallbackImage = data.pop();
     return (
         <div>
