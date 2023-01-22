@@ -10,26 +10,25 @@ object-assign
 	http://jedwatson.github.io/classnames
 */
 
-/*!
-  Copyright (c) 2015 Jed Watson.
-  Based on code that is Copyright 2013-2015, Facebook, Inc.
-  All rights reserved.
-*/
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
 
-/*!
- * Adapted from jQuery UI core
- *
- * http://jqueryui.com
- *
- * Copyright 2014 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/category/ui-core/
- */
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /**
- * @remix-run/router v1.2.1
+ * @remix-run/router v1.3.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -40,7 +39,7 @@ object-assign
  */
 
 /**
- * React Router DOM v6.6.2
+ * React Router DOM v6.7.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -51,7 +50,7 @@ object-assign
  */
 
 /**
- * React Router v6.6.2
+ * React Router v6.7.0
  *
  * Copyright (c) Remix Software Inc.
  *

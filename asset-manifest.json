@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.a26b230e.css",
-    "main.js": "/static/js/main.d378c0d4.js",
+    "main.css": "/static/css/main.eafc2812.css",
+    "main.js": "/static/js/main.8f4a8c85.js",
     "static/media/resume.pdf": "/static/media/resume.e972dcbf6ad60d0170ee.pdf",
     "static/media/fairy-tail.png": "/static/media/fairy-tail.5ff3e7cd3b20328a3c98.png",
     "static/media/fushimi-inari.jpg": "/static/media/fushimi-inari.72d2b5fb4f30ea02a653.jpg",
@@ -82,11 +82,11 @@
     "static/media/roboto-greek-ext-300-normal.woff2": "/static/media/roboto-greek-ext-300-normal.35b9d6be04b95f0f0530.woff2",
     "static/media/roboto-greek-ext-700-normal.woff2": "/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/index.html",
-    "main.a26b230e.css.map": "/static/css/main.a26b230e.css.map",
-    "main.d378c0d4.js.map": "/static/js/main.d378c0d4.js.map"
+    "main.eafc2812.css.map": "/static/css/main.eafc2812.css.map",
+    "main.8f4a8c85.js.map": "/static/js/main.8f4a8c85.js.map"
   },
   "entrypoints": [
-    "static/css/main.a26b230e.css",
-    "static/js/main.d378c0d4.js"
+    "static/css/main.eafc2812.css",
+    "static/js/main.8f4a8c85.js"
   ]
 }
