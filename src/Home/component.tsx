@@ -46,14 +46,13 @@ const Home = () => (
 );
 
 const Image: React.FC<ImageProps> = ({data}) => {
-    const fallbackImage = data.pop();
+    const [webp, jp2, jpg] = data;
+
     return (
-        <div>
-            <picture>
-                {data.map(image => <source srcSet={image} key={image}/>)}
-                <img className={styles.image} src={fallbackImage} alt=""/>
-            </picture>
-        </div>
+        <picture>
+            {[webp, jp2].map(image => <source srcSet={image} key={image}/>)}
+            <img className={styles.image} src={jpg} alt=""/>
+        </picture>
     );
 };
 
