@@ -2,9 +2,9 @@ import { renderHook } from '@testing-library/react-hooks';
 import useAnalytics from "./hook";
 import * as AnalyticsService from "./service";
 
-jest.mock("./service.js");
+jest.mock("./service.ts");
 
-let props;
+let props: UseAnalyticsProps;
 
 describe("src/Analytics/hook", () => {
     beforeEach(() => {

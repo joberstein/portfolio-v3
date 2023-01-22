@@ -1,1 +1,0 @@
-export const buildSectionData = (title, description, urls={}) => ({title, description, urls});

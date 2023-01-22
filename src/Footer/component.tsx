@@ -1,16 +1,16 @@
 import styles from "./styles.module.scss";
 import resume from "./files/resume.pdf";
-import ExternalLinks, {createTextLink} from "ExternalLinks/component";
-import {VerticalNavigation} from "Navigation/component";
-import { getLinks, LinkTypes } from "Navigation/util";
+import ExternalLinks from "ExternalLinks/component";
+import { VerticalNavigation } from "Navigation/component";
+import { getSiteLinks, SiteLinkCategory } from "Navigation/util";
 
-const baseLinks = getLinks({ type: LinkTypes.Base });
+const baseLinks = getSiteLinks({ type: SiteLinkCategory.Base });
 
-const contactLinks = [
-    createTextLink(resume, "Resume (PDF)"),
-    createTextLink("https://joberstein.github.io/resume", "Resume (HTML)"),
-    createTextLink("https://www.linkedin.com/in/jesseoberstein", "LinkedIn"),
-    createTextLink("https://www.github.com/joberstein", "GitHub"),
+const contactLinks: SiteLink[] = [
+    { path: resume, text: "Resume (PDF)" },
+    { path: "https://joberstein.github.io/resume", text: "Resume (HTML)" },
+    { path: "https://www.linkedin.com/in/jesseoberstein", text: "LinkedIn" },
+    { path: "https://www.github.com/joberstein", text: "GitHub" },
 ];
 
 const Footer = () => (
@@ -27,7 +27,7 @@ const Footer = () => (
                 <h3 className={styles.linkSectionTitle}>
                     External Links
                 </h3>
-                <ExternalLinks routes={contactLinks}/>
+                <ExternalLinks links={contactLinks}/>
             </div>
         </div>
     </footer>

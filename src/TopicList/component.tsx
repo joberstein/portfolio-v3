@@ -1,7 +1,6 @@
-import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 
-const TopicList = ({topicName, items}) => (
+const TopicList: React.FC<TopicListProps> = ({ topicName, items }) => (
     <div className={styles.topics}>
 
         {topicName && (
@@ -17,15 +16,5 @@ const TopicList = ({topicName, items}) => (
         )}
     </div>
 );
-
-TopicList.defaultProps = {
-    topicName: "",
-    items: []
-};
-
-TopicList.propTypes = {
-    topicName: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.string)
-};
 
 export default TopicList;

@@ -68,6 +68,13 @@
   &:hover {
     opacity: .8;
   }
+
+  &:disabled {
+    background: gray;
+    color: white;
+    cursor: default;
+    opacity: .6;
+  }
 }
 
 .sendSuccess {
