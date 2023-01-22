@@ -5,14 +5,20 @@ import * as analyticsService from "Analytics/service";
 jest.mock("react-ga");
 
 describe("Initializing analytics", () => {
-    test("Not on localhost", () => {
+    const isLocalhost = jest.spyOn(windowUtils, 'isLocalhost');
+    
+    beforeEach(() => {
+        isLocalhost.mockReturnValue(true);
+    });
+
+    it("Not on localhost", () => {
+        isLocalhost.mockReturnValue(false);
         analyticsService.initializeAnalytics();
         
         expect(GoogleAnalytics.initialize).toHaveBeenCalledWith("UA-145898568-1", expect.anything());
     });
 
-    test("On localhost", () => {
-        jest.spyOn(windowUtils, 'isLocalhost').mockReturnValue(true);
+    it("On localhost", () => {
         analyticsService.initializeAnalytics();
         
         expect(GoogleAnalytics.initialize).toHaveBeenCalledWith("UA-145898568-2", expect.anything());

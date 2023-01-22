@@ -18,9 +18,10 @@ before_install:
   - yarn cache clean
 
 script:
-  - yarn build
+  - yarn tsc
   - yarn test --ci
   - yarn validate:commits
+  - yarn build
 
 deploy:
   - provider: script
