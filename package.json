@@ -19,13 +19,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/jest": "^29.2.6",
     "@types/node": "^18.11.18",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
     "react-scripts": "5.0.1",
     "sass": "^1.57.1",
     "typescript": "^4.9.4",
@@ -34,7 +33,7 @@
   "scripts": {
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build && cp build/index.html build/404.html",
-    "test": "react-scripts test --env=node",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "release": "pre-commit run --hook-stage manual semantic-release -v",
