@@ -4,23 +4,7 @@ import styles from "./styles.module.scss";
 import ContactForm from "ContactForm/component";
 import { useState, useEffect } from "react";
 import { AlertColor } from "@mui/material";
-
-const getSnackbarConfig = (result: ContactFormResult | void): SnackbarConfig => {
-    switch (result) {
-        case "success":
-            return {
-                severity: "success",
-                message: "Successfully sent your message!",
-            };
-        case "failure": 
-            return {
-                severity: "error",
-                message: "Uh-oh, it looks like there was an error sending your message. Please try again."
-            };
-        default:
-            return {} as never;
-    }
-};
+import { getSnackbarConfig } from "./util";
 
 const Contact = () => {
     const [result, setResult] = useState<ContactFormResult | void>();

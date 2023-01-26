@@ -11,3 +11,8 @@ interface ContactFormData {
     readonly replyToAddress: string;
     readonly subject: string;
 }
+
+interface GetCaptchaTokenArgs {
+    executeRecaptcha?: (action?: string) => Promise<string>;
+    action?: string;
+}

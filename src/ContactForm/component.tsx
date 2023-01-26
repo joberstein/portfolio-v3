@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import Progress from "@mui/material/CircularProgress";
-import sendMessage from "./service";
+import {sendMessage, getCaptchaToken} from "./service";
 import {recordInteraction} from "Analytics/service";
 import styles from "./styles.module.scss";
 
@@ -50,22 +50,17 @@ const ContactForm: React.FC<ContactFormProps> = ({
 
     const { executeRecaptcha } = useGoogleReCaptcha();
 
-    const handleReCaptchaVerify = useCallback(async () => {
-        if (!executeRecaptcha) {
-            console.warn('Execute recaptcha not yet available');
-            return;
-        }
-
-        const token = await executeRecaptcha('contact_form');
-        setCaptcha(token);
-    }, [ executeRecaptcha ]);
-
     useEffect(() => {
-        handleReCaptchaVerify();
-    }, [ handleReCaptchaVerify ]);
+        let setState = true;
+
+        getCaptchaToken({ executeRecaptcha, action: 'contact_form' })
+            .then((token) => setState && setCaptcha(token));
+
+       return () => { setState = false; };
+    }, [ executeRecaptcha, setCaptcha ]);
 
     return (
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={styles.form} onSubmit={onSubmit} aria-label="contact">
             {loading && (
                 <div className={styles.loading}>
                     <Progress size={100} thickness={2.5} />
