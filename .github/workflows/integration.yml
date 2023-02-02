@@ -27,7 +27,7 @@ jobs:
 
       - name: Validate Commits
         run: |
-          yarn add --global @joberstein12/commitlint-config
+          yarn global add @joberstein12/commitlint-config
           npx commitlint --from HEAD^ --verbose
 
       - name: Initialize Pre-Commit
