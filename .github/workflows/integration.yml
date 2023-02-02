@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
@@ -38,7 +40,8 @@ jobs:
         run: yarn test --ci
 
       - name: Validate Commits
-        run: yarn validate:commits
+        if: event == pull_request
+        run: npx commitlint --from HEAD^ --verbose
 
       - name: Build Application
         run: yarn build
