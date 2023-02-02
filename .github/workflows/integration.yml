@@ -1,4 +1,5 @@
 name: Continuous Integration
+run-name: continuous-integration
 
 on:
   - push
@@ -19,7 +20,7 @@ jobs:
           cache: yarn
 
       - name: Setup Homebrew
-        uses: Homebrew/actions/setup-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
 
       - name: Install Pre-Commit
         run: brew install pre-commit
