@@ -28,6 +28,9 @@ jobs:
           pip install pre-commit
           pre-commit install
 
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
       - name: Validate Typescript
         run: yarn tsc
 
