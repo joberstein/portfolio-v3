@@ -4,12 +4,13 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   integration:
     uses: ./.github/workflows/integration.yml
     secrets: inherit
-    
+
   deployment:
     needs: integration
     runs-on: ubuntu-22.04
