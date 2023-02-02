@@ -1,0 +1,39 @@
+name: Continuous Integration
+
+on:
+  - push
+  - pull_request
+  - workflow_call
+
+jobs:
+  integration:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+
+      - uses: actions/setup-python@v4 
+        with:
+          python-version: 3.x
+          cache: pip
+
+      - name: Install Pre-Commit
+        run: |
+          pip install pre-commit
+          pre-commit install
+
+      - name: Validate Typescript
+        run: yarn tsc
+
+      - name: Execute Tests
+        run: yarn test --ci
+
+      - name: Validate Commits
+        run: yarn validate:commits
+
+      - name: Build Application
+        run: yarn build
