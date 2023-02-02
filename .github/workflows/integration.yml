@@ -9,12 +9,17 @@ jobs:
   integration:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
+
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew
 
       - name: Install Pre-Commit
         run: brew install pre-commit
