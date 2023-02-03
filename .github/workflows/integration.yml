@@ -1,8 +1,10 @@
-name: Integration
+name: CI/CD
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - .*
+  pull_request:
 
 jobs:
   main:
@@ -40,3 +42,16 @@ jobs:
 
       - name: Build Application
         run: yarn build
+
+      - name: Deploy Application
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          branches: |
+            [ 
+              ${{ github.ref_name	}}
+            ]
+          dry_run: ${{ github.ref_name != 'master' }}
+          extra_plugins: |
+            @qiwi/semantic-release-gh-pages-plugin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
