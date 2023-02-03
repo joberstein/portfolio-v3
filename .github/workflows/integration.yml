@@ -20,8 +20,6 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-
-      - run: yarn global dir
       
       - name: Install Commitlint Config
         run: yarn add -D @joberstein12/commitlint-config
@@ -32,17 +30,6 @@ jobs:
           configFile: '.commitlintrc.json'
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
-
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
-
-      - name: Initialize Pre-Commit
-        run: |
-          pip install pre-commit
-          pre-commit install
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
