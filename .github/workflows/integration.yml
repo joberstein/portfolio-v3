@@ -42,3 +42,12 @@ jobs:
 
       - name: Build Application
         run: yarn build
+
+      - name: Deploy Application
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          dry_run: true
+          extra_plugins: |
+            @qiwi/semantic-release-gh-pages-plugin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
