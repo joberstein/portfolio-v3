@@ -21,6 +21,8 @@ jobs:
           node-version: 18
           cache: yarn
 
+      - run: yarn global dir
+
       - name: Install Commitlint Config
         run: yarn global add @joberstein12/commitlint-config
       
@@ -29,7 +31,7 @@ jobs:
         with:
           configFile: '.commitlintrc.json'
         env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
+          NODE_PATH: $(yarn global dir)
 
 
       - name: Setup Python
