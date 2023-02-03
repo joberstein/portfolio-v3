@@ -22,16 +22,16 @@ jobs:
           cache: yarn
 
       - run: yarn global dir
-
+      
       - name: Install Commitlint Config
-        run: yarn global add @joberstein12/commitlint-config
+        run: yarn add -D @joberstein12/commitlint-config
       
       - name: Validate Commits
         uses: wagoid/commitlint-github-action@v5
         with:
           configFile: '.commitlintrc.json'
         env:
-          NODE_PATH: /home/runner/.config/yarn/global/node_modules
+          NODE_PATH: ${{ github.workspace }}/node_modules
 
 
       - name: Setup Python
