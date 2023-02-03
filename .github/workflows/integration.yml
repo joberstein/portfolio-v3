@@ -29,7 +29,7 @@ jobs:
         with:
           configFile: './commitlintrc.json'
         env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
+          NODE_PATH: /home/runner/.cache/yarn/v6
 
 
       - name: Setup Python
