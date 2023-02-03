@@ -3,8 +3,6 @@ name: Continuous Integration
 on:
   - push
   - pull_request
-  - workflow_call
-  - workflow_dispatch
 
 jobs:
   main:
@@ -42,16 +40,3 @@ jobs:
 
       - name: Build Application
         run: yarn build
-
-      - name: Deploy Application
-        uses: cycjimmy/semantic-release-action@v3
-        with:
-          branches: |
-            [
-              '#133'
-            ]
-          dry_run: true
-          extra_plugins: |
-            @qiwi/semantic-release-gh-pages-plugin
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
