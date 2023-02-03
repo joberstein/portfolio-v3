@@ -46,6 +46,10 @@ jobs:
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
         with:
+          branches: |
+            [
+              '#133'
+            ]
           dry_run: true
           extra_plugins: |
             @qiwi/semantic-release-gh-pages-plugin
