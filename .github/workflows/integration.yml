@@ -17,6 +17,8 @@ jobs:
       
       - name: Validate Commits
         uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: './commitlintrc.json'
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
