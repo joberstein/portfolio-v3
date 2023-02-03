@@ -48,7 +48,7 @@ jobs:
         with:
           branches: |
             [ 
-              ${{ github.ref_name	}}
+              '${{ github.ref_name	}}'
             ]
           dry_run: ${{ github.ref_name != 'master' }}
           extra_plugins: |
