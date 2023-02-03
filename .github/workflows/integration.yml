@@ -14,17 +14,20 @@ jobs:
         uses: actions/checkout@v3
         with: 
           fetch-depth: 0
-      
-      - name: Validate Commits
-        uses: wagoid/commitlint-github-action@v5
-        with:
-          configFile: './commitlintrc.json'
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
+
+      - name: Install Commitlint Config
+        run: yarn global add joberstein12/commitlint-config
+      
+      - name: Validate Commits
+        uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: './commitlintrc.json'
 
       - name: Setup Python
         uses: actions/setup-python@v4
