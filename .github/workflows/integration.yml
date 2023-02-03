@@ -22,7 +22,7 @@ jobs:
           cache: yarn
 
       - name: Install Commitlint Config
-        run: yarn global add joberstein12/commitlint-config
+        run: yarn global add @joberstein12/commitlint-config
       
       - name: Validate Commits
         uses: wagoid/commitlint-github-action@v5
