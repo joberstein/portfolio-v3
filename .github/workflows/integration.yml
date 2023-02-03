@@ -27,9 +27,7 @@ jobs:
       - name: Validate Commits
         uses: wagoid/commitlint-github-action@v5
         with:
-          configFile: './commitlintrc.json'
-        env:
-          NODE_PATH: /home/runner/.cache/yarn/v6
+          configFile: '.commitlintrc.json'
 
 
       - name: Setup Python
