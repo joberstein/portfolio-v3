@@ -28,6 +28,9 @@ jobs:
         uses: wagoid/commitlint-github-action@v5
         with:
           configFile: './commitlintrc.json'
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+
 
       - name: Setup Python
         uses: actions/setup-python@v4
