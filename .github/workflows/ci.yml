@@ -48,7 +48,7 @@ jobs:
 
       # Required to authenticate with gh-pages
       - name: Set Git Remote Url
-        if: github.ref_name == 'master'
+        # if: github.ref_name == 'master'
         run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
 
       - name: Deploy Application
