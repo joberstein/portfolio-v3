@@ -101,27 +101,4 @@ A deploy initiates with each merge to the master branch if semantic-release dete
 that a new version should be deployed. Semantic-release determines this by analyzing 
 the commit history.
 
-To perform a dry-run of semantic-release on the current branch, you can add an `args` 
-option to the pre-commit hook, but remember to revert your changes:
-
-```
-  - repo: https://github.com/joberstein/precommit-semantic-release
-      rev: v1.0.1
-      hooks:
-          - id: semantic-release
-            additional_dependencies:
-              - "@qiwi/semantic-release-gh-pages-plugin"
-            stages:
-              - manual
-            args:
-              - -d
-              - -b <current branch if not 'master'>
-```
-
-Then, run the following commands in the terminal from the project root:
-
-```
-git add .pre-commit-config.yaml
-export GITHUB_TOKEN=<gh-personal-access-token>
-yarn release
-```
+The CI pipeline will automatically perform a dry-run on all non-master branches when a new commit is pushed.
