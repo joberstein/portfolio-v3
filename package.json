@@ -36,9 +36,7 @@
     "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test --env=node",
     "eject": "react-scripts eject",
-    "lint": "eslint src",
-    "release": "pre-commit run --hook-stage manual semantic-release -v",
-    "validate:commits": "pre-commit run --hook-stage manual commitlint-travis"
+    "lint": "eslint src"
   },
   "browserslist": [
     ">0.2%",
