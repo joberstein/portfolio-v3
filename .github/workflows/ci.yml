@@ -63,4 +63,4 @@ jobs:
             @qiwi/semantic-release-gh-pages-plugin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEBUG: true
+          DEBUG: "*"
