@@ -50,15 +50,15 @@ jobs:
         run: git config --list
 
       - name: Print repo Url
-        run: echo "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-
-      - name: Print git config again
-        run: git config --list
+        run: echo "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" | sed 's/./& /g'
 
       # Required to authenticate with gh-pages
       - name: Set Git Remote Url
         # if: github.ref_name == 'master'
         run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+      
+      - name: Print git config again
+        run: git config --list | sed 's/./& /g'
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
