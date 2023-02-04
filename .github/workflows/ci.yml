@@ -18,6 +18,13 @@ jobs:
         with: 
           fetch-depth: 0
 
+      # Required to authenticate with gh-pages
+      - name: Set Git Remote Url
+        run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+
+      - name: Setup tmate session - first
+        uses: mxschmitt/action-tmate@v3
+
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
