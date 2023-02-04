@@ -6,6 +6,9 @@ on:
       - '**'
   pull_request:
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   ci_pipeline:
     runs-on: ubuntu-22.04
@@ -42,6 +45,9 @@ jobs:
 
       - name: Build Application
         run: yarn build
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
