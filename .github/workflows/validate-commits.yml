@@ -30,9 +30,9 @@ jobs:
       - name: Validate Commit Range
         if: env.IS_PR
         env:
-          FROM_COMMIT: ${{ github.base_ref }}
-          TO_COMMIT: ${{ github.head_ref }}
-        run: npx commitlint -V -f "$FROM_COMMIT" -t "$TO_COMMIT"
+          FROM_BRANCH: ${{ github.base_ref }}
+          TO_BRANCH: ${{ github.head_ref }}
+        run: npx commitlint -V -f "origin/$FROM_BRANCH" -t $TO_BRANCH
         
       - name: Validate Latest Commitlint
         if: ${{ !env.IS_PR }}
