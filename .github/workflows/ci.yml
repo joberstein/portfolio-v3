@@ -50,7 +50,7 @@ jobs:
             [ 
               '${{ github.ref_name	}}'
             ]
-          dry_run: ${{ github.ref_name != 'master' }}
+          # dry_run: ${{ github.ref_name != 'master' }}
           extra_plugins: |
             @qiwi/semrel-metabranch
         env:
