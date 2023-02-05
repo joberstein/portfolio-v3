@@ -4,14 +4,9 @@
         "@semantic-release/release-notes-generator",
         "@semantic-release/github",
         [
-            "@qiwi/semrel-metabranch",
+            "@semantic-release/exec",
             {
-                "publish": {
-                    "action": "push",
-                    "branch": "gh-pages",
-                    "from": "./build",
-                    "message": "Deploy ${nextRelease.gitTag}"
-                }
+                "publishCmd": "./gh-pages ${nextRelease.version} 1"
             }
         ]
     ]
