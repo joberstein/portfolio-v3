@@ -23,7 +23,7 @@ git clean -df
 && git rm -r .
 
 echo "Restoring files in '$SOURCE'..."
-&& cp -r $TEMP_FOLDER/* .
+cp -r $TEMP_FOLDER/* .
 && rm -r $TEMP_FOLDER
 
 echo "Adding files..."
