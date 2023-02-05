@@ -1,0 +1,39 @@
+name: Commit Validation
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+env:
+  IS_PR: ${{ contains(github.event_name, 'pull_request') }}
+
+jobs:
+  validate_commits:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+      
+      - name: Install Commitlint Config
+        run: yarn global add -D @joberstein12/commitlint-config
+      
+      - name: Validate Commit Range
+        if: env.IS_PR
+        env:
+          FROM_COMMIT: github.base_ref
+          TO_COMMIT: github.head_ref
+        run: npx commitlint -V -f $FROM_COMMIT -t $TO_COMMIT
+        
+      - name: Validate Latest Commitlint
+        if: ${{ !env.IS_PR }}
+        run: npx commitlint -Ve
