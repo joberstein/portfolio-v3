@@ -48,12 +48,12 @@ jobs:
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
+        if: github.actor != 'dependabot[bot]'
         with:
           branches: |
             [ 
               '${{ github.ref_name	}}'
             ]
-          # dry_run: ${{ github.ref_name != 'master' }}
           extra_plugins: |
             @semantic-release/exec
         env:

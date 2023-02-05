@@ -27,7 +27,7 @@ cp -r $TEMP_FOLDER/* . \
 && rm -r $TEMP_FOLDER
 
 echo "Adding files..."
-git add --all
+git add -vA
 
 echo "Committing files..."
 git commit -vm "Deploy $VERSION"
