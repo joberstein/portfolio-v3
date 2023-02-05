@@ -52,6 +52,6 @@ jobs:
             ]
           dry_run: ${{ github.ref_name != 'master' }}
           extra_plugins: |
-            @qiwi/semantic-release-gh-pages-plugin
+            @qiwi/semrel-metabranch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
