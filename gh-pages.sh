@@ -19,18 +19,18 @@ echo "Storing files in '$SOURCE'..."
 cp -r $SOURCE/* $TEMP_FOLDER
 
 echo "Cleaning..."
-git clean -df
+git clean -df \
 && git rm -r .
 
 echo "Restoring files in '$SOURCE'..."
-cp -r $TEMP_FOLDER/* .
+cp -r $TEMP_FOLDER/* . \
 && rm -r $TEMP_FOLDER
 
 echo "Adding files..."
 git add --all
 
 echo "Committing files..."
-git commit -m "Deploy $VERSION"
+git commit -vm "Deploy $VERSION"
 
 echo "Pushing commit..."
 if [ $DRY_RUN ]; 
