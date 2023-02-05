@@ -6,7 +6,7 @@
         [
             "@semantic-release/exec",
             {
-                "publishCmd": "./gh-pages ${nextRelease.version} 1"
+                "publishCmd": "./gh-pages.sh ${nextRelease.version} 1"
             }
         ]
     ]
