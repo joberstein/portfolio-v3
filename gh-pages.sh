@@ -3,7 +3,6 @@
 BRANCH="gh-pages"
 SOURCE="build"
 VERSION=$1
-DRY_RUN=${1:-1}
 TEMP_FOLDER=$(mktemp -d)
 
 if [ -z $VERSION ];
@@ -33,9 +32,4 @@ echo "Committing files..."
 git commit -vm "Deploy $VERSION"
 
 echo "Pushing commit..."
-if [ $DRY_RUN ]; 
-then
-    git push origin -u $BRANCH --dry-run
-else 
-    git push origin -u $BRANCH
-fi
+git push origin -u $BRANCH
