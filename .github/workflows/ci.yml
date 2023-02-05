@@ -55,6 +55,7 @@ jobs:
             @qiwi/semrel-metabranch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEBUG: "get-git-auth-url,semantic-release:*"
 
       - name: Setup tmate session
         if: ${{ failure() }}
