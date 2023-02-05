@@ -49,13 +49,10 @@ jobs:
       - name: Print git config
         run: git config --list
 
-      # Required to authenticate with gh-pages
-      - name: Set Git Remote Url
-        # if: github.ref_name == 'master'
-        run: git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-      
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      - name: Set Github Actions user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
