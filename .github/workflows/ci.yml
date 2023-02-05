@@ -31,6 +31,9 @@ jobs:
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
 
+      - name: Reset Ref
+        run: git checkout .
+
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
@@ -45,13 +48,9 @@ jobs:
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
-        with:
-          branches: |
-            [ 
-              '${{ github.ref_name	}}'
-            ]
-          dry_run: ${{ github.ref_name != 'master' }}
-          extra_plugins: |
-            @qiwi/semrel-metabranch
+        if: github.ref_name == 'master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          extra_plugins: |
+            @semantic-release/exec
