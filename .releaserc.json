@@ -4,10 +4,9 @@
         "@semantic-release/release-notes-generator",
         "@semantic-release/github",
         [
-            "@qiwi/semantic-release-gh-pages-plugin", 
+            "@semantic-release/exec",
             {
-                "src": "build",
-                "msg": "Deploy <%= nextRelease.gitTag %>"
+                "publishCmd": "./gh-pages.sh ${nextRelease.version}"
             }
         ]
     ]
