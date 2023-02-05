@@ -71,4 +71,5 @@ jobs:
           NODE_DEBUG: "gh-pages"
 
       - name: Setup tmate session
+        if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
