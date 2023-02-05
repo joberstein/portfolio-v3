@@ -32,7 +32,7 @@ jobs:
         env:
           FROM_COMMIT: ${{ github.base_ref }}
           TO_COMMIT: ${{ github.head_ref }}
-        run: npx commitlint -V -f $FROM_COMMIT -t $TO_COMMIT
+        run: npx commitlint -V -f "$FROM_COMMIT" -t "$TO_COMMIT"
         
       - name: Validate Latest Commitlint
         if: ${{ !env.IS_PR }}
