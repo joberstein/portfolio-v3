@@ -9,6 +9,8 @@ on:
 jobs:
   ci_pipeline:
     runs-on: ubuntu-22.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
