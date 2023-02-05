@@ -6,9 +6,6 @@ on:
       - '**'
   pull_request:
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   ci_pipeline:
     runs-on: ubuntu-22.04
