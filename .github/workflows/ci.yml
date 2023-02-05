@@ -48,7 +48,7 @@ jobs:
 
       - name: Deploy Application
         uses: cycjimmy/semantic-release-action@v3
-        if: github.ref_name == master
+        if: github.ref_name == 'master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
