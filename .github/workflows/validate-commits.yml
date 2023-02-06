@@ -5,6 +5,10 @@ on:
     branches:
       - '**'
   pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 env:
   IS_PR: ${{ contains(github.event_name, 'pull_request') }}
