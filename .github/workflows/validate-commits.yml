@@ -36,11 +36,7 @@ jobs:
           git checkout $FROM_BRANCH
           git checkout $TO_BRANCH
           FROM_COMMIT=$(git rev-list $FROM_BRANCH..$TO_BRANCH | tail -1)
-          npx commitlint -V -f $FROM_COMMIT
-
-      - name: Setup tmate session
-        if: ${{ failure() && fromJSON(env.IS_PR) }}
-        uses: mxschmitt/action-tmate@v3
+          npx commitlint -V -f ${FROM_COMMIT}^
         
       - name: Validate Latest Commitlint
         if: ${{ !fromJSON(env.IS_PR) }}
