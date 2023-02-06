@@ -33,6 +33,8 @@ jobs:
           FROM_BRANCH: ${{ github.base_ref }}
           TO_BRANCH: ${{ github.head_ref }}
         run: |
+          git checkout $FROM_BRANCH
+          git checkout $TO_BRANCH
           FROM_COMMIT=$(git rev-list $FROM_BRANCH..$TO_BRANCH | tail -1)
           npx commitlint -V -f $FROM_COMMIT
 
