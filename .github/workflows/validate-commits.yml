@@ -32,7 +32,7 @@ jobs:
         env:
           FROM_BRANCH: ${{ github.base_ref }}
           TO_BRANCH: ${{ github.head_ref }}
-        run: npx commitlint -V -f "origin/$FROM_BRANCH" -t $TO_BRANCH"
+        run: npx commitlint -V -f "origin/$FROM_BRANCH" -t $TO_BRANCH
         
       - name: Validate Latest Commitlint
         if: ${{ !fromJSON(env.IS_PR) }}
