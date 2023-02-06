@@ -36,4 +36,4 @@ jobs:
         
       - name: Validate Latest Commitlint
         if: ${{ !fromJSON(env.IS_PR) }}
-        run: npx commitlint -Ve
+        run: npx commitlint -V -f $GITHUB_SHA^
