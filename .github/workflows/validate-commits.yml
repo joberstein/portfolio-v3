@@ -28,12 +28,12 @@ jobs:
         run: yarn global add -D @joberstein12/commitlint-config
       
       - name: Validate Commit Range
-        if: env.IS_PR
+        if: fromJSON(env.IS_PR)
         env:
           FROM_BRANCH: ${{ github.base_ref }}
           TO_BRANCH: ${{ github.head_ref }}
-        run: npx commitlint -V -f "origin/$FROM_BRANCH" -t $TO_BRANCH
+        run: npx commitlint -V -f "origin/$FROM_BRANCH" -t $TO_BRANCH"
         
       - name: Validate Latest Commitlint
-        if: ${{ !env.IS_PR }}
+        if: ${{ !fromJSON(env.IS_PR) }}
         run: npx commitlint -Ve
