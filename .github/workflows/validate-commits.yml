@@ -25,7 +25,7 @@ jobs:
           cache: yarn
       
       - name: Install Commitlint Config
-        run: yarn global add -D @joberstein12/commitlint-config
+        run: yarn global add @joberstein12/commitlint-config
       
       - name: Validate Commit Range
         if: fromJSON(env.IS_PR)
