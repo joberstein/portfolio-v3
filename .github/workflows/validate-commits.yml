@@ -26,6 +26,9 @@ jobs:
       
       - name: Install Commitlint Config
         run: yarn global add @joberstein12/commitlint-config
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       
       - name: Validate Commit Range
         if: fromJSON(env.IS_PR)
