@@ -18,6 +18,11 @@ jobs:
         uses: actions/checkout@v3
         with: 
           fetch-depth: 0
+      
+      - name: Validate Commits
+        uses: joberstein/actions-commitlint-validation@v1
+        with:
+          extra_config: "@joberstein12/commitlint-config"
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
