@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       
       - name: Validate Commits
-        uses: joberstein/actions-commitlint-validation@v1
+        uses: joberstein/actions-commitlint-validation@v1.1.0
         with:
           extra_config: "@joberstein12/commitlint-config"
 
