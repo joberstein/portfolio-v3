@@ -24,9 +24,6 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-      
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v3.14
 
       - name: Validate Commits
         uses: joberstein/actions-commitlint-validation@v1.0.0
