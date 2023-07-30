@@ -12,7 +12,7 @@ then
 fi
 
 echo "Checking out $BRANCH..."
-git checkout $BRANCH
+git checkout -f $BRANCH
 
 echo "Storing files in '$SOURCE'..."
 cp -r $SOURCE/* $TEMP_FOLDER
