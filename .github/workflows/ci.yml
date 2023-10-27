@@ -26,7 +26,7 @@ jobs:
           cache: yarn
 
       - name: Validate Commits
-        uses: joberstein/actions-commitlint-validation@v1.0.0
+        uses: joberstein/actions-commitlint-validation@v1-dist
         with:
           extra_config: "@joberstein12/commitlint-config"
 
